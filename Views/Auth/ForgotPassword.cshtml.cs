@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace QBCAWEB.Views.Auth
+namespace CNPM_QBCA.Views.Auth
 {
-    public class ForgotPasswordModel : PageModel
+    public class FogotPasswordModel : PageModel
     {
         public void OnGet()
         {

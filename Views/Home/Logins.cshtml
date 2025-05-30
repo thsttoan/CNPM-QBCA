@@ -1,0 +1,63 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QBCA - Recent Logins</title>
+    <!-- ... (CSS như bạn đã dùng ở trang login) ... -->
+</head>
+<body>
+    <!-- ... background-shapes ... -->
+    <div class="login-container">
+        <div class="logo">Q</div>
+        <div class="logo-text">QBCA</div>
+        <div class="logo-subtitle">Question Bank Checking Application</div>
+        @model List<QBCA.Models.Login>
+        <div class="recent-logins-title">Recent Logins</div>
+        <table class="logins-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Login Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Count > 0)
+                {
+                    for (int i = 0; i < Model.Count; i++)
+                    {
+                        var roleName = Model[i].RoleID switch
+                        {
+                            1 => "R&D Staff",
+                            2 => "Lecturer",
+                            3 => "Head of Dept",
+                            4 => "Subject Leader",
+                            5 => "Head of Examination Department",
+                            _ => "Unknown"
+                        };
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@Model[i].Email</td>
+                            <td>@roleName</td>
+                            <td>@Model[i].LastLogin.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" style="color:#e74c3c;">No login records found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a href="@Url.Action("Index", "Home")" class="btn-home">Back to Dashboard</a>
+        <div class="footer-text">© 2025 UTH University - R&D Department</div>
+    </div>
+</body>
+</html>

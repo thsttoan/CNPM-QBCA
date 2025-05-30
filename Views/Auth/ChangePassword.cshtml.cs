@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CNPM_QBCA.Views.Auth
 {
-    public class ForgotPasswordConfirmationModel : PageModel
+    public class ChangePasswordModel : PageModel
     {
         public void OnGet()
         {

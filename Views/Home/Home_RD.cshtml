@@ -1,13 +1,35 @@
 ﻿@{
-    ViewBag.Title = "Dashboard - R&D Staff";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
-    var roleKey = ViewBag.RoleKey ?? "rd-staff";
+    ViewBag.Title = "R&D Staff Dashboard";
+    ViewBag.UserName = "R&D User";
+    ViewBag.RoleName = "R&D Staff";
+    ViewBag.AvatarInitials = "RM";
 }
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const userRole = "@roleKey";
-        loadSidebarByRole(userRole);
-        loadDashboardHtml(userRole);
-    });
-</script>
+@section SidebarMenu {
+    <ul class="sidebar-menu">
+        <li><a href="@Url.Action("Home_RD", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
+        <li><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
+        <li><a href="@Url.Action("CLOs", "Subject")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">CLOs & Difficulty Levels</span></a></li>
+        <li><a href="@Url.Action("Plan", "Distribution")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
+        <li><a href="@Url.Action("QuestionBank", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
+        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check (AI)</span></a></li>
+        <li><a href="@Url.Action("SubmissionTable", "Submission")"><i class="fas fa-table menu-icon"></i><span class="menu-text">Submission Table</span></a></li>
+        <li><a href="@Url.Action("Exam", "Exam")"><i class="fas fa-file-alt menu-icon"></i><span class="menu-text">Exam Management</span></a></li>
+        <li><a href="@Url.Action("Report", "Report")"><i class="fas fa-chart-bar menu-icon"></i><span class="menu-text">Reports</span></a></li>
+        <li><a href="@Url.Action("Settings", "Config")"><i class="fas fa-cog menu-icon"></i><span class="menu-text">Configuration</span></a></li>
+        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
+    </ul>
+}
+<main class="dashboard-container">
+    <div class="welcome-banner">
+        <h1>Welcome, R&D Staff!</h1>
+        <ul>
+            <li>Manage subjects, CLOs, and question difficulty levels.</li>
+            <li>Distribute plans and assign number of questions per subject.</li>
+            <li>Check for duplicate English questions using AI/lexical analysis.</li>
+            <li>Manage the question bank, submission table, and exams.</li>
+            <li>Receive and review notifications and reports.</li>
+            <li>Configure system options and maintain high accuracy for duplication checks.</li>
+        </ul>
+    </div>
+</main>

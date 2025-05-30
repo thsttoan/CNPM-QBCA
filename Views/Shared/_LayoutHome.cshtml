@@ -1,20 +1,23 @@
 ﻿@{
     Layout = null;
+    // Lấy avatar chỉ 1 chữ cái đầu
+    string userName = (string)ViewBag.UserName ?? "User";
+    string avatarInitials = !string.IsNullOrWhiteSpace(userName)
+        ? userName.Trim().Substring(0, 1).ToUpper()
+        : "U";
+    // Truyền ngược lại cho các view con nếu muốn dùng chung
+    ViewBag.AvatarInitials = avatarInitials;
 }
-@using System.Security.Claims
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-
-    <!-- Font & Icon -->
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- External CSS -->
-    <link rel="stylesheet" href="~/css/dashboard.css" />
+    <link rel="stylesheet" href="@(Url.Content("~/css/dashboard.css"))" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <aside class="sidebar" id="sidebar">
@@ -22,15 +25,15 @@
             <span class="sidebar-logo">QBCA</span>
             <span class="sidebar-logo-abbr">Q</span>
         </div>
-        <ul class="sidebar-menu" id="sidebarMenu"></ul>
+        @RenderSection("SidebarMenu", required: false)
         <div class="sidebar-toggle-container">
             <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebarToggleBtn">
                 <i class="fas fa-chevron-left"></i> <span class="menu-text">Collapse</span>
             </button>
         </div>
     </aside>
-
     <div class="main-content">
+        <!-- Header bar -->
         <header class="top-header">
             <div class="header-left">
                 <h2 class="app-name">Question Bank Checking Application</h2>
@@ -38,24 +41,16 @@
             </div>
             <div class="header-right">
                 <!-- Notifications -->
-                <div class="notification-bell" id="notificationBellContainerLayout">
-                    <span class="icon-wrapper" id="notificationIconWrapperLayout" title="Show Notifications">
+                <div class="notification-bell">
+                    <span class="icon-wrapper" title="Show Notifications">
                         <i class="fas fa-bell"></i>
-                        <span class="notification-badge" id="notificationCountLayout">0</span>
+                        <span class="notification-badge">0</span>
                     </span>
-                    <div class="notification-dropdown" id="notificationDropdownContentLayout">
+                    <div class="notification-dropdown">
                         <div class="notification-dropdown-header">
                             <span>Notifications</span>
-                            <div class="notification-header-actions">
-                                <button id="markAllNotificationsAsReadBtn" title="Mark all as read">
-                                    <i class="fas fa-check-double"></i>
-                                </button>
-                                <button id="notificationSettingsBtn" title="Notification settings">
-                                    <i class="fas fa-cog"></i>
-                                </button>
-                            </div>
                         </div>
-                        <ul class="notification-dropdown-list" id="headerNotificationListLayout">
+                        <ul class="notification-dropdown-list">
                             <li class="no-notifications">No new notifications.</li>
                         </ul>
                         <div class="notification-dropdown-footer">
@@ -63,55 +58,34 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- User Menu -->
                 <div class="user-menu" id="userMenuContainer">
-                    <div class="user-profile" id="userProfileTrigger">
-                        <div class="user-avatar" id="userAvatar">U</div>
-                        <div class="user-info">
-                            <span class="user-name" id="profileUserName">User</span>
-                            <span class="user-role" id="profileUserRole">Role</span>
+                    <div class="user-profile" id="userProfileTrigger" tabindex="0" style="display:flex;align-items:center;">
+                        <div class="avatar" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+                            border-radius:50%;background:linear-gradient(135deg,#667eea 60%,#764ba2 100%);
+                            color:#fff;font-size:20px;font-weight:bold;box-shadow:0 1.5px 6px rgba(102,126,234,0.15);border:2px solid #fff;">
+                            @ViewBag.AvatarInitials
+                        </div>
+                        <div style="margin-left:12px;">
+                            <div class="profile-name" style="font-weight:600;color:#333;font-size:16px;">@ViewBag.UserName</div>
+                            <div class="profile-email" style="color:#666;font-size:13px;">@ViewBag.Email</div>
+                            <div class="profile-role" style="font-size:13px;color:#667eea;font-weight:500;">@ViewBag.RoleName</div>
                         </div>
                     </div>
                     <ul class="user-dropdown" id="userDropdownContent">
                         <li><a href="@Url.Action("Profile", "Home")"><i class="fas fa-user-circle"></i> Profile</a></li>
-                        <li><a href="#"><i class="fas fa-key"></i> Change Password</a></li>
+                        <li><a href="@Url.Action("ChangePassword", "Auth")"><i class="fas fa-key"></i> Change Password</a></li>
+                        <li><a href="@Url.Action("Logins", "Home")"><i class="fas fa-history"></i> Logins</a></li>
                         <li class="dropdown-divider"></li>
                         <li><a href="@Url.Action("Logout", "Auth")"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     </ul>
                 </div>
             </div>
         </header>
-
-        <main class="dashboard-container" id="dashboardContent">
-            @RenderBody()
-        </main>
+        @RenderBody()
     </div>
-
-    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    <script src="~/js/dashboard.js"></script>
-    <script>
-        // Toggle dropdown menu when clicking avatar
-        document.addEventListener("DOMContentLoaded", function () {
-            const trigger = document.getElementById("userProfileTrigger");
-            const dropdown = document.getElementById("userDropdownContent");
-
-            if (trigger && dropdown) {
-                trigger.addEventListener("click", function (e) {
-                    e.stopPropagation();
-                    dropdown.classList.toggle("show");
-                });
-
-                // Close dropdown when clicking outside
-                document.addEventListener("click", function (e) {
-                    if (!dropdown.contains(e.target)) {
-                        dropdown.classList.remove("show");
-                    }
-                });
-            }
-        });
-    </script>
-
+    <script src="@(Url.Content("~/js/dashboard.js"))"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

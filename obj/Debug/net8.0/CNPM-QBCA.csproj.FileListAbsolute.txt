@@ -165,10 +165,10 @@ E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\CNPM-QBCA.pdb
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\CNPM-QBCA.genruntimeconfig.cache
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\ref\CNPM-QBCA.dll
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\BCrypt.Net-Next.dll
-E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\Microsoft.OpenApi.dll
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\CNPM-QBCA.MvcApplicationPartsAssemblyInfo.cs
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\CNPM-QBCA.sourcelink.json
+E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

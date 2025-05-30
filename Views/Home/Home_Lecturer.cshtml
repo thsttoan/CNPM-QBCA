@@ -1,13 +1,30 @@
 ﻿@{
-    ViewBag.Title = "Dashboard - Lecturer";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
-    var roleKey = ViewBag.RoleKey ?? "lecturer";
+    ViewBag.Title = "Lecturer Dashboard";
+    ViewBag.UserName = "Lecturer";
+    ViewBag.RoleName = "Lecturer";
+    ViewBag.AvatarInitials = "LE";
 }
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const userRole = "@roleKey";
-        loadSidebarByRole(userRole);
-        loadDashboardHtml(userRole);
-    });
-</script>
+@section SidebarMenu {
+    <ul class="sidebar-menu">
+        <li><a href="@Url.Action("Home_Lecturer", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
+        <li><a href="@Url.Action("MyTasks", "Task")"><i class="fas fa-clipboard-list menu-icon"></i><span class="menu-text">My Tasks</span></a></li>
+        <li><a href="@Url.Action("UploadQuestions", "Question")"><i class="fas fa-upload menu-icon"></i><span class="menu-text">Upload Questions</span></a></li>
+        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check</span></a></li>
+        <li><a href="@Url.Action("EditQuestions", "Question")"><i class="fas fa-edit menu-icon"></i><span class="menu-text">Edit Questions</span></a></li>
+        <li><a href="@Url.Action("MockExam", "Exam")"><i class="fas fa-file-signature menu-icon"></i><span class="menu-text">Mock Exam</span></a></li>
+        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
+    </ul>
+}
+<main class="dashboard-container">
+    <div class="welcome-banner">
+        <h1>Welcome, Lecturer!</h1>
+        <ul>
+            <li>View and manage assigned tasks from Subject Leader or Head of Department.</li>
+            <li>Upload new questions to the system and check for duplicates.</li>
+            <li>Edit or delete duplicate questions as needed.</li>
+            <li>Take mock exams and provide feedback for exam improvement.</li>
+            <li>Receive notifications about assignments and feedback.</li>
+        </ul>
+    </div>
+</main>

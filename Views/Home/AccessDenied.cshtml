@@ -1,12 +1,13 @@
 ﻿@{
     Layout = null;
+    ViewBag.Title = "Access Denied";
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QBCA - Password Reset</title>
+    <title>QBCA - Access Denied</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -55,20 +56,22 @@
                 right: 10%;
                 animation-delay: 6s;
             }
-
         @@keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
+            0%, 100%
 
-            50% {
-                transform: translateY(-20px);
-            }
+        {
+            transform: translateY(0);
         }
 
-        .confirmation-container {
+        50% {
+            transform: translateY(-20px);
+        }
+
+        }
+
+        .denied-container {
             position: relative;
-            max-width: 450px;
+            max-width: 400px;
             margin: 80px auto;
             padding: 40px;
             background-color: white;
@@ -78,52 +81,62 @@
             text-align: center;
         }
 
-        .success-icon {
+        .logo {
             font-size: 64px;
-            color: #28a745;
-            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: #667eea;
         }
 
-        .title {
+        .logo-text {
+            text-align: center;
             font-size: 24px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-top: 10px;
             color: #333;
         }
 
-        .subtitle {
-            font-size: 16px;
+        .logo-subtitle {
+            text-align: center;
+            font-size: 14px;
             color: #666;
             margin-bottom: 30px;
-            line-height: 1.5;
         }
 
-        .info-text {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            color: #495057;
-            font-size: 14px;
-            line-height: 1.6;
+        .icon-warning {
+            margin-bottom: 12px;
         }
 
-        .back-button {
+        .btn {
             display: inline-block;
-            padding: 12px 30px;
-            background-color: #667eea;
-            color: white;
-            text-decoration: none;
+            margin: 8px 4px 0 4px;
+            padding: 10px 22px;
             border-radius: 5px;
             font-size: 16px;
+            text-decoration: none;
             font-weight: 600;
-            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-            .back-button:hover {
+        .btn-primary {
+            background-color: #667eea;
+            color: white;
+        }
+
+            .btn-primary:hover {
                 background-color: #5a67d8;
-                text-decoration: none;
-                color: white;
+            }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+            margin-right: 8px;
+        }
+
+            .btn-danger:hover {
+                background-color: #c0392b;
             }
 
         .footer-text {
@@ -133,29 +146,30 @@
             color: #999;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
     <div class="background-shapes">
         <div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div>
     </div>
+    <div class="denied-container">
+        <div class="logo">Q</div>
+        <div class="logo-text">QBCA</div>
+        <div class="logo-subtitle">Question Bank Checking Application</div>
 
-    <div class="confirmation-container">
-        <div class="success-icon">✅</div>
-        <div class="title">Password Reset Request Sent</div>
-        <div class="subtitle">We've received your password reset request</div>
-
-        <div class="info-text">
-            <p><strong>What happens next?</strong></p>
-            <p>If an account with the provided email address exists in our system, you should receive password reset instructions shortly.</p>
-            <p>Please check your email inbox and spam folder.</p>
-            <p><em>Note: For security reasons, we don't confirm whether the email address exists in our system.</em></p>
+        <div class="icon-warning">
+            <i class="fas fa-exclamation-triangle" style="font-size:40px; color:#e74c3c;"></i>
         </div>
-
-        <a href="@Url.Action("Login", "Auth")" class="back-button">
-            ← Back to Login
+        <h2 style="color:#e74c3c; margin-top:18px;">Access Denied!</h2>
+        <p style="font-size:18px; margin-bottom: 14px;">
+            @ViewBag.Message You do not have permission to access this page.
+        </p>
+        <a href="@Url.Action("Logout", "Auth")" class="btn btn-danger">
+            <i class="fas fa-sign-out-alt"></i> Log out & Sign in again
         </a>
-
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
         <div class="footer-text">© 2025 UTH University - R&D Department</div>
     </div>
 </body>
