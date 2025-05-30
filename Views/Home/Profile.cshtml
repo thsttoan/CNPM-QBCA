@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="feature-view-title-banner">
+    <h1>My Profile</h1>
+</div>
+
+<div class="feature-view-content">
+    <table>
+        <tr>
+            <th>Full Name</th>
+            <td>@ViewBag.FullName</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@ViewBag.Email</td>
+        </tr>
+        <tr>
+            <th>Role ID</th>
+            <td>@ViewBag.RoleID</td>
+        </tr>
+    </table>
+</div>

@@ -26,6 +26,11 @@ namespace QBCA.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
@@ -47,11 +52,13 @@ namespace QBCA.Controllers
                 return View(model);
             }
 
+            var roleId = user.RoleID;
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.RoleName),
-                new Claim("FullName", user.FullName)
+                new Claim("FullName", user.FullName),
+                new Claim("RoleID", roleId.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(
@@ -68,7 +75,16 @@ namespace QBCA.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            return RedirectToAction("Index", "Home");
+            // ➤ Chuyển trực tiếp đến dashboard tương ứng với vai trò
+            return roleId switch
+            {
+                1 => RedirectToAction("Home_RD", "Home"),
+                2 => RedirectToAction("Home_HeadDept", "Home"),
+                3 => RedirectToAction("Home_SubjectLeader", "Home"),
+                4 => RedirectToAction("Home_Lecturer", "Home"),
+                5 => RedirectToAction("Home_ExamHead", "Home"),
+                _ => RedirectToAction("Unauthorized", "Home")
+            };
         }
 
         // GET: /Auth/Logout
@@ -78,13 +94,5 @@ namespace QBCA.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Auth");
         }
-    }
-
-    public class UserInfo
-    {
-        public string Username { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Role { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
     }
 }

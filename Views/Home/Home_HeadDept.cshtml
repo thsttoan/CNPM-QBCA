@@ -1,6 +1,13 @@
 ﻿@{
+    ViewBag.Title = "Dashboard - Head of Department";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
-    ViewBag.Title = "Head of Department Dashboard";
+    var roleKey = ViewBag.RoleKey ?? "head-dept";
 }
-<h1>Welcome, Head of Dept</h1>
-<p>Oversee department operations and validate question submissions.</p>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userRole = "@roleKey";
+        loadSidebarByRole(userRole);
+        loadDashboardHtml(userRole);
+    });
+</script>

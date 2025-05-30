@@ -1,6 +1,8 @@
 ﻿@{
+    ViewBag.Title = "Dashboard - Subject Leader";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
-    ViewBag.Title = "Subject Leader Dashboard";
+    var roleKey = ViewBag.RoleKey ?? "subject-leader";
 }
-<h1>Welcome, Subject Leader</h1>
-<p>Manage subject-specific content and ensure quality standards.</p>
+
+<script>
+    document.addEventListener("DOMContentLoaded

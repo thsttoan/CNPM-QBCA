@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QBCA.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
+using System.Security.Claims;
+using QBCA.Models;
 
 namespace QBCA.Controllers
 {
@@ -18,16 +19,71 @@ namespace QBCA.Controllers
 
         public IActionResult Index()
         {
-            _logger.LogInformation("Home page accessed");
-            ViewBag.Title = "QBCA - Home";
-            ViewBag.Message = "Welcome to QBCAWEB!";
+            var roleIdClaim = User.FindFirst("RoleId")?.Value;
+            if (!int.TryParse(roleIdClaim, out var roleId))
+                return View("Unauthorized");
+
+            return roleId switch
+            {
+                1 => RedirectToAction("Home_RD"),
+                2 => RedirectToAction("Home_HeadDept"),
+                3 => RedirectToAction("Home_SubjectLeader"),
+                4 => RedirectToAction("Home_Lecturer"),
+                5 => RedirectToAction("Home_ExamHead"),
+                _ => View("Unauthorized")
+            };
+        }
+
+        public IActionResult Home_RD()
+        {
+            ViewBag.RoleKey = "rd-staff";
+            return View("Home_RD");
+        }
+
+        public IActionResult Home_HeadDept()
+        {
+            ViewBag.RoleKey = "head-dept";
             return View();
         }
 
+        public IActionResult Home_SubjectLeader()
+        {
+            ViewBag.RoleKey = "subject-leader";
+            return View();
+        }
+
+        public IActionResult Home_Lecturer()
+        {
+            ViewBag.RoleKey = "lecturer";
+            return View();
+        }
+
+        public IActionResult Home_ExamHead()
+        {
+            ViewBag.RoleKey = "exam-head";
+            return View();
+        }
         public IActionResult About()
         {
             ViewBag.Title = "About";
             ViewBag.Message = "This is an introduction page for QBCA.";
+            return View();
+        }
+
+        public IActionResult Unauthorized()
+        {
+            return View();
+        }
+        public IActionResult Profile()
+        {
+            var email = User.Identity?.Name;
+            var fullName = User.FindFirst("FullName")?.Value ?? "Unknown";
+            var roleId = User.FindFirst("RoleId")?.Value ?? "N/A";
+
+            ViewBag.Email = email;
+            ViewBag.FullName = fullName;
+            ViewBag.RoleID = roleId;
+
             return View();
         }
 
