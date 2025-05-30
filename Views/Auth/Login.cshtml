@@ -1,0 +1,276 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QBCA - Login</title>
+    <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f9;
+    }
+
+    .background-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1;
+    }
+
+    .shape {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        opacity: 0.2;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .shape:nth-child(1) { top: 10%; left: 10%; }
+    .shape:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+    .shape:nth-child(3) { bottom: 15%; left: 20%; animation-delay: 4s; }
+    .shape:nth-child(4) { bottom: 10%; right: 10%; animation-delay: 6s; }
+
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .login-container {
+        position: relative;
+        max-width: 400px;
+        margin: 80px auto;
+        padding: 40px;
+        background-color: white;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        z-index: 1;
+    }
+
+    .logo {
+        font-size: 64px;
+        font-weight: bold;
+        text-align: center;
+        color: #667eea;
+    }
+
+    .logo-text {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 600;
+        margin-top: 10px;
+        color: #333;
+    }
+
+    .logo-subtitle {
+        text-align: center;
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        box-sizing: border-box; 
+    }
+
+    .role-options {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .role-option {
+        flex: 1;
+        padding: 10px;
+        margin: 3px;
+        text-align: center;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 13px; 
+    }
+
+    .role-option.active {
+        background-color: #667eea;
+        color: white;
+        border-color: #667eea;
+    }
+
+    .remember-forgot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 10px;
+        background-color: #667eea;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 15px;
+    }
+
+    .login-button:hover {
+        background-color: #5a67d8;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin-top: 30px;
+        font-size: 12px;
+        color: #999;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 35px; 
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #777;
+    }
+    
+    .validation-summary-errors ul {
+        list-style-type: none;
+        padding-left: 0;
+        color: red;
+        margin-bottom:15px;
+    }
+    .validation-summary-errors li {
+        margin-bottom: 5px;
+    }
+    .text-danger {
+        color: red;
+        font-size: 0.9em;
+    }
+
+</style>
+</head>
+
+<body>
+    <div class="background-shapes">
+        <div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="logo">Q</div>
+        <div class="logo-text">QBCA</div>
+        <div class="logo-subtitle">Question Bank Checking Application</div>
+
+        @model QBCA.Models.LoginViewModel
+
+        @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { id = "loginForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(false, "", new { @class = "text-danger validation-summary-errors" })
+
+            <div class="form-group">
+                <label class="form-label">Select Role</label>
+                <div class="role-options">
+                    <div class="role-option active" data-role="rd-staff">R&D Staff</div>
+                    <div class="role-option" data-role="lecturer">Lecturer</div>
+                    <div class="role-option" data-role="head-dept">Head of Dept</div>
+                    <div class="role-option" data-role="subject-leader">Subject Leader</div>
+                    <div class="role-option" data-role="exam-head">Head of Examination Department</div>
+                </div>
+                @Html.HiddenFor(m => m.SelectedRole, new { id = "selectedRoleInput", @Value = "rd-staff" })
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="form-label">Email Address</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-input", placeholder = "Enter your email", id="email" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label asp-for="Password" class="form-label">Password</label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-input", placeholder = "Enter your password", id="password" })
+                <button type="button" class="password-toggle" onclick="togglePassword()">👁</button>
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="remember-forgot">
+                <label>
+                    @Html.CheckBoxFor(m => m.RememberMe) Remember me
+                </label>
+                <a href="@Url.Action("ForgotPassword", "Auth")" style="font-size: 14px; color: #667eea;">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-button">
+                <span class="button-text">Sign In</span>
+            </button>
+        }
+
+        <div class="footer-text">© 2025 UTH University - R&D Department</div>
+    </div>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const btn = document.querySelector('.password-toggle');
+            if (password.type === 'password') {
+                password.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                password.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const roleOptions = document.querySelectorAll('.role-option');
+            const selectedRoleInput = document.getElementById('selectedRoleInput');
+
+            if (selectedRoleInput && !selectedRoleInput.value) {
+                 const activeOption = document.querySelector('.role-option.active');
+                 if (activeOption) {
+                    selectedRoleInput.value = activeOption.dataset.role;
+                 }
+            }
+            
+            roleOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    roleOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    if (selectedRoleInput) {
+                        selectedRoleInput.value = this.dataset.role;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

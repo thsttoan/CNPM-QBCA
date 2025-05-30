@@ -1,0 +1,1986 @@
+﻿@{
+    Layout = null;
+}
+@using System.Security.Claims
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QBCA - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        body {
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        background-color: #f0f2f5;
+        color: #333;
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .sidebar {
+        width: 260px;
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        transition: width 0.3s ease;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+            .sidebar.collapsed .sidebar-header .sidebar-logo,
+            .sidebar.collapsed .sidebar-menu li a .menu-text {
+                display: none;
+            }
+
+            .sidebar.collapsed .sidebar-header .sidebar-logo-abbr {
+                display: inline;
+            }
+
+            .sidebar.collapsed .sidebar-menu li a {
+                justify-content: center;
+            }
+
+                .sidebar.collapsed .sidebar-menu li a .menu-icon {
+                    margin-right: 0;
+                }
+
+            .sidebar.collapsed .sidebar-toggle {
+                justify-content: center;
+            }
+
+    .sidebar-header {
+        text-align: center;
+        margin-bottom: 25px;
+        padding: 0 15px;
+    }
+
+    .sidebar-logo {
+        font-size: 28px;
+        font-weight: bold;
+        color: #3498db;
+        display: inline;
+    }
+
+    .sidebar-logo-abbr {
+        font-size: 28px;
+        font-weight: bold;
+        color: #3498db;
+        display: none;
+    }
+
+    .sidebar-menu {
+        list-style-type: none;
+        padding: 0 15px;
+        margin: 0;
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+        .sidebar-menu li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 13px 15px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            transition: background-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+            .sidebar-menu li a:hover, .sidebar-menu li a.active {
+                background-color: #34495e;
+                color: #fff;
+            }
+
+            .sidebar-menu li a .menu-icon {
+                font-size: 18px;
+                margin-right: 15px;
+                width: 20px;
+                text-align: center;
+            }
+
+    .sidebar-toggle-container {
+        padding: 15px;
+        border-top: 1px solid #3a5368;
+    }
+
+    .sidebar-toggle {
+        background: none;
+        border: none;
+        color: #bdc3c7;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
+        border-radius: 5px;
+    }
+
+        .sidebar-toggle:hover {
+            background-color: #34495e;
+            color: #fff;
+        }
+
+        .sidebar-toggle .menu-text {
+            margin-left: 10px;
+        }
+
+
+    .main-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .top-header {
+        background-color: #fff;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .header-left .app-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+    }
+
+    .header-left .university-name {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin: 0;
+    }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+
+        .notification-bell {
+            position: relative;
+            display: flex; 
+            align-items: center; 
+            padding-top: 5px; 
+            padding-bottom: 5px; 
+        }
+
+            .notification-bell > .icon-wrapper {
+                font-size: 20px;
+                color: #555;
+                cursor: pointer;
+                position: relative;
+                display: inline-flex; 
+                align-items: center;
+                justify-content: center;
+                height: 38px;
+                width: 38px;
+                padding: 0;
+            }
+
+                .notification-bell > .icon-wrapper > i.fas {
+                    line-height: 1;
+                    vertical-align: middle;
+                }
+
+        .notification-badge { 
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background-color: #e74c3c;
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+            font-weight: bold;
+            display: none;
+        }
+
+        .notification-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 19px; 
+            width: 360px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            z-index: 1001;
+            border: 1px solid #e0e0e0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+
+    .notification-dropdown-header {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        font-size: 15px;
+        color: #333;
+    }
+
+    .notification-dropdown-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .notification-dropdown-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+            .notification-dropdown-list li:last-child {
+                border-bottom: none;
+            }
+
+            .notification-dropdown-list li:hover {
+                background-color: #f8f9fa;
+            }
+
+            .notification-dropdown-list li.no-notifications {
+                text-align: center;
+                color: #777;
+                padding: 20px 15px;
+                cursor: default;
+            }
+
+                .notification-dropdown-list li.no-notifications:hover {
+                    background-color: transparent;
+                }
+
+
+    .notification-item-icon {
+        font-size: 16px;
+        color: #667eea;
+        margin-top: 2px;
+        width: 20px;
+        text-align: center;
+    }
+
+    .notification-item-content {
+        flex-grow: 1;
+    }
+
+    .notification-item-text {
+        display: block;
+        color: #333;
+        margin-bottom: 3px;
+        line-height: 1.4;
+    }
+
+    .notification-item-meta {
+        font-size: 11px;
+        color: #7f8c8d;
+    }
+
+    .notification-dropdown-footer {
+        padding: 10px 15px;
+        text-align: center;
+        border-top: 1px solid #eee;
+    }
+
+        .notification-dropdown-footer a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+            .notification-dropdown-footer a:hover {
+                text-decoration: underline;
+            }
+
+    .notification-header-actions {
+        display: flex;
+        align-items: center;
+    }
+
+        .notification-header-actions button {
+            margin-left: 8px;
+        }
+
+    /* --- User Menu Styles --- */
+    .user-menu {
+        position: relative;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        padding: 5px; /* This padding is what we are matching */
+        border-radius: 6px;
+        transition: background-color 0.2s;
+    }
+
+        .user-profile:hover {
+            background-color: #f0f2f5;
+        }
+
+    .user-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background-color: #3498db;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 10px;
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+
+    .user-info .user-name {
+        font-weight: 600;
+        font-size: 14px;
+        display: block;
+    }
+
+    .user-info .user-role {
+        font-size: 12px;
+        color: #7f8c8d;
+        display: block;
+    }
+
+    .user-dropdown {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        background-color: white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 6px;
+        list-style: none;
+        padding: 8px 0;
+        margin: 0;
+        width: 200px;
+        z-index: 1000;
+        border: 1px solid #eee;
+    }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .user-dropdown li a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+            .user-dropdown li a i {
+                margin-right: 10px;
+                color: #7f8c8d;
+                width: 16px;
+            }
+
+            .user-dropdown li a:hover {
+                background-color: #f0f2f5;
+            }
+
+        .user-dropdown .dropdown-divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 8px 0;
+        }
+    /* --- End User Menu Styles --- */
+
+
+    .dashboard-container {
+        padding: 25px 30px;
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+
+    .feature-view-title-banner {
+        background: linear-gradient(135deg, #5b6a7d 0%, #495666 100%);
+        color: white;
+        padding: 20px 25px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+        .feature-view-title-banner h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+    .feature-view-content {
+        background-color: #fff;
+        padding: 20px 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+        /* Basic form styling for feature views */
+        .feature-view-content form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            max-width: 600px; /* Hoặc theo ý muốn */
+        }
+
+        .feature-view-content label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .feature-view-content input[type="text"],
+        .feature-view-content input[type="number"],
+        .feature-view-content select,
+        .feature-view-content textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .feature-view-content textarea {
+            min-height: 100px;
+        }
+
+        .feature-view-content button, .feature-view-content .btn-primary { /* Added .btn-primary */
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.2s;
+            max-width: 200px; /* Hoặc theo ý muốn */
+            text-decoration: none; /* For <a> styled as button */
+            display: inline-flex; /* For <a> */
+            align-items: center; /* For <a> */
+            justify-content: center; /* For <a> */
+        }
+
+            .feature-view-content button:hover, .feature-view-content .btn-primary:hover {
+                background-color: #2980b9;
+            }
+
+        .feature-view-content .form-group {
+            margin-bottom: 10px;
+        }
+        /* Basic table styling */
+        .feature-view-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .feature-view-content th, .feature-view-content td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .feature-view-content th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .feature-view-content .action-cell button, .feature-view-content .action-cell a {
+            padding: 5px 10px;
+            font-size: 13px;
+            margin-right: 5px;
+            text-decoration: none;
+        }
+
+        .feature-view-content .btn-sm { /* Small button style */
+            padding: 5px 10px;
+            font-size: 13px;
+        }
+
+        .feature-view-content .btn-warning {
+            background-color: #f0ad4e;
+            color: white;
+        }
+
+            .feature-view-content .btn-warning:hover {
+                background-color: #ec971f;
+            }
+
+        .feature-view-content .btn-danger {
+            background-color: #d9534f;
+            color: white;
+        }
+
+            .feature-view-content .btn-danger:hover {
+                background-color: #c9302c;
+            }
+
+
+    .welcome-banner {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+        .welcome-banner h1 {
+            margin: 0 0 8px 0;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .welcome-banner p {
+            margin: 0;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .dashboard-card {
+        background-color: white;
+        padding: 20px 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-card .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .dashboard-card .card-icon {
+            font-size: 22px;
+            color: #3498db;
+            margin-right: 12px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .dashboard-card .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 0;
+            color: #3c4858;
+        }
+
+        .dashboard-card .card-content .main-stat {
+            font-size: 30px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            color: #3498db;
+        }
+
+        .dashboard-card .card-content .sub-text {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .dashboard-card .card-link {
+            display: inline-block;
+            font-size: 14px;
+            color: #3498db;
+            text-decoration: none;
+            margin-top: 18px;
+            font-weight: 600;
+        }
+
+            .dashboard-card .card-link:hover {
+                text-decoration: underline;
+            }
+
+        .dashboard-card .card-description {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+    .action-button {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background-color 0.2s;
+    }
+
+        .action-button:hover {
+            background-color: #2980b9;
+        }
+
+        .action-button i {
+            margin-right: 8px;
+        }
+
+    .task-list ul, .notification-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .task-list li, .notification-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .task-list li:last-child, .notification-list li:last-child {
+            border-bottom: none;
+        }
+
+    .task-list .task-info, .notification-list .notification-info {
+        flex-grow: 1;
+    }
+
+    .task-list .task-title, .notification-list .notification-title {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 4px;
+        color: #454f5b;
+    }
+
+    .task-list .task-meta, .notification-list .notification-meta {
+        font-size: 12px;
+        color: #7f8c8d;
+    }
+
+    .notification-list .new-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #e74c3c;
+        border-radius: 50%;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .quick-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .quick-action-btn {
+        background-color: #f8f9fa;
+        color: #495057;
+        border: 1px solid #dee2e6;
+        text-align: center;
+        padding: 15px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background-color 0.2s, border-color 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100px;
+    }
+
+        .quick-action-btn:hover {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+        }
+
+        .quick-action-btn i {
+            display: block;
+            font-size: 26px;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+</style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">QBCA</span>
+            <span class="sidebar-logo-abbr">Q</span>
+        </div>
+        <ul class="sidebar-menu" id="sidebarMenu">
+            <!-- Sidebar items will be populated by JavaScript -->
+        </ul>
+        <div class="sidebar-toggle-container">
+            <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebarToggleBtn">
+                <i class="fas fa-chevron-left"></i> <span class="menu-text">Collapse</span>
+            </button>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <h2 class="app-name">Question Bank Checking Application</h2>
+                <p class="university-name">UTH University - R&D Department</p>
+            </div>
+            <div class="header-right">
+                <div class="notification-bell" id="notificationBellContainerLayout">
+                    <span class="icon-wrapper" id="notificationIconWrapperLayout" title="Show Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationCountLayout">0</span>
+                    </span>
+                    <div class="notification-dropdown" id="notificationDropdownContentLayout">
+                        <div class="notification-dropdown-header">
+                            <span>Notifications</span>
+                            
+                            <div class="notification-header-actions">
+                                <button id="markAllNotificationsAsReadBtn" title="Mark all as read" style="background:none; border:none; cursor:pointer; color:#555; font-size:16px; padding: 5px;">
+                                    <i class="fas fa-check-double"></i>
+                                </button>
+                                <button id="notificationSettingsBtn" title="Notification settings" style="background:none; border:none; cursor:pointer; color:#555; font-size:16px; padding: 5px;">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <ul class="notification-dropdown-list" id="headerNotificationListLayout">
+                            <li class="no-notifications">No new notifications.</li>
+                        </ul>
+                        <div class="notification-dropdown-footer">
+                            <a href="@Url.Action("Index", "Notification")">View All Notifications</a>
+                        </div>
+                    </div>
+
+                <div class="user-menu" id="userMenuContainer">
+                    <div class="user-profile" id="userProfileTrigger">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div class="user-info">
+                            <span class="user-name" id="profileUserName">User</span>
+                            <span class="user-role" id="profileUserRole">Role</span>
+                        </div>
+                    </div>
+                    <ul class="user-dropdown" id="userDropdownContent">
+                        <li><a href="#"><i class="fas fa-user-circle"></i> Profile</a></li>
+                        <li><a href="#"><i class="fas fa-key"></i> Change Password</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="@Url.Action("Logout", "Auth")"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-container" id="dashboardContent">
+            <p>Loading dashboard...</p>
+        </main>
+    </div>
+
+    <script>
+        let currentAppUserRole = '';
+        let currentAppUserFullName = '';
+
+        const userRolesConfig = {
+            "rd-staff": {
+                name: "R&D Staff",
+                avatarInitials: "RM",
+                sidebarMenu: [
+                    { name: "Dashboard", icon: "fas fa-tachometer-alt", link: "#", active: true },
+                    // UPDATED Link for Subject Management
+                    { name: "Subject Management", icon: "fas fa-book", link: "#subjects" },
+                    { name: "Question Bank", icon: "fas fa-database", link: "#questions" },
+                    { name: "Duplication Check", icon: "fas fa-search-plus", link: "#duplicates" },
+                    { name: "Plans & Distribution", icon: "fas fa-tasks", link: "#plans" },
+                    { name: "Exam Management", icon: "fas fa-file-alt", link: "#exams" },
+                    { name: "Reports", icon: "fas fa-chart-bar", link: "#reports-rd" },
+                    { name: "Settings", icon: "fas fa-cog", link: "#settings" }
+                ],
+                dashboardHtml: `
+                    <div class="welcome-banner">
+                        <h1 id="welcomeName">Welcome back!</h1>
+                        <p>Efficiently manage subjects, question banks, and duplication processes.</p>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-book card-icon"></i><h3 class="card-title">Subject Management</h3></div>
+                            <div class="card-content"><p class="main-stat" id="totalSubjects">0</p><span class="sub-text">Total Subjects</span></div>
+                            <div class="quick-actions-grid">
+                               <a href="#subjects/create" class="quick-action-btn"><i class="fas fa-plus-circle"></i>Create Subject</a>
+                               <a href="#subjects" class="quick-action-btn"><i class="fas fa-list-alt"></i>View Subjects</a>
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-tasks card-icon"></i><h3 class="card-title">Question Plans</h3></div>
+                            <div class="card-content"><p class="main-stat" id="activePlans">0</p><span class="sub-text">Active Plans</span></div>
+                             <div class="quick-actions-grid">
+                               <a href="#plans/assign" class="quick-action-btn"><i class="fas fa-calendar-check"></i>Assign Plan</a>
+                               <a href="#plans" class="quick-action-btn"><i class="fas fa-eye"></i>View Plans</a>
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                             <div class="card-header"><i class="fas fa-search-plus card-icon"></i><h3 class="card-title">Duplicate Detections</h3></div>
+                            <div class="card-content"><p class="main-stat" id="pendingReviews">0</p><span class="sub-text">Pending Reviews</span></div>
+                            <a href="#duplicates/review" class="card-link">Review Duplicates →</a>
+                        </div>
+                         <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-file-export card-icon"></i><h3 class="card-title">Exam Operations</h3></div>
+                            <div class="card-description">Create submission tables, export exams, and manage related steps.</div>
+                            <div class="quick-actions-grid">
+                               <a href="#exams/create-submission" class="quick-action-btn"><i class="fas fa-table"></i>Create Submission Table</a>
+                               <a href="#exams/export" class="quick-action-btn"><i class="fas fa-file-pdf"></i>Export Exam</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card" style="margin-top:25px;">
+                        <div class="card-header"><i class="far fa-bell card-icon"></i><h3 class="card-title">Recent System Notifications</h3></div>
+                        <div class="notification-list" id="rdNotifications">
+                            <ul><li><span class="notification-info"><span class="notification-title">No new notifications.</span></span></li></ul>
+                        </div>
+                    </div>
+                `
+            },
+            
+            "lecturer": {
+                name: "Lecturer",
+                avatarInitials: "LE",
+                sidebarMenu: [
+                    { name: "Dashboard", icon: "fas fa-tachometer-alt", link: "#", active: true },
+                    { name: "My Tasks", icon: "fas fa-clipboard-list", link: "#tasks" },
+                    { name: "Upload Questions", icon: "fas fa-upload", link: "#upload" },
+                    { name: "Check Duplicates", icon: "fas fa-copy", link: "#check-duplicates" },
+                    { name: "Mock Exams", icon: "fas fa-file-signature", link: "#mock-exams" }
+                ],
+                dashboardHtml: `
+                    <div class="welcome-banner">
+                        <h1 id="welcomeName">Welcome!</h1>
+                        <p>Here are your current tasks and quick actions.</p>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-clipboard-list card-icon"></i><h3 class="card-title">Assigned Tasks</h3></div>
+                            <div class="card-content"><p class="main-stat" id="pendingTasks">0</p><span class="sub-text">Pending Tasks</span></div>
+                            <a href="#tasks" class="card-link">View All Tasks →</a>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-upload card-icon"></i><h3 class="card-title">Upload Questions</h3></div>
+                            <p class="card-description">Contribute new questions to the question bank.</p>
+                            <a href="#upload" class="action-button" style="margin-top:10px;"><i class="fas fa-plus"></i>Upload Now</a>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-copy card-icon"></i><h3 class="card-title">Check for Duplicates</h3></div>
+                            <p class="card-description">Review and manage duplicate questions for assigned subjects.</p>
+                            <a href="#check-duplicates" class="action-button" style="margin-top:10px;"><i class="fas fa-search"></i>Start Checking</a>
+                        </div>
+                         <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-file-signature card-icon"></i><h3 class="card-title">Mock Exams</h3></div>
+                            <p class="card-description">Take mock exams and provide feedback.</p>
+                            <a href="#mock-exams" class="action-button" style="margin-top:10px;"><i class="fas fa-play-circle"></i>Start Mock Exam</a>
+                        </div>
+                    </div>
+                     <div class="dashboard-card" style="margin-top:25px;">
+                        <div class="card-header"><i class="far fa-bell card-icon"></i><h3 class="card-title">Notifications</h3></div>
+                        <div class="notification-list" id="lecturerNotifications">
+                             <ul><li><span class="notification-info"><span class="notification-title">No new notifications.</span></span></li></ul>
+                        </div>
+                    </div>
+                `
+            },
+            "head-dept": {
+                name: "Head of Department",
+                avatarInitials: "HD",
+                sidebarMenu: [
+                    { name: "Dashboard", icon: "fas fa-tachometer-alt", link: "#", active: true },
+                    { name: "Overview", icon: "fas fa-chart-pie", link: "#overview" },
+                    { name: "Assign Plans", icon: "fas fa-calendar-plus", link: "#assign-plans-hod" },
+                    { name: "Delegate Tasks", icon: "fas fa-users-cog", link: "#delegate-hod" },
+                    { name: "Approvals", icon: "fas fa-check-double", link: "#approvals" },
+                    { name: "Reports", icon: "fas fa-chart-line", link: "#reports-hd" }
+                ],
+                dashboardHtml: `
+                    <div class="welcome-banner">
+                        <h1 id="welcomeName">Welcome!</h1>
+                        <p>Oversee progress, assign plans, and manage approvals for your department.</p>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-check-double card-icon"></i><h3 class="card-title">Pending Approvals</h3></div>
+                            <div class="card-content"><p class="main-stat" id="pendingApprovals">0</p><span class="sub-text">Submission Tables & Plans</span></div>
+                            <a href="#approvals" class="card-link">Review Approvals →</a>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-calendar-plus card-icon"></i><h3 class="card-title">Assign Question Plans</h3></div>
+                             <p class="card-description">Allocate question numbers and overall plans to subjects or Subject Leaders.</p>
+                            <a href="#assign-plans-hod" class="action-button" style="margin-top:10px;"><i class="fas fa-share-square"></i>Assign Now</a>
+                        </div>
+                         <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-users-cog card-icon"></i><h3 class="card-title">Delegate Tasks to Lecturers</h3></div>
+                             <p class="card-description">Assign specific high-level tasks or responsibilities to Lecturers.</p>
+                            <a href="#delegate-hod" class="action-button" style="margin-top:10px;"><i class="fas fa-user-check"></i>Delegate Now</a>
+                        </div>
+                    </div>
+                     <div class="dashboard-card" style="margin-top:25px;">
+                        <div class="card-header"><i class="far fa-bell card-icon"></i><h3 class="card-title">Key Departmental Notifications</h3></div>
+                        <div class="notification-list" id="hodNotifications">
+                            <ul><li><span class="notification-info"><span class="notification-title">No new notifications.</span></span></li></ul>
+                        </div>
+                    </div>
+                `
+            },
+            "subject-leader": {
+                name: "Subject Leader",
+                avatarInitials: "SL",
+                sidebarMenu: [
+                    { name: "Dashboard", icon: "fas fa-tachometer-alt", link: "#", active: true },
+                    { name: "My Subjects", icon: "fas fa-chalkboard-teacher", link: "#my-subjects" },
+                    { name: "Assign Tasks (Lecturers)", icon: "fas fa-user-plus", link: "#assign-lecturer-tasks" },
+                    { name: "Review Questions", icon: "fas fa-edit", link: "#review-questions" },
+                    { name: "Submit Exams/Question Lists", icon: "fas fa-file-import", link: "#submit-exams" },
+                    { name: "Approve Final Lists", icon: "fas fa-clipboard-check", link: "#approve-lists" }
+                ],
+                dashboardHtml: `
+                    <div class="welcome-banner">
+                        <h1 id="welcomeName">Welcome back!</h1>
+                        <p>Manage your subjects, assign tasks to lecturers, and review question submissions.</p>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-edit card-icon"></i><h3 class="card-title">Questions for Review</h3></div>
+                            <div class="card-content"><p class="main-stat" id="questionsForReview">0</p><span class="sub-text">Uploaded by Lecturers</span></div>
+                            <a href="#review-questions" class="card-link">Start Reviewing →</a>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-user-plus card-icon"></i><h3 class="card-title">Assign Tasks to Lecturers</h3></div>
+                            <p class="card-description">Delegate question creation, review, or editing tasks to lecturers for your subjects.</p>
+                            <a href="#assign-lecturer-tasks" class="action-button" style="margin-top:10px;"><i class="fas fa-angle-double-right"></i>Assign Now</a>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-exclamation-triangle card-icon" style="color:#e74c3c;"></i><h3 class="card-title">Duplicate Question Alerts</h3></div>
+                            <div class="card-content"><p class="main-stat" id="duplicateAlerts">0</p><span class="sub-text">Require Attention in Your Subjects</span></div>
+                             <a href="#duplicates/alerts" class="card-link">View Alerts →</a>
+                        </div>
+                        <div class="dashboard-card">
+                            <div class="card-header"><i class="fas fa-file-import card-icon"></i><h3 class="card-title">Submit Question Lists</h3></div>
+                            <p class="card-description">Compile and submit finalized question lists for your subjects.</p>
+                            <a href="#submit-exams" class="action-button" style="margin-top:10px;"><i class="fas fa-paper-plane"></i>Submit Now</a>
+                        </div>
+                    </div>
+                    <div class="dashboard-card" style="margin-top:25px;">
+                        <div class="card-header"><i class="far fa-bell card-icon"></i><h3 class="card-title">Subject-Specific Notifications</h3></div>
+                        <div class="notification-list" id="slNotifications">
+                            <ul><li><span class="notification-info"><span class="notification-title">No new notifications.</span></span></li></ul>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        const featureViewsConfig = {
+            // --- R&D Staff Features ---
+            "subjects": { // NEW View for Subject Management
+                title: "Subject Management",
+                html: `<div class="feature-view-content">
+                    <p>Manage subjects, CLOs, and question difficulty levels for the question bank.</p>
+                    <div style="margin-bottom: 20px;">
+                        <a href="#subjects/create" class="btn-primary"><i class="fas fa-plus-circle"></i> Create New Subject</a>
+                    </div>
+                    <table id="subjectsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Subject Code</th>
+                                <th>Subject Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subjectsTableBody">
+                            <tr><td colspan="5">Loading subjects...</td></tr>
+                        </tbody>
+                    </table>
+                    <script>loadSubjectsData();<\/script>
+                </div>`
+            },
+            "subjects/create": { // NEW View for Creating a Subject
+                title: "Create New Subject",
+                html: `<div class="feature-view-content">
+                    <p>Fill in the details for the new subject.</p>
+                    <form id="createSubjectForm">
+                        <div class="form-group">
+                            <label for="subjectCode">Subject Code:</label>
+                            <input type="text" id="subjectCode" name="subjectCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectName">Subject Name:</label>
+                            <input type="text" id="subjectName" name="subjectName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectDescription">Description:</label>
+                            <textarea id="subjectDescription" name="subjectDescription"></textarea>
+                        </div>
+                        <button type="submit">Create Subject</button>
+                        <a href="#subjects" style="margin-left:10px; color:#777; text-decoration:none;">Cancel</a>
+                    </form>
+                    <script>
+                        document.getElementById('createSubjectForm').addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            // In a real app, you'd get form data and send it to the server
+                            const subjectData = {
+                                code: document.getElementById('subjectCode').value,
+                                name: document.getElementById('subjectName').value,
+                                description: document.getElementById('subjectDescription').value
+                            };
+                            console.log("Submitting new subject:", subjectData);
+                            alert('Simulating subject creation for: ' + subjectData.name + '\\nCheck console for data.\\nIn a real app, this would call a backend API.');
+                            // After successful creation (simulated), redirect to subjects list
+                            // For now, just an alert. To redirect: window.location.hash = '#subjects';
+                        });
+                    <\/script>
+                </div>`
+            },
+
+            // ... (các feature views khác giữ nguyên) ...
+            "questions": {
+                title: "Question Bank Management",
+                html: `<div class="feature-view-content">
+                    <p>View, search, filter, and manage the entire question bank. Perform bulk operations like import/export.</p>
+                    <div class="form-group">
+                        <input type="text" placeholder="Search questions...">
+                        <button>Search</button>
+                    </div>
+                    <table>
+                        <thead><tr><th>ID</th><th>Question Text (Preview)</th><th>Subject</th><th>Difficulty</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>Q001</td><td>What is software engineering?</td><td>SWD392</td><td>Medium</td><td>Approved</td><td class="action-cell"><button>View</button> <button>Edit</button></td></tr>
+                            <tr><td>Q002</td><td>Describe the Agile methodology.</td><td>SWR302</td><td>Easy</td><td>Pending Review</td><td class="action-cell"><button>View</button> <button>Edit</button></td></tr>
+                        </tbody>
+                    </table>
+                    <button style="margin-top:15px;">Import Questions</button> <button style="margin-top:15px;">Export All Questions</button>
+                </div>`
+            },
+            "duplicates": {
+                title: "Duplication Check Overview",
+                html: `<div class="feature-view-content">
+                    <p>Initiate system-wide duplication checks, view duplication reports, and configure detection parameters (e.g., similarity threshold).</p>
+                    <button>Run Full Duplication Check</button>
+                    <h4>Configuration</h4>
+                    <form>
+                        <div class="form-group"><label for="similarity">Similarity Threshold (%):</label><input type="number" id="similarity" value="85"></div>
+                        <button type="button">Save Settings</button>
+                    </form>
+                    <h4>Recent Duplication Reports</h4>
+                    <ul><li>Report - 2023-10-26: 15 potential duplicates found. <a href="#">View Details</a></li></ul>
+                </div>`
+            },
+            "duplicates/review": {
+                title: "Review Duplicate Detections",
+                html: `<div class="feature-view-content">
+                    <p>Review questions flagged as potential duplicates by the system or across different lecturer submissions. Resolve by merging, deleting, or marking as unique.</p>
+                    <h4>Pending Review (Cross-Lecturer/Subject)</h4>
+                     <table>
+                        <thead><tr><th>Set ID</th><th>Question A (Preview)</th><th>Question B (Preview)</th><th>Similarity</th><th>Source</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>D001</td><td>Explain MVC pattern...</td><td>Describe the Model-View-Controller...</td><td>92%</td><td>Lecturer A vs Lecturer B</td><td class="action-cell"><button>View Pair</button> <button>Resolve</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            },
+            "plans": {
+                title: "Plans & Distribution Management",
+                html: `<div class="feature-view-content">
+                    <p>Create, manage, and track question contribution plans. Define targets for subjects and monitor overall progress.</p>
+                    <a href="#plans/assign" class="action-button" style="margin-bottom:15px;"><i class="fas fa-plus-circle"></i> Create/Assign New Plan</a>
+                    <h4>Active Plans</h4>
+                     <table>
+                        <thead><tr><th>Plan ID</th><th>Subject</th><th>Target Questions</th><th>Progress</th><th>Deadline</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>P001</td><td>SWD392</td><td>100</td><td>75/100</td><td>2023-12-31</td><td class="action-cell"><button>View</button> <button>Edit</button></td></tr>
+                            <tr><td>P002</td><td>SWE102</td><td>50</td><td>10/50</td><td>2023-11-30</td><td class="action-cell"><button>View</button> <button>Edit</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            },
+            "plans/assign": {
+                title: "Assign/Create Question Plan",
+                html: `<div class="feature-view-content">
+                    <p>Assign specific question contribution plans and number of questions per subject. This can also involve creating a new plan.</p>
+                    <form>
+                        <div class="form-group"><label for="planName">Plan Name (Optional):</label><input type="text" id="planName" placeholder="e.g., Fall 2023 Contribution Drive"></div>
+                        <div class="form-group"><label for="subjectSelect">Select Subject:</label><select id="subjectSelect"><option>SWD392</option><option>SWE102</option><option>PMG202c</option></select></div>
+                        <div class="form-group"><label for="numQuestions">Number of Questions Required:</label><input type="number" id="numQuestions" value="50"></div>
+                        <div class="form-group"><label for="deadline">Deadline:</label><input type="date" id="deadline"></div>
+                        <div class="form-group"><label for="assignTo">Assign To (Subject Leader/HOD for notification):</label><select id="assignTo"><option>SL for SWD392</option><option>Head of Department</option></select></div>
+                        <button type="button" onclick="alert('Plan Assigned/Created (simulated)')">Assign/Create Plan</button>
+                    </form>
+                </div>`
+            },
+            "exams": {
+                title: "Exam Management",
+                html: `<div class="feature-view-content">
+                    <p>Oversee the exam creation process, manage exam versions, coordinate final exam exports, and assign related tasks.</p>
+                    <a href="#exams/create-submission" class="action-button" style="margin-bottom:15px;"><i class="fas fa-table"></i> Create Submission Table</a>
+                    <a href="#exams/export" class="action-button" style="margin-bottom:15px;"><i class="fas fa-file-pdf"></i> Export Exam</a>
+                    <h4>Exam Drafts</h4>
+                     <table>
+                        <thead><tr><th>Exam ID</th><th>Title</th><th>Subject</th><th>Status</th><th>Version</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>EXM001</td><td>Midterm SWD392</td><td>SWD392</td><td>Approved by HOD</td><td>v2.1</td><td class="action-cell"><button>View</button> <button>Export</button></td></tr>
+                            <tr><td>EXM002</td><td>Final SWE102</td><td>SWE102</td><td>Pending HED Review</td><td>v1.0</td><td class="action-cell"><button>View</button> <button>Assign Review Task</button></td></tr>
+                        </tbody>
+                    </table>
+                    <h4>Assign Exam Task (e.g., to HED for review)</h4>
+                    <form>
+                         <div class="form-group"><label for="examSelectTask">Select Exam:</label><select id="examSelectTask"><option>EXM002 - Final SWE102</option></select></div>
+                         <div class="form-group"><label for="taskTypeExam">Task Type:</label><select id="taskTypeExam"><option>Review and Comment</option><option>Final Approval</option></select></div>
+                         <div class="form-group"><label for="assignToExam">Assign To:</label><select id="assignToExam"><option>Head of Examination Dept.</option><option>Lecturer Group X</option></select></div>
+                         <button type="button" onclick="alert('Exam task assigned (simulated)')">Assign Task</button>
+                    </form>
+                </div>`
+            },
+            "exams/create-submission": {
+                title: "Create Exam Submission Table",
+                html: `<div class="feature-view-content">
+                    <p>Generate submission tables for exams, documenting the questions included, their CLOs, difficulty, and sources. This involves selecting an exam draft and questions.</p>
+                    <form>
+                        <div class="form-group"><label for="examForTable">Select Exam Draft:</label><select id="examForTable"><option>Midterm SWD392 - v2.0</option></select></div>
+                        <p><em>(Interface to select questions for the table will appear here)</em></p>
+                        <button type="button" onclick="alert('Submission Table Generated (simulated)')">Generate Submission Table</button>
+                    </form>
+                    <p style="margin-top:15px;">The generated table is then submitted for HOD approval.</p>
+                </div>`
+            },
+            "exams/export": {
+                title: "Export Exam",
+                html: `<div class="feature-view-content">
+                    <p>Export finalized exams in various formats (e.g., PDF, DOCX) for review or printing. Enter percentage difficulty levels if required for the exam structure.</p>
+                    <form>
+                        <div class="form-group"><label for="examToExport">Select Approved Exam:</label><select id="examToExport"><option>EXM001 - Midterm SWD392 - v2.1</option></select></div>
+                        <div class="form-group">
+                            <label>Difficulty Distribution:</label>
+                            Easy: <input type="number" value="30" style="width:60px;">%
+                            Medium: <input type="number" value="50" style="width:60px;">%
+                            Hard: <input type="number" value="20" style="width:60px;">%
+                        </div>
+                        <div class="form-group"><label for="exportFormat">Export Format:</label><select id="exportFormat"><option>PDF</option><option>DOCX</option></select></div>
+                        <button type="button" onclick="alert('Exam Exported (simulated)')">Export Exam</button>
+                    </form>
+                </div>`
+            },
+            "reports-rd": {
+                title: "R&D Reports",
+                html: `<div class="feature-view-content">
+                    <p>Generate and view reports on question bank health, duplication rates, contribution progress, exam statistics, and system usage.</p>
+                    <h4>Available Reports:</h4>
+                    <ul>
+                        <li><a href="#">Question Contribution by Subject (Last Quarter)</a></li>
+                        <li><a href="#">Overall Duplication Rate Trend</a></li>
+                        <li><a href="#">Exam Difficulty Analysis Report</a></li>
+                        <li><a href="#">User Activity Log</a></li>
+                    </ul>
+                    <button>Generate Custom Report</button>
+                </div>`
+            },
+            "settings": {
+                title: "System Settings",
+                html: `<div class="feature-view-content">
+                    <p>Configure system-level settings, manage user roles and permissions (overview), define parameters for duplication checks, notification preferences, etc.</p>
+                    <form>
+                        <div class="form-group"><label for="systemEmail">System Notification Email:</label><input type="text" id="systemEmail" value="noreply@uth.edu.vn"></div>
+                        <div class="form-group"><label for="defaultSimilarity">Default Duplication Similarity Threshold (%):</label><input type="number" id="defaultSimilarity" value="80"></div>
+                        <button type="button">Save System Settings</button>
+                    </form>
+                    <h4 style="margin-top:20px;">User Role Management (Overview)</h4>
+                    <p><em>(User role management details would typically be in a dedicated admin section)</em></p>
+                </div>`
+            },
+
+            // --- Lecturer Features ---
+            "tasks": {
+                title: "My Tasks",
+                html: `<div class="feature-view-content">
+                    <p>View all tasks assigned to you, such as creating new questions, reviewing/editing questions, or checking for duplicates within your assigned subjects.</p>
+                    <table>
+                        <thead><tr><th>Task ID</th><th>Description</th><th>Subject</th><th>Deadline</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>T001</td><td>Create 10 MCQs on Topic 3</td><td>SWT301</td><td>2023-11-15</td><td>Pending</td><td class="action-cell"><button onclick="window.location.hash='#upload'">Start</button></td></tr>
+                            <tr><td>T002</td><td>Review 5 questions for clarity</td><td>SWR302</td><td>2023-11-10</td><td>In Progress</td><td class="action-cell"><button>Continue</button></td></tr>
+                             <tr><td>T003</td><td>Take Mock Exam for PRO192</td><td>PRO192</td><td>2023-11-20</td><td>Assigned</td><td class="action-cell"><button onclick="window.location.hash='#mock-exams'">Start</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            },
+            "upload": {
+                title: "Upload Questions",
+                html: `<div class="feature-view-content">
+                    <p>Upload new questions, providing question text, options, correct answer, difficulty level, and associated CLOs. You can upload single questions or a batch.</p>
+                    <form>
+                        <div class="form-group"><label for="qSubject">Subject:</label><select id="qSubject"><option>SWT301</option><option>SWR302</option></select></div>
+                        <div class="form-group"><label for="qText">Question Text (English):</label><textarea id="qText"></textarea></div>
+                        <div class="form-group"><label for="qOptionA">Option A:</label><input type="text" id="qOptionA"></div>
+                        <div class="form-group"><label for="qOptionB">Option B:</label><input type="text" id="qOptionB"></div>
+                        <div class="form-group"><label for="qOptionC">Option C:</label><input type="text" id="qOptionC"></div>
+                        <div class="form-group"><label for="qOptionD">Option D:</label><input type="text" id="qOptionD"></div>
+                        <div class="form-group"><label for="qCorrect">Correct Answer:</label><select id="qCorrect"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+                        <div class="form-group"><label for="qDifficulty">Difficulty:</label><select id="qDifficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select></div>
+                        <div class="form-group"><label for="qCLO">CLO(s):</label><input type="text" id="qCLO" placeholder="e.g., CLO1, CLO2"></div>
+                        <button type="button" onclick="alert('Question Uploaded (simulated). System will check for duplicates.')">Upload Question</button>
+                    </form>
+                    <h4 style="margin-top:20px;">Batch Upload</h4>
+                    <input type="file" accept=".csv,.xlsx,.txt"> <button>Upload File</button>
+                </div>`
+            },
+            "check-duplicates": {
+                title: "Check Duplicates",
+                html: `<div class="feature-view-content">
+                    <p>Check for duplicate questions within your assigned subjects or among a new batch of questions you are preparing. You can also edit or delete your duplicate questions.</p>
+                    <h4>Check New Question Text:</h4>
+                    <textarea placeholder="Paste your new question text here to check for potential duplicates..." style="width:100%; min-height:80px;"></textarea>
+                    <button style="margin-top:10px;" onclick="alert('Checking for duplicates... (simulated)')">Check This Question</button>
+                    <h4 style="margin-top:20px;">Previously Detected Duplicates in My Questions:</h4>
+                     <table>
+                        <thead><tr><th>My Q.ID</th><th>Original Text</th><th>Potential Duplicate In Bank (ID)</th><th>Similarity</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>MYQ101</td><td>What is a variable scope...</td><td>BANKQ56 (View)</td><td>95%</td><td class="action-cell"><button>Edit MyQ101</button> <button style="background-color:#e74c3c;">Delete MyQ101</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            },
+            "mock-exams": {
+                title: "Mock Exams",
+                html: `<div class="feature-view-content">
+                    <p>Take mock exams assigned to you or browse available mock exams for practice and provide feedback.</p>
+                    <h4>Assigned Mock Exams:</h4>
+                     <table>
+                        <thead><tr><th>Exam Title</th><th>Subject</th><th>Time Limit</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>PRO192 - Midterm Practice</td><td>PRO192</td><td>60 mins</td><td class="action-cell"><button>Start Exam</button></td></tr>
+                        </tbody>
+                    </table>
+                    <h4 style="margin-top:20px;">Provide Feedback (After Taking Exam):</h4>
+                    <form>
+                        <div class="form-group"><label for="examFeedbackSubject">Exam Taken:</label><input type="text" id="examFeedbackSubject" value="PRO192 - Midterm Practice" readonly></div>
+                        <div class="form-group"><label for="examFeedback">Your Comments/Feedback:</label><textarea id="examFeedback"></textarea></div>
+                        <button type="button" onclick="alert('Feedback Submitted (simulated)')">Submit Feedback</button>
+                    </form>
+                </div>`
+            },
+
+            // --- Head of Department Features ---
+            "overview": {
+                title: "Department Overview",
+                html: `<div class="feature-view-content">
+                    <p>A high-level overview of all activities within the department, including question bank status, plan progress, pending approvals, and overall team performance.</p>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card"><div class="card-header"><i class="fas fa-database card-icon"></i><h3 class="card-title">Total Questions in Bank</h3></div><p class="main-stat">1250</p></div>
+                        <div class="dashboard-card"><div class="card-header"><i class="fas fa-tasks card-icon"></i><h3 class="card-title">Active Contribution Plans</h3></div><p class="main-stat">5</p></div>
+                        <div class="dashboard-card"><div class="card-header"><i class="fas fa-check-square card-icon"></i><h3 class="card-title">Pending HOD Approvals</h3></div><p class="main-stat" id="hodPendingApprovalsOverview">1</p></div>
+                        <div class="dashboard-card"><div class="card-header"><i class="fas fa-users card-icon"></i><h3 class="card-title">Active Lecturers</h3></div><p class="main-stat">25</p></div>
+                    </div>
+                    <p style="margin-top:20px;"><em>(More charts and summaries would go here)</em></p>
+                </div>`
+            },
+             "assign-plans-hod": {
+                title: "Assign Overall Plans (HOD)",
+                html: `<div class="feature-view-content">
+                    <p>As Head of Department, assign overall question contribution plans to subjects or delegate plan management to Subject Leaders. You will be notified of progress.</p>
+                    <form>
+                        <div class="form-group"><label for="hodPlanSubject">Target Subject/Department Area:</label><select id="hodPlanSubject"><option>All Subjects</option><option>IT Department</option><option>Business Department</option></select></div>
+                        <div class="form-group"><label for="hodPlanGoal">Overall Goal/Target (e.g., total new questions):</label><input type="text" id="hodPlanGoal" placeholder="e.g., 500 new unique questions by end of semester"></div>
+                        <div class="form-group"><label for="hodPlanDelegate">Delegate to / Notify:</label><select id="hodPlanDelegate"><option>All Subject Leaders</option><option>R&D Staff</option></select></div>
+                        <button type="button" onclick="alert('Overall Plan Assigned (simulated). Notifications sent.')">Assign Plan</button>
+                    </form>
+                </div>`
+            },
+            "delegate-hod": {
+                title: "Delegate Tasks to Lecturers (HOD)",
+                html: `<div class="feature-view-content">
+                    <p>As Head of Department, delegate high-level tasks or responsibilities to Subject Leaders or specific Lecturers (e.g., lead a curriculum review for question relevance).</p>
+                    <form>
+                        <div class="form-group"><label for="hodTaskDesc">Task Description:</label><textarea id="hodTaskDesc"></textarea></div>
+                        <div class="form-group"><label for="hodTaskAssignee">Assign To (Lecturer/Group/SL):</label><input type="text" id="hodTaskAssignee" placeholder="e.g., Dr. Smith, IT Lecturers Group"></div>
+                        <div class="form-group"><label for="hodTaskDeadline">Deadline:</label><input type="date" id="hodTaskDeadline"></div>
+                        <button type="button" onclick="alert('Task Delegated (simulated). Assignee notified.')">Delegate Task</button>
+                    </form>
+                </div>`
+            },
+            "approvals": {
+                title: "Pending Approvals",
+                html: `<div class="feature-view-content">
+                    <p>Review and approve critical items based on your role. For HOD, this includes final exam submission tables or significant changes to question bank structure. R&D may see other approval types.</p>
+                    <h4>Items Awaiting Your Approval:</h4>
+                     <table>
+                        <thead><tr><th>Item ID</th><th>Type</th><th>Submitted By</th><th>Date Submitted</th><th>Actions</th></tr></thead>
+                        <tbody id="approvalItemsList">
+                            <tr><td>SUBM003</td><td>Final Exam Submission Table (SWD392 Midterm)</td><td>R&D Staff</td><td>2023-10-25</td><td class="action-cell"><button>View Details</button> <button style="background-color:green;">Approve</button> <button style="background-color:#e67e22;">Reject</button></td></tr>
+                            <tr><td>PLAN005</td><td>New Question Plan (SWR302)</td><td>R&D Staff</td><td>2023-10-24</td><td class="action-cell"><button>View Details</button> <button style="background-color:green;">Approve</button> <button style="background-color:#e67e22;">Reject</button></td></tr>
+                        </tbody>
+                    </table>
+                    <script>
+                        // Simple script to adjust content based on role for this shared view
+                        if (currentAppUserRole === 'rd-staff') {
+                            const approvalItemsList = document.getElementById('approvalItemsList');
+                            if(approvalItemsList) approvalItemsList.innerHTML = '<tr><td>QSET012</td><td>Question Set from Subject Leader</td><td>SL John Doe</td><td>2023-10-26</td><td class="action-cell"><button>Review</button> <button>Finalize</button></td></tr> <tr><td colspan="5"><em>R&D staff see different types of approvals, e.g., from SLs.</em></td></tr>';
+                        }
+                    <\/script>
+                </div>`
+            },
+            "reports-hd": {
+                title: "Department Reports (HOD)",
+                html: `<div class="feature-view-content">
+                    <p>View consolidated reports on departmental performance, resource allocation, achievement of targets related to the question bank, and lecturer contributions.</p>
+                     <h4>Available Reports:</h4>
+                    <ul>
+                        <li><a href="#">Departmental Question Contribution Summary</a></li>
+                        <li><a href="#">Subject Leader Performance Overview</a></li>
+                        <li><a href="#">Exam Pass Rate Analysis (Department-wide)</a></li>
+                    </ul>
+                    <button>Generate Custom Departmental Report</button>
+                </div>`
+            },
+
+            // --- Subject Leader Features ---
+            "my-subjects": {
+                title: "My Subjects",
+                html: `<div class="feature-view-content">
+                    <p>View and manage your assigned subjects. This includes details like subject code, name, assigned lecturers, question count, and overall progress towards contribution goals.</p>
+                     <table>
+                        <thead><tr><th>Subject Code</th><th>Subject Name</th><th>Assigned Lecturers</th><th>Question Count</th><th>Plan Progress</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>SWT301</td><td>Software Testing</td><td>Dr. Alice, Mr. Bob</td><td>150/200</td><td>75%</td><td class="action-cell"><button>View Details</button></td></tr>
+                            <tr><td>SWR302</td><td>Software Requirement</td><td>Ms. Carol</td><td>80/100</td><td>80%</td><td class="action-cell"><button>View Details</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            },
+            "assign-lecturer-tasks": {
+                title: "Assign Tasks to Lecturers",
+                html: `<div class="feature-view-content">
+                    <p>Assign tasks such as question creation, review, or editing to lecturers for specific subjects you lead.</p>
+                    <form>
+                        <div class="form-group"><label for="slTaskSubject">Select Subject:</label><select id="slTaskSubject"><option>SWT301</option><option>SWR302</option></select></div>
+                        <div class="form-group"><label for="slTaskLecturer">Select Lecturer:</label><select id="slTaskLecturer"><option>Dr. Alice (SWT301)</option><option>Mr. Bob (SWT301)</option><option>Ms. Carol (SWR302)</option></select></div>
+                        <div class="form-group"><label for="slTaskType">Task Type:</label><select id="slTaskType"><option>Create New Questions</option><option>Review Submitted Questions</option><option>Edit Existing Questions</option></select></div>
+                        <div class="form-group"><label for="slTaskDetails">Task Details/Instructions:</label><textarea id="slTaskDetails"></textarea></div>
+                        <div class="form-group"><label for="slTaskDeadline">Deadline:</label><input type="date" id="slTaskDeadline"></div>
+                        <button type="button" onclick="alert('Task assigned to lecturer (simulated). Lecturer notified.')">Assign Task</button>
+                    </form>
+                </div>`
+            },
+            "review-questions": {
+                title: "Review Questions (from Lecturers)",
+                html: `<div class="feature-view-content">
+                    <p>Review questions submitted or flagged by lecturers for your subjects. You can approve, reject with comments, or edit questions. Approved questions are then ready for final list compilation.</p>
+                    <h4>Questions Awaiting Your Review:</h4>
+                     <table>
+                        <thead><tr><th>Q.ID</th><th>Question Preview</th><th>Lecturer</th><th>Subject</th><th>Date Submitted</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>TEMP056</td><td>Explain the concept of polymorphism...</td><td>Mr. Bob</td><td>SWT301</td><td>2023-10-26</td><td class="action-cell"><button>View/Edit</button> <button style="background-color:green;">Approve</button> <button style="background-color:#e67e22;">Reject w/Comment</button></td></tr>
+                            <tr><td>TEMP057</td><td>What are black-box testing techniques?</td><td>Dr. Alice</td><td>SWT301</td><td>2023-10-25</td><td class="action-cell"><button>View/Edit</button> <button style="background-color:green;">Approve</button> <button style="background-color:#e67e22;">Reject w/Comment</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            },
+            "submit-exams": {
+                title: "Submit Final Question Lists/Exams",
+                html: `<div class="feature-view-content">
+                    <p>Compile and submit finalized exam question sets or approved question lists for your subjects for further processing by R&D or approval by HOD.</p>
+                    <form>
+                        <div class="form-group"><label for="slSubmitSubject">Select Subject:</label><select id="slSubmitSubject"><option>SWT301</option><option>SWR302</option></select></div>
+                        <div class="form-group"><label for="slSubmitType">Submission Type:</label><select id="slSubmitType"><option>Final Question List for Subject</option><option>Draft Exam Paper</option></select></div>
+                        <div class="form-group"><label for="slSubmitName">Name/Title:</label><input type="text" id="slSubmitName" placeholder="e.g., SWT301 Final List - Fall 2023"></div>
+                        <p><em>(Interface to select/attach questions or exam document would be here)</em></p>
+                        <div class="form-group"><label for="slSubmitNotes">Notes for R&D/HOD:</label><textarea id="slSubmitNotes"></textarea></div>
+                        <button type="button" onclick="alert('Submission sent to R&D/HOD (simulated).')">Submit List/Exam</button>
+                    </form>
+                </div>`
+            },
+            "approve-lists": {
+                title: "Approve Final Question Lists (by Subject Leader)",
+                html: `<div class="feature-view-content">
+                    <p>Provide final approval for curated lists of questions (e.g., after lecturer contributions and your initial review) before they are officially submitted for inclusion in the main bank or exam generation by R&D.</p>
+                    <h4>Lists Awaiting Your Final Approval:</h4>
+                     <table>
+                        <thead><tr><th>List ID</th><th>Subject</th><th>No. of Questions</th><th>Prepared By</th><th>Actions</th></tr></thead>
+                        <tbody>
+                            <tr><td>QLIST001</td><td>SWT301</td><td>25</td><td>Self/System Aggregated</td><td class="action-cell"><button>Review List</button> <button style="background-color:green;">Final Approve</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            },
+            "duplicates/alerts": {
+                title: "Duplicate Question Alerts (My Subjects)",
+                html: `<div class="feature-view-content">
+                    <p>Displays alerts for potential duplicate questions identified by the system within your subjects, requiring your attention and resolution (e.g., merging, editing, or confirming uniqueness).</p>
+                    <h4>Alerts for Your Subjects:</h4>
+                    <table>
+                        <thead><tr><th>Alert ID</th><th>Question A (ID)</th><th>Question B (ID)</th><th>Subject</th><th>Similarity</th><th>Action</th></tr></thead>
+                        <tbody>
+                             <tr><td>DA001</td><td>SWT301_Q52</td><td>SWT301_Q78</td><td>SWT301</td><td>90%</td><td class="action-cell"><button>Review Pair</button> <button>Resolve</button></td></tr>
+                        </tbody>
+                    </table>
+                </div>`
+            }
+        };
+
+        // NEW function to load and display subjects (simulated)
+        async function loadSubjectsData() {
+            const tableBody = document.getElementById('subjectsTableBody');
+            if (!tableBody) return;
+
+            tableBody.innerHTML = '<tr><td colspan="5">Loading subjects...</td></tr>';
+
+            // Simulate API Call
+            try {
+                 fetch('/api/RolesApi')
+                      .then(res => res.json())
+                      .then(data => {
+                      // render roles ra giao diện
+                });
+
+                // SIMULATED DATA (Replace with actual API call)
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+                const subjects = [
+                    { id: 1, subjectCode: "SWD392", subjectName: "Software Development Capstone Project", description: "Focuses on the entire software development lifecycle." },
+                    { id: 2, subjectCode: "SWE102", subjectName: "Introduction to Software Engineering", description: "Basic concepts of software engineering." },
+                    { id: 3, subjectCode: "SWR302", subjectName: "Software Requirements", description: "Elicitation, analysis, and management of software requirements." },
+                    { id: 4, subjectCode: "PMG202c", subjectName: "Project Management", description: "Principles of project management in IT." }
+                ];
+                // END SIMULATED DATA
+
+                if (subjects.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5">No subjects found.</td></tr>';
+                    return;
+                }
+
+                let rowsHtml = '';
+                subjects.forEach(subject => {
+                    rowsHtml += `
+                        <tr>
+                            <td>${subject.id}</td>
+                            <td>${subject.subjectCode}</td>
+                            <td>${subject.subjectName}</td>
+                            <td>${subject.description || 'N/A'}</td>
+                            <td class="action-cell">
+                                <a href="#subjects/edit/${subject.id}" class="btn-sm btn-warning">Edit</a>
+                                <a href="#subjects/details/${subject.id}" class="btn-sm btn-primary">Details</a>
+                                <button class="btn-sm btn-danger" onclick="deleteSubject(${subject.id}, '${subject.subjectName}')">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                tableBody.innerHTML = rowsHtml;
+
+            } catch (error) {
+                console.error("Error loading subjects:", error);
+                tableBody.innerHTML = '<tr><td colspan="5">Error loading subjects. Please try again.</td></tr>';
+            }
+        }
+
+        // NEW: Placeholder for delete subject functionality
+        function deleteSubject(subjectId, subjectName) {
+            if (confirm(`Are you sure you want to delete the subject "${subjectName}" (ID: ${subjectId})?`)) {
+                // In a real app, this would make an API call to delete the subject
+                console.log(`Simulating delete for subject ID: ${subjectId}`);
+                alert(`Simulating deletion of ${subjectName}.\nIn a real app, this would call a backend API and then refresh the list.`);
+                // Potentially call loadSubjectsData() again to refresh the list after deletion
+                loadSubjectsData();
+            }
+        }
+
+
+        function loadDashboardForRole(roleKey, userFullName) {
+            const roleData = userRolesConfig[roleKey];
+            const sidebarMenuEl = document.getElementById('sidebarMenu');
+            const profileUserNameEl = document.getElementById('profileUserName');
+            const profileUserRoleEl = document.getElementById('profileUserRole');
+            const userAvatarEl = document.getElementById('userAvatar');
+
+            if (!roleData) {
+                console.error("Role data not found for key:", roleKey);
+                document.getElementById('dashboardContent').innerHTML = "<p style='color:red; text-align:center; margin-top: 20px;'>Error: User role configuration not found.</p>";
+                if(profileUserNameEl) profileUserNameEl.textContent = "Unknown User";
+                if(profileUserRoleEl) profileUserRoleEl.textContent = "Unknown Role";
+                if(userAvatarEl) userAvatarEl.textContent = "?";
+                if(sidebarMenuEl) sidebarMenuEl.innerHTML = '<li><a href="#" class="active"><i class="fas fa-tachometer-alt menu-icon"></i> <span class="menu-text">Dashboard</span></a></li>';
+                return;
+            }
+
+            currentAppUserRole = roleKey;
+            currentAppUserFullName = userFullName || roleData.name;
+
+            profileUserNameEl.textContent = currentAppUserFullName;
+            profileUserRoleEl.textContent = roleData.name;
+
+            const nameParts = (currentAppUserFullName).split(' ');
+            let initials = nameParts[0] ? nameParts[0][0] : '';
+            if (nameParts.length > 1 && nameParts[nameParts.length - 1]) {
+                initials += nameParts[nameParts.length - 1][0];
+            } else if (initials.length === 1 && (currentAppUserFullName).length > 1) {
+                initials += (currentAppUserFullName)[1] || '';
+            }
+            userAvatarEl.textContent = (initials.length === 2 ? initials.toUpperCase() : roleData.avatarInitials);
+
+            sidebarMenuEl.innerHTML = '';
+            roleData.sidebarMenu.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = item.link; // Should be hash links like #subjects
+                a.innerHTML = `<i class="${item.icon} menu-icon"></i> <span class="menu-text">${item.name}</span>`;
+                if (item.active) a.classList.add('active');
+                li.appendChild(a);
+                sidebarMenuEl.appendChild(li);
+            });
+
+            handleHashChange();
+        }
+
+        function loadFeatureView(featureKey) {
+            const dashboardContentEl = document.getElementById('dashboardContent');
+            const viewData = featureViewsConfig[featureKey];
+
+            if (viewData) {
+                dashboardContentEl.innerHTML = `
+                    <div class="feature-view-title-banner">
+                        <h1>${viewData.title}</h1>
+                    </div>
+                    ${viewData.html}
+                `;
+                const scripts = dashboardContentEl.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    try {
+                       eval(scripts[i].innerHTML);
+                    } catch (e) {
+                       console.error("Error evaluating script in feature view:", featureKey, e, scripts[i].innerHTML);
+                    }
+                }
+                updateSidebarActiveState(`#${featureKey}`);
+            } else {
+                // Handle sub-routes like #subjects/edit/1 or #subjects/details/1
+                if (featureKey.startsWith("subjects/edit/")) {
+                    const id = featureKey.substring("subjects/edit/".length);
+                    loadEditSubjectView(id);
+                } else if (featureKey.startsWith("subjects/details/")) {
+                     const id = featureKey.substring("subjects/details/".length);
+                    loadSubjectDetailsView(id);
+                }
+                else {
+                    console.warn(`Feature view for key "${featureKey}" not found. Loading default dashboard.`);
+                    if (currentAppUserRole && userRolesConfig[currentAppUserRole]) {
+                        dashboardContentEl.innerHTML = userRolesConfig[currentAppUserRole].dashboardHtml;
+                        const welcomeNameElement = dashboardContentEl.querySelector('#welcomeName');
+                         if (welcomeNameElement) {
+                            welcomeNameElement.textContent = `Welcome back, ${currentAppUserFullName}!`;
+                        }
+                        updateDynamicStats(currentAppUserRole);
+                        updateRoleSpecificNotifications(currentAppUserRole);
+                        updateSidebarActiveState("#");
+                    } else {
+                         dashboardContentEl.innerHTML = "<p>Content not found and user role is not set.</p>";
+                    }
+                }
+            }
+        }
+
+        // Placeholder for loading edit subject view
+        function loadEditSubjectView(subjectId) {
+            const dashboardContentEl = document.getElementById('dashboardContent');
+             dashboardContentEl.innerHTML = `
+                <div class="feature-view-title-banner"><h1>Edit Subject (ID: ${subjectId})</h1></div>
+                <div class="feature-view-content">
+                    <p>Form to edit subject ID ${subjectId} would go here.</p>
+                    <p><em>(Simulated - fetch subject data by ID and populate form)</em></p>
+                    <form id="editSubjectForm">
+                        <div class="form-group"><label for="editSubjectCode">Subject Code:</label><input type="text" id="editSubjectCode" value="CODE_${subjectId}"></div>
+                        <div class="form-group"><label for="editSubjectName">Subject Name:</label><input type="text" id="editSubjectName" value="Name for Subject ${subjectId}"></div>
+                        <button type="submit">Save Changes</button>
+                        <a href="#subjects" style="margin-left:10px;">Cancel</a>
+                    </form>
+                </div>`;
+            document.getElementById('editSubjectForm').addEventListener('submit', function(e){
+                e.preventDefault();
+                alert(`Simulating save for subject ID ${subjectId}`);
+                window.location.hash = '#subjects';
+            });
+            updateSidebarActiveState("#subjects"); // Keep parent menu active
+        }
+
+        // Placeholder for loading subject details view
+        function loadSubjectDetailsView(subjectId) {
+            const dashboardContentEl = document.getElementById('dashboardContent');
+            dashboardContentEl.innerHTML = `
+                <div class="feature-view-title-banner"><h1>Subject Details (ID: ${subjectId})</h1></div>
+                <div class="feature-view-content">
+                    <p>Details for subject ID ${subjectId} would go here.</p>
+                    <p>Subject Code: CODE_${subjectId}</p>
+                    <p>Subject Name: Name for Subject ${subjectId}</p>
+                    <p><em>(Simulated - fetch full subject data by ID including CLOs etc.)</em></p>
+                     <a href="#subjects" class="btn-primary btn-sm" style="margin-top:15px;">Back to List</a>
+                </div>`;
+            updateSidebarActiveState("#subjects"); // Keep parent menu active
+        }
+
+
+        function updateSidebarActiveState(activeHref) {
+            const sidebarMenuEl = document.getElementById('sidebarMenu');
+            if (!sidebarMenuEl) return;
+            const links = sidebarMenuEl.querySelectorAll('a');
+            links.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                // Match base route for sub-routes (e.g. #subjects/create should activate #subjects link)
+                if (linkHref === activeHref || (activeHref.startsWith(linkHref) && linkHref !== "#") ) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            if (activeHref === "#" || activeHref === "") {
+                const dashboardLink = sidebarMenuEl.querySelector('a[href="#"]');
+                if (dashboardLink) dashboardLink.classList.add('active');
+            }
+        }
+
+        function handleHashChange() {
+            const dashboardContentEl = document.getElementById('dashboardContent');
+            let hash = window.location.hash;
+
+            if (!hash || hash === "#" || hash === "#/") {
+                hash = "#";
+                if (currentAppUserRole && userRolesConfig[currentAppUserRole]) {
+                    dashboardContentEl.innerHTML = userRolesConfig[currentAppUserRole].dashboardHtml;
+                    const welcomeNameElement = dashboardContentEl.querySelector('#welcomeName');
+                    if (welcomeNameElement) {
+                        welcomeNameElement.textContent = `Welcome back, ${currentAppUserFullName}!`;
+                    }
+                    updateDynamicStats(currentAppUserRole);
+                    updateRoleSpecificNotifications(currentAppUserRole);
+                } else {
+                     dashboardContentEl.innerHTML = "<p>Please log in or select a role to view the dashboard.</p>";
+                }
+                updateSidebarActiveState(hash);
+            } else {
+                 // Check full hash first (e.g., #subjects/create), then base hash (e.g. #subjects)
+                const featureKey = hash.substring(1);
+                if (featureViewsConfig[featureKey] ||
+                    featureKey.startsWith("subjects/edit/") || // Handle specific dynamic routes
+                    featureKey.startsWith("subjects/details/") ||
+                    featureKey.startsWith("subjects/create") ) { // also for create subject as its distinct
+                     loadFeatureView(featureKey);
+                }
+                else {
+                    console.warn(`Hash "${hash}" not recognized or specific view not defined directly in featureViewsConfig. Trying to load parent or default dashboard.`);
+                     if (currentAppUserRole && userRolesConfig[currentAppUserRole]) {
+                        dashboardContentEl.innerHTML = userRolesConfig[currentAppUserRole].dashboardHtml;
+                        const welcomeNameElement = dashboardContentEl.querySelector('#welcomeName');
+                         if (welcomeNameElement) {
+                            welcomeNameElement.textContent = `Welcome back, ${currentAppUserFullName}!`;
+                        }
+                        updateDynamicStats(currentAppUserRole);
+                        updateRoleSpecificNotifications(currentAppUserRole);
+                        updateSidebarActiveState("#");
+                    } else {
+                        dashboardContentEl.innerHTML = `<p>Content for route "${hash}" not found and no default user role set.</p>`;
+                        updateSidebarActiveState("");
+                    }
+                }
+            }
+        }
+
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarToggleBtn');
+            const icon = toggleBtn.querySelector('i');
+            const text = toggleBtn.querySelector('.menu-text');
+
+            sidebar.classList.toggle('collapsed');
+            if (sidebar.classList.contains('collapsed')) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+                if(text) text.textContent = "Expand";
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+                if(text) text.textContent = "Collapse";
+            }
+        }
+
+        function updateDynamicStats(roleKey) {
+            if (!document.getElementById('dashboardContent').querySelector('.welcome-banner') &&
+                !document.getElementById('dashboardContent').querySelector('#subjectsTable')) { // Check if not dashboard and not subject management view
+                return;
+            }
+            if (roleKey === "rd-staff") {
+                document.getElementById('totalSubjects') && (document.getElementById('totalSubjects').textContent = '12');
+                document.getElementById('activePlans') && (document.getElementById('activePlans').textContent = '4');
+                document.getElementById('pendingReviews') && (document.getElementById('pendingReviews').textContent = '7');
+            } else if (roleKey === "lecturer") {
+                document.getElementById('pendingTasks') && (document.getElementById('pendingTasks').textContent = '3');
+            } else if (roleKey === "head-dept") {
+                document.getElementById('pendingApprovals') && (document.getElementById('pendingApprovals').textContent = '2');
+                const hodPendingApprovalsOverview = document.getElementById('hodPendingApprovalsOverview');
+                if (hodPendingApprovalsOverview) hodPendingApprovalsOverview.textContent = '2';
+            } else if (roleKey === "subject-leader") {
+                document.getElementById('questionsForReview') && (document.getElementById('questionsForReview').textContent = '18');
+                document.getElementById('duplicateAlerts') && (document.getElementById('duplicateAlerts').textContent = '3');
+            }
+        }
+
+        function updateRoleSpecificNotifications(roleKey) {
+            let notificationHtml = '<ul><li><span class="notification-info"><span class="notification-title" style="color:#888">No new notifications.</span></span></li></ul>';
+            let targetElementId = '';
+
+            if (roleKey === "rd-staff" && document.getElementById('rdNotifications')) {
+                notificationHtml = `<ul>
+                    <li><span class="new-dot"></span><span class="notification-info"><span class="notification-title">Submission table for SWD392 approved by HOD.</span><span class="notification-meta">10m ago</span></span></li>
+                    <li><span class="notification-info"><span class="notification-title">Duplicate check report generated. 5 new potential duplicates found.</span><span class="notification-meta">1h ago</span></span></li>
+                    <li><span class="notification-info"><span class="notification-title">New question plan for PRO192 created.</span><span class="notification-meta">3h ago</span></span></li>
+                </ul>`;
+                targetElementId = 'rdNotifications';
+            } else if (roleKey === "lecturer" && document.getElementById('lecturerNotifications')) {
+                notificationHtml = `<ul>
+                    <li><span class="new-dot"></span><span class="notification-info"><span class="notification-title">Task Assigned: Create 5 questions for SWR302, Chapter 2.</span><span class="notification-meta">Now</span></span></li>
+                    <li><span class="new-dot"></span><span class="notification-info"><span class="notification-title">Mock Exam "PRO192 Midterm Practice" available.</span><span class="notification-meta">30m ago</span></span></li>
+                    <li><span class="notification-info"><span class="notification-title">Your uploaded question QID:L023 flagged as potential duplicate.</span><span class="notification-meta">2h ago</span></span></li>
+                </ul>`;
+                targetElementId = 'lecturerNotifications';
+            } else if (roleKey === "subject-leader" && document.getElementById('slNotifications')) {
+                 notificationHtml = `<ul>
+                    <li><span class="new-dot"></span><span class="notification-info"><span class="notification-title">15 questions uploaded by Dr. Alice for SWT301.</span><span class="notification-meta">30m ago - <a href="#review-questions">Review Now</a></span></span></li>
+                    <li><span class="notification-info"><span class="notification-title">Task delegated: Review Chapter 1 questions to Mr. Bob.</span><span class="notification-meta">1h ago</span></span></li>
+                    <li><span class="notification-info"><span class="notification-title">Duplicate alert: 2 high-similarity questions in SWR302.</span><span class="notification-meta">4h ago - <a href="#duplicates/alerts">View Alerts</a></span></span></li>
+                 </ul>`;
+                targetElementId = 'slNotifications';
+            } else if (roleKey === "head-dept" && document.getElementById('hodNotifications')) {
+                notificationHtml = `<ul>
+                    <li><span class="new-dot"></span><span class="notification-info"><span class="notification-title">Final Submission Table for SWD392 Midterm awaits approval.</span><span class="notification-meta">45m ago - <a href="#approvals">Review Now</a></span></span></li>
+                    <li><span class="notification-info"><span class="notification-title">R&D assigned new question plan for IT Department.</span><span class="notification-meta">2h ago</span></span></li>
+                    <li><span class="notification-info"><span class="notification-title">Exam PRO192 results are available for review.</span><span class="notification-meta">1 day ago</span></span></li>
+                </ul>`;
+                targetElementId = 'hodNotifications';
+            }
+
+            if (targetElementId) {
+                 const notificationElement = document.getElementById(targetElementId);
+                if (notificationElement) {
+                    notificationElement.innerHTML = notificationHtml;
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const serverUserRole = '@User.FindFirst(ClaimTypes.Role)?.Value';
+            const serverUserFullName = '@User.FindFirst("FullName")?.Value' || '@User.Identity.Name';
+
+
+            let resolvedUserRole = serverUserRole;
+            if (!resolvedUserRole || !userRolesConfig[resolvedUserRole]) {
+                 console.warn("Server role not found or invalid, defaulting to 'rd-staff' for demo.");
+                 resolvedUserRole = "rd-staff";
+            }
+
+            const resolvedUserFullName = serverUserFullName || (userRolesConfig[resolvedUserRole] ? (resolvedUserRole === "rd-staff" ? "R&D Staff Member" : userRolesConfig[resolvedUserRole].name) : "Valued User");
+
+
+            if (userRolesConfig[resolvedUserRole]) {
+                loadDashboardForRole(resolvedUserRole, resolvedUserFullName);
+            } else {
+                console.error("User role is invalid or not found from server: ", resolvedUserRole);
+                document.getElementById('profileUserName').textContent = "Unknown User";
+                document.getElementById('profileUserRole').textContent = "Unknown Role";
+                document.getElementById('userAvatar').textContent = "?";
+                document.getElementById('sidebarMenu').innerHTML = '<li><a href="#" class="active"><i class="fas fa-tachometer-alt menu-icon"></i> <span class="menu-text">Dashboard</span></a></li>';
+                document.getElementById('dashboardContent').innerHTML = "<p style='color:red; text-align:center; margin-top: 20px;'>Error: User role configuration not found and no valid default.</p>";
+                currentAppUserRole = '';
+            }
+
+
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarToggleBtn');
+            const icon = toggleBtn.querySelector('i');
+            const text = toggleBtn.querySelector('.menu-text');
+             if (sidebar.classList.contains('collapsed')) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+                if(text) text.textContent = "Expand";
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+                if(text) text.textContent = "Collapse";
+            }
+
+                    const notificationIconWrapper = document.getElementById('notificationIconWrapperLayout');
+        const notificationDropdown = document.getElementById('notificationDropdownContentLayout');
+        const notificationBellContainer = document.getElementById('notificationBellContainerLayout');
+        const headerNotificationListEl = document.getElementById('headerNotificationListLayout');
+        const notificationCountBadgeEl = document.getElementById('notificationCountLayout');
+
+        const markAllNotificationsAsReadBtn = document.getElementById('markAllNotificationsAsReadBtn');
+        const notificationSettingsBtn = document.getElementById('notificationSettingsBtn');
+
+        let sampleHeaderNotifications = [
+            { id: 'notif1', icon: 'fas fa-tasks', text: 'New task assigned: "Review Chapter 5 questions".', time: '15m ago', link: '#tasks', isRead: false },
+            { id: 'notif2', icon: 'fas fa-check-circle', text: 'Your submission for "SWR301 Exam Draft" was approved.', time: '1h ago', link: '#submit-exams', isRead: false },
+            { id: 'notif3', icon: 'fas fa-users', text: 'Head of Dept. delegated a new plan for "AI Ethics".', time: '3h ago', link: '#assign-plans-hod', isRead: true }, // Đã đọc
+            { id: 'notif4', icon: 'fas fa-exclamation-triangle', text: 'High duplicate score detected for QID:L045.', time: 'Yesterday', link: '#check-duplicates', isRead: false }, // Chưa đọc
+            { id: 'notif5', icon: 'fas fa-file-alt', text: 'R&D published new question formatting guidelines.', time: '2 days ago', link: '@Url.Action("Index", "Notification")', isRead: false }, // Chưa đọc
+        ];
+
+
+        function displayHeaderNotifications() {
+            headerNotificationListEl.innerHTML = '';
+            const unreadNotifications = sampleHeaderNotifications.filter(notif => !notif.isRead);
+
+            if (unreadNotifications.length === 0) {
+                headerNotificationListEl.innerHTML = '<li class="no-notifications">All caught up! No new notifications.</li>';
+            } else {
+
+                let displayedCount = 0;
+                unreadNotifications.slice(0, 5).forEach(notif => {
+                     if (displayedCount < 5) {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <i class="${notif.icon || 'fas fa-info-circle'} notification-item-icon" style="${notif.isRead ? 'color:#aaa;' : ''}"></i>
+                            <div class="notification-item-content">
+                                <span class="notification-item-text" style="${notif.isRead ? 'color:#777;' : ''}">${notif.text}</span>
+                                <span class="notification-item-meta">${notif.time}</span>
+                            </div>`;
+                        
+                        li.addEventListener('click', () => {
+                            markNotificationAsRead(notif.id);
+                            if (notif.link) {
+                                if (notif.link.startsWith("#")) window.location.hash = notif.link;
+                                else window.location.href = notif.link;
+                            }
+                            notificationDropdown.classList.remove('active');
+                        });
+                        headerNotificationListEl.appendChild(li);
+                        displayedCount++;
+                    }
+                });
+                
+            }
+
+            const badgeCount = unreadNotifications.length;
+            if (notificationCountBadgeEl) {
+                if (badgeCount > 0) {
+                    notificationCountBadgeEl.textContent = badgeCount > 9 ? '9+' : badgeCount;
+                    notificationCountBadgeEl.style.display = 'block';
+                } else {
+                    notificationCountBadgeEl.textContent = '0';
+                    notificationCountBadgeEl.style.display = 'none';
+                }
+            }
+        }
+
+        function markNotificationAsRead(notificationId) {
+            const notification = sampleHeaderNotifications.find(n => n.id === notificationId);
+            if (notification && !notification.isRead) {
+                notification.isRead = true;
+                displayHeaderNotifications();
+                
+                console.log(`Notification ${notificationId} marked as read (simulated).`);
+            }
+        }
+
+        if (markAllNotificationsAsReadBtn) {
+            markAllNotificationsAsReadBtn.addEventListener('click', function(event) {
+                event.stopPropagation();y
+                sampleHeaderNotifications.forEach(notif => notif.isRead = true);
+                displayHeaderNotifications();
+                
+                console.log("All notifications marked as read (simulated).");
+                
+            });
+        }
+
+        if (notificationSettingsBtn) {
+            notificationSettingsBtn.addEventListener('click', function(event) {
+                event.stopPropagation();
+                alert('Notification settings clicked! (To be implemented)');
+                
+            });
+        }
+
+        displayHeaderNotifications();
+
+
+                    if (notificationIconWrapper && notificationDropdown && notificationBellContainer) {
+                notificationIconWrapper.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    notificationDropdown.classList.toggle('active');
+                });
+            }
+
+            const userProfileTrigger = document.getElementById('userProfileTrigger');
+            const userDropdownContent = document.getElementById('userDropdownContent');
+            const userMenuContainer = document.getElementById('userMenuContainer');
+
+            if (userProfileTrigger && userDropdownContent && userMenuContainer) {
+                userProfileTrigger.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    userDropdownContent.classList.toggle('active');
+                });
+            }
+
+            document.addEventListener('click', function(event) {
+                if (notificationDropdown && notificationDropdown.classList.contains('active') && !notificationBellContainer.contains(event.target)) {
+                    notificationDropdown.classList.remove('active');
+                }
+                if (userDropdownContent && userDropdownContent.classList.contains('active') && !userMenuContainer.contains(event.target)) {
+                    userDropdownContent.classList.remove('active');
+                }
+            });
+
+            window.addEventListener('hashchange', handleHashChange);
+
+        });
+    </script>
+
+</body>
+</html>
