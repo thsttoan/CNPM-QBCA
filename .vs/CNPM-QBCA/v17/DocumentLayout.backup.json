@@ -3,40 +3,56 @@
   "WorkspaceRootPath": "E:\\CNPM\\Project\\CNPM-QBCA\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\controller\\subjectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:controller\\subjectcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\difficultylevel\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\difficultylevel\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\models\\difficultylevelcreateviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:models\\difficultylevelcreateviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\models\\difficultylevel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:models\\difficultylevel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\models\\clo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:models\\clo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\controller\\difficultylevelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:controller\\difficultylevelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\difficultylevel\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\difficultylevel\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\models\\subject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:models\\subject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\controller\\clocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:controller\\clocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\subject\\clos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\subject\\clos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\models\\clocreateviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:models\\clocreateviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\clo\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\clo\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\clo\\clos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\clo\\clos.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\subject\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\subject\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\subject\\subjects.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\subject\\subjects.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\difficultylevel\\dls.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\difficultylevel\\dls.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\home\\home_rd.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\home\\home_rd.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\clo\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\clo\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\views\\subject\\subjects.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:views\\subject\\subjects.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,127 +62,179 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\DifficultyLevel\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\DifficultyLevel\\Edit.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\DifficultyLevel\\Edit.cshtml*",
+              "RelativeToolTip": "Views\\DifficultyLevel\\Edit.cshtml*",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAkwH8AAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T16:55:37.587Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DifficultyLevel.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\DifficultyLevel.cs",
+              "RelativeDocumentMoniker": "Models\\DifficultyLevel.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\DifficultyLevel.cs",
+              "RelativeToolTip": "Models\\DifficultyLevel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T16:54:33.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DifficultyLevelController.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Controller\\DifficultyLevelController.cs",
+              "RelativeDocumentMoniker": "Controller\\DifficultyLevelController.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Controller\\DifficultyLevelController.cs*",
+              "RelativeToolTip": "Controller\\DifficultyLevelController.cs*",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAQwFUAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T16:52:46.367Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CLOController.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Controller\\CLOController.cs",
+              "RelativeDocumentMoniker": "Controller\\CLOController.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Controller\\CLOController.cs",
+              "RelativeToolTip": "Controller\\CLOController.cs",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAowI0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T16:51:07.838Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CLOCreateViewModel.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\CLOCreateViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\CLOCreateViewModel.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\CLOCreateViewModel.cs",
+              "RelativeToolTip": "Models\\CLOCreateViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T16:49:17.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DifficultyLevelCreateViewModel.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\DifficultyLevelCreateViewModel.cs",
+              "RelativeDocumentMoniker": "Models\\DifficultyLevelCreateViewModel.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\DifficultyLevelCreateViewModel.cs*",
+              "RelativeToolTip": "Models\\DifficultyLevelCreateViewModel.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-31T16:49:13.175Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\CLO\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\CLO\\Edit.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\CLO\\Edit.cshtml",
+              "RelativeToolTip": "Views\\CLO\\Edit.cshtml",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAtwF4AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T16:46:13.039Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\DifficultyLevel\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\DifficultyLevel\\Create.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\DifficultyLevel\\Create.cshtml",
+              "RelativeToolTip": "Views\\DifficultyLevel\\Create.cshtml",
+              "ViewState": "AgIAAGEAAAAAAAAAAAAmwH0AAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T16:45:07.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DLs.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\DifficultyLevel\\DLs.cshtml",
+              "RelativeDocumentMoniker": "Views\\DifficultyLevel\\DLs.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\DifficultyLevel\\DLs.cshtml",
+              "RelativeToolTip": "Views\\DifficultyLevel\\DLs.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T16:45:06.148Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CLOs.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\CLO\\CLOs.cshtml",
+              "RelativeDocumentMoniker": "Views\\CLO\\CLOs.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\CLO\\CLOs.cshtml",
+              "RelativeToolTip": "Views\\CLO\\CLOs.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T16:45:03.679Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\Subject\\Create.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\Create.cshtml",
+              "RelativeToolTip": "Views\\Subject\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T16:44:47.907Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CLO.cs",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\CLO.cs",
-              "RelativeDocumentMoniker": "Models\\CLO.cs",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\CLO.cs",
-              "RelativeToolTip": "Models\\CLO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T11:43:13.143Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DifficultyLevel.cs",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\DifficultyLevel.cs",
-              "RelativeDocumentMoniker": "Models\\DifficultyLevel.cs",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\DifficultyLevel.cs",
-              "RelativeToolTip": "Models\\DifficultyLevel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T11:43:06.208Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Data\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Data\\ApplicationDbContext.cs",
-              "RelativeToolTip": "Data\\ApplicationDbContext.cs",
-              "ViewState": "AgIAALcAAAAAAAAAAAAAAMkAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T11:40:27.415Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "CLOs.cshtml",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\CLOs.cshtml",
-              "RelativeDocumentMoniker": "Views\\Subject\\CLOs.cshtml",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\CLOs.cshtml",
-              "RelativeToolTip": "Views\\Subject\\CLOs.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-31T11:35:55.142Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Subject.cs",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\Subject.cs",
-              "RelativeDocumentMoniker": "Models\\Subject.cs",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Models\\Subject.cs",
-              "RelativeToolTip": "Models\\Subject.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAAwBUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T11:26:27.834Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\Create.cshtml",
-              "RelativeDocumentMoniker": "Views\\Subject\\Create.cshtml",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\Create.cshtml",
-              "RelativeToolTip": "Views\\Subject\\Create.cshtml",
-              "ViewState": "AgIAABoAAAAAAAAAAAAkwDQAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-31T10:28:32.852Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SubjectController.cs",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Controller\\SubjectController.cs",
-              "RelativeDocumentMoniker": "Controller\\SubjectController.cs",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Controller\\SubjectController.cs*",
-              "RelativeToolTip": "Controller\\SubjectController.cs*",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAowCsAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T10:26:51.8Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Home_RD.cshtml",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Home\\Home_RD.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Home_RD.cshtml",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Home\\Home_RD.cshtml",
-              "RelativeToolTip": "Views\\Home\\Home_RD.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-31T10:56:49.614Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "Subjects.cshtml",
               "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\Subjects.cshtml",
               "RelativeDocumentMoniker": "Views\\Subject\\Subjects.cshtml",
               "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\Subject\\Subjects.cshtml",
               "RelativeToolTip": "Views\\Subject\\Subjects.cshtml",
-              "ViewState": "AgIAAFkAAAAAAAAAAAAowGcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-31T10:28:07.045Z",
+              "WhenOpened": "2025-05-31T16:44:40.952Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\CLO\\Create.cshtml",
+              "RelativeDocumentMoniker": "Views\\CLO\\Create.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\Views\\CLO\\Create.cshtml",
+              "RelativeToolTip": "Views\\CLO\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-05-31T16:43:52.777Z",
               "EditorCaption": ""
             }
           ]
