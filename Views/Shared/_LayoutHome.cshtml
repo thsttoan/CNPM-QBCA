@@ -1,11 +1,11 @@
 ﻿@{
     Layout = null;
-    // Lấy avatar chỉ 1 chữ cái đầu
+    
     string userName = (string)ViewBag.UserName ?? "User";
     string avatarInitials = !string.IsNullOrWhiteSpace(userName)
         ? userName.Trim().Substring(0, 1).ToUpper()
         : "U";
-    // Truyền ngược lại cho các view con nếu muốn dùng chung
+    
     ViewBag.AvatarInitials = avatarInitials;
 }
 <!DOCTYPE html>

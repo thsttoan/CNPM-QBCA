@@ -1,0 +1,118 @@
+﻿@model List<QBCA.Models.Subject>
+@{
+    ViewBag.Title = "Subject Management";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+@section SidebarMenu {
+    <ul class="sidebar-menu">
+        <li><a href="@Url.Action("Home_RD", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
+        <li><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
+        <li><a href="@Url.Action("CLOs", "Subject")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">CLOs & Difficulty Levels</span></a></li>
+        <li><a href="@Url.Action("Plan", "Distribution")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
+        <li><a href="@Url.Action("QuestionBank", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
+        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check (AI)</span></a></li>
+        <li><a href="@Url.Action("SubmissionTable", "Submission")"><i class="fas fa-table menu-icon"></i><span class="menu-text">Submission Table</span></a></li>
+        <li><a href="@Url.Action("Exam", "Exam")"><i class="fas fa-file-alt menu-icon"></i><span class="menu-text">Exam Management</span></a></li>
+        <li><a href="@Url.Action("Report", "Report")"><i class="fas fa-chart-bar menu-icon"></i><span class="menu-text">Reports</span></a></li>
+        <li><a href="@Url.Action("Settings", "Config")"><i class="fas fa-cog menu-icon"></i><span class="menu-text">Configuration</span></a></li>
+        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
+    </ul>
+}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1 text-primary">
+                <i class="fas fa-book-open me-2"></i> Subject Management
+            </h2>
+            <div class="text-secondary small">Manage all subjects for the question bank here.</div>
+        </div>
+        <a href="@Url.Action("Create", "Subject")" class="btn btn-lg btn-gradient-primary shadow rounded-pill px-4">
+            <i class="fas fa-plus"></i> Add New Subject
+        </a>
+    </div>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-check-circle me-2"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="card shadow-lg border-0">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Subject Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Created At</th>
+                            <th scope="col">Created By</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int stt = 1;
+                            foreach (var subject in Model)
+                            {
+                                <tr>
+                                    <td class="text-muted">@stt++</td>
+                                    <td class="fw-semibold">@subject.SubjectName</td>
+                                    <td>
+                                        <span class="badge px-3 py-2 rounded-pill @(subject.Status?.ToLower() == "active" ? "bg-success" : "bg-secondary")">
+                                            <i class="fas @(subject.Status?.ToLower() == "active" ? "fa-check-circle" : "fa-clock") me-1"></i>
+                                            @subject.Status
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark">@subject.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-primary">@((subject.Creator != null ? subject.Creator.FullName : "N/A"))</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3 disabled"><i class="fas fa-edit"></i> Edit</a>
+                                        <a href="#" class="btn btn-sm btn-outline-danger rounded-pill px-3 disabled"><i class="fas fa-trash"></i> Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5 text-muted">
+                                    <i class="fas fa-folder-open fa-2x mb-2"></i><br />
+                                    <span class="fs-5">No subjects found.</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        .btn-gradient-primary {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+        }
+
+            .btn-gradient-primary:hover {
+                background: linear-gradient(90deg, #5a67d8 0%, #6b47a2 100%);
+                color: #fff;
+            }
+
+        .card {
+            border-radius: 1rem;
+        }
+
+        .table thead th {
+            border-top: none;
+        }
+    </style>
+}

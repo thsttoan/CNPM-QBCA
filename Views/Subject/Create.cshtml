@@ -1,0 +1,66 @@
+﻿@model QBCA.Models.Subject
+@{
+    ViewBag.Title = "Create New Subject";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+@section SidebarMenu {
+    <ul class="sidebar-menu">
+        <li><a href="@Url.Action("Home_RD", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
+        <li><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
+        <li><a href="@Url.Action("CLOs", "Subject")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">CLOs & Difficulty Levels</span></a></li>
+        <li><a href="@Url.Action("Plan", "Distribution")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
+        <li><a href="@Url.Action("QuestionBank", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
+        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check (AI)</span></a></li>
+        <li><a href="@Url.Action("SubmissionTable", "Submission")"><i class="fas fa-table menu-icon"></i><span class="menu-text">Submission Table</span></a></li>
+        <li><a href="@Url.Action("Exam", "Exam")"><i class="fas fa-file-alt menu-icon"></i><span class="menu-text">Exam Management</span></a></li>
+        <li><a href="@Url.Action("Report", "Report")"><i class="fas fa-chart-bar menu-icon"></i><span class="menu-text">Reports</span></a></li>
+        <li><a href="@Url.Action("Settings", "Config")"><i class="fas fa-cog menu-icon"></i><span class="menu-text">Configuration</span></a></li>
+        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
+    </ul>
+}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white fw-bold fs-4">
+                    <i class="fas fa-plus-circle"></i> Create New Subject
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("Create", "Subject", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.SubjectName, new { @class = "form-label fw-semibold" })
+                            @Html.TextBoxFor(m => m.SubjectName, new { @class = "form-control form-control-lg", placeholder = "Enter subject name", required = "required", autofocus = "autofocus" })
+                            @Html.ValidationMessageFor(m => m.SubjectName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Status</label>
+                            @Html.DropDownListFor(m => m.Status, new SelectList(new[] { "Active", "Inactive" }), "Select status", new { @class = "form-select form-select-lg", required = "required" })
+                            @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger" })
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-save"></i> Save
+                        </button>
+                        <a href="@Url.Action("Subjects", "Subject")" class="btn btn-link mt-2"><i class="fas fa-arrow-left"></i> Back to Subject List</a>
+                    }
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle"></i> @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        .card-header {
+            letter-spacing: 1px;
+        }
+    </style>
+
+}
