@@ -1,14 +1,14 @@
 ﻿// Sidebar toggle
-function toggleSidebar() {
-    var sidebar = document.getElementById("sidebar");
-    if (sidebar.classList.contains("collapsed")) {
-        sidebar.classList.remove("collapsed");
-        document.querySelector(".main-content").style.marginLeft = "220px";
-    } else {
-        sidebar.classList.add("collapsed");
-        document.querySelector(".main-content").style.marginLeft = "60px";
-    }
-}
+// function toggleSidebar() {
+//    var sidebar = document.getElementById("sidebar");
+//    if (sidebar.classList.contains("collapsed")) {
+//        sidebar.classList.remove("collapsed");
+//        document.querySelector(".main-content").style.marginLeft = "220px";
+//    } else {
+//        sidebar.classList.add("collapsed");
+//        document.querySelector(".main-content").style.marginLeft = "60px";
+//    }
+//} 
 
 // User avatar dropdown
 document.addEventListener("DOMContentLoaded", function () {

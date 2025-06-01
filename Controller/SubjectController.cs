@@ -95,7 +95,6 @@ namespace QBCA.Controllers
 
                     subject.SubjectName = model.SubjectName;
                     subject.Status = model.Status;
-                    // Không cập nhật CreatedAt/CreatedBy ở đây
 
                     _context.Subjects.Update(subject);
                     await _context.SaveChangesAsync();

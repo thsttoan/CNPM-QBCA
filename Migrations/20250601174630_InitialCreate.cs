@@ -223,6 +223,27 @@ namespace CNPM_QBCA.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Plans",
+                columns: table => new
+                {
+                    PlanID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SubjectID = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plans", x => x.PlanID);
+                    table.ForeignKey(
+                        name: "FK_Plans_Subjects_SubjectID",
+                        column: x => x.SubjectID,
+                        principalTable: "Subjects",
+                        principalColumn: "SubjectID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
                 {
@@ -288,6 +309,41 @@ namespace CNPM_QBCA.Migrations
                     table.ForeignKey(
                         name: "FK_SubmissionTables_Users_CreatedBy",
                         column: x => x.CreatedBy,
+                        principalTable: "Users",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlanDistributions",
+                columns: table => new
+                {
+                    DistributionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PlanID = table.Column<int>(type: "int", nullable: false),
+                    DifficultyLevelID = table.Column<int>(type: "int", nullable: false),
+                    AssignedManagerID = table.Column<int>(type: "int", nullable: true),
+                    NumberOfQuestions = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlanDistributions", x => x.DistributionID);
+                    table.ForeignKey(
+                        name: "FK_PlanDistributions_DifficultyLevels_DifficultyLevelID",
+                        column: x => x.DifficultyLevelID,
+                        principalTable: "DifficultyLevels",
+                        principalColumn: "DifficultyLevelID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PlanDistributions_Plans_PlanID",
+                        column: x => x.PlanID,
+                        principalTable: "Plans",
+                        principalColumn: "PlanID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PlanDistributions_Users_AssignedManagerID",
+                        column: x => x.AssignedManagerID,
                         principalTable: "Users",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Restrict);
@@ -471,6 +527,26 @@ namespace CNPM_QBCA.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlanDistributions_AssignedManagerID",
+                table: "PlanDistributions",
+                column: "AssignedManagerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlanDistributions_DifficultyLevelID",
+                table: "PlanDistributions",
+                column: "DifficultyLevelID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlanDistributions_PlanID",
+                table: "PlanDistributions",
+                column: "PlanID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Plans_SubjectID",
+                table: "Plans",
+                column: "SubjectID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Questions_CLOID",
                 table: "Questions",
                 column: "CLOID");
@@ -547,6 +623,9 @@ namespace CNPM_QBCA.Migrations
                 name: "Notifications");
 
             migrationBuilder.DropTable(
+                name: "PlanDistributions");
+
+            migrationBuilder.DropTable(
                 name: "QuestionUploads");
 
             migrationBuilder.DropTable(
@@ -557,6 +636,9 @@ namespace CNPM_QBCA.Migrations
 
             migrationBuilder.DropTable(
                 name: "ExamQuestions");
+
+            migrationBuilder.DropTable(
+                name: "Plans");
 
             migrationBuilder.DropTable(
                 name: "ExamPlans");

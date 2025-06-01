@@ -4,7 +4,6 @@
     string email = (string)ViewBag.Email ?? "";
     string role = (string)ViewBag.Role ?? "";
 
-    // Lấy duy nhất 1 chữ cái đầu tiên của tên
     string avatarText = !string.IsNullOrWhiteSpace(fullName)
         ? fullName.Trim().Substring(0, 1).ToUpper()
         : "U";

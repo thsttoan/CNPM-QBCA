@@ -25,6 +25,8 @@ namespace QBCA.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<DuplicateCheckResult> DuplicateCheckResults { get; set; }
+        public DbSet<Plan> Plans { get; set; }
+        public DbSet<PlanDistribution> PlanDistributions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -197,6 +199,40 @@ namespace QBCA.Data
                 .WithMany(ep => ep.SubmissionTables)
                 .HasForeignKey(st => st.PlanID)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Plan - Subject
+            modelBuilder.Entity<Plan>()
+                .HasOne(p => p.Subject)
+                .WithMany(s => s.Plans)
+                .HasForeignKey(p => p.SubjectID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PlanDistribution - Plan
+            modelBuilder.Entity<PlanDistribution>()
+                .HasOne(pd => pd.Plan)
+                .WithMany(p => p.Distributions)
+                .HasForeignKey(pd => pd.PlanID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PlanDistribution - DifficultyLevel
+            modelBuilder.Entity<PlanDistribution>()
+                .HasOne(pd => pd.DifficultyLevel)
+                .WithMany()
+                .HasForeignKey(pd => pd.DifficultyLevelID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PlanDistribution - AssignedManager (User)
+            modelBuilder.Entity<PlanDistribution>()
+                .HasOne(pd => pd.AssignedManager)
+                .WithMany()
+                .HasForeignKey(pd => pd.AssignedManagerID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // PlanDistribution.Status  NOT NULL 
+            modelBuilder.Entity<PlanDistribution>()
+                .Property(pd => pd.Status)
+                .HasDefaultValue("Assigned")
+                .IsRequired();
         }
     }
 }

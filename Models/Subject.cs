@@ -23,5 +23,7 @@ namespace QBCA.Models
         public ICollection<ExamPlan> ExamPlans { get; set; } = new List<ExamPlan>();
         public ICollection<Question> Questions { get; set; } = new List<Question>();
         public ICollection<DifficultyLevel> DifficultyLevels { get; set; } = new List<DifficultyLevel>();
+
+        public ICollection<Plan> Plans { get; set; } = new List<Plan>();
     }
 }

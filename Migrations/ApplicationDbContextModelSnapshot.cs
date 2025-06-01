@@ -267,6 +267,67 @@ namespace CNPM_QBCA.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("QBCA.Models.Plan", b =>
+                {
+                    b.Property<int>("PlanID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlanID"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("SubjectID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlanID");
+
+                    b.HasIndex("SubjectID");
+
+                    b.ToTable("Plans");
+                });
+
+            modelBuilder.Entity("QBCA.Models.PlanDistribution", b =>
+                {
+                    b.Property<int>("DistributionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DistributionID"));
+
+                    b.Property<int?>("AssignedManagerID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DifficultyLevelID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfQuestions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlanID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DistributionID");
+
+                    b.HasIndex("AssignedManagerID");
+
+                    b.HasIndex("DifficultyLevelID");
+
+                    b.HasIndex("PlanID");
+
+                    b.ToTable("PlanDistributions");
+                });
+
             modelBuilder.Entity("QBCA.Models.Question", b =>
                 {
                     b.Property<int>("QuestionID")
@@ -614,6 +675,43 @@ namespace CNPM_QBCA.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("QBCA.Models.Plan", b =>
+                {
+                    b.HasOne("QBCA.Models.Subject", "Subject")
+                        .WithMany("Plans")
+                        .HasForeignKey("SubjectID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("QBCA.Models.PlanDistribution", b =>
+                {
+                    b.HasOne("QBCA.Models.User", "AssignedManager")
+                        .WithMany()
+                        .HasForeignKey("AssignedManagerID")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("QBCA.Models.DifficultyLevel", "DifficultyLevel")
+                        .WithMany()
+                        .HasForeignKey("DifficultyLevelID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QBCA.Models.Plan", "Plan")
+                        .WithMany("Distributions")
+                        .HasForeignKey("PlanID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AssignedManager");
+
+                    b.Navigation("DifficultyLevel");
+
+                    b.Navigation("Plan");
+                });
+
             modelBuilder.Entity("QBCA.Models.Question", b =>
                 {
                     b.HasOne("QBCA.Models.CLO", "CLO")
@@ -750,6 +848,11 @@ namespace CNPM_QBCA.Migrations
                     b.Navigation("ExamReviews");
                 });
 
+            modelBuilder.Entity("QBCA.Models.Plan", b =>
+                {
+                    b.Navigation("Distributions");
+                });
+
             modelBuilder.Entity("QBCA.Models.Question", b =>
                 {
                     b.Navigation("DuplicateCheckResults");
@@ -773,6 +876,8 @@ namespace CNPM_QBCA.Migrations
                     b.Navigation("DifficultyLevels");
 
                     b.Navigation("ExamPlans");
+
+                    b.Navigation("Plans");
 
                     b.Navigation("Questions");
                 });
