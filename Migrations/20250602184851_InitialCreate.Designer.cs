@@ -12,7 +12,7 @@ using QBCA.Data;
 namespace CNPM_QBCA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250601174630_InitialCreate")]
+    [Migration("20250602184851_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -318,7 +318,9 @@ namespace CNPM_QBCA.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Assigned");
 
                     b.HasKey("DistributionID");
 
@@ -344,7 +346,8 @@ namespace CNPM_QBCA.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -373,32 +376,6 @@ namespace CNPM_QBCA.Migrations
                     b.HasIndex("SubjectID");
 
                     b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("QBCA.Models.QuestionUpload", b =>
-                {
-                    b.Property<int>("UploadID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UploadID"));
-
-                    b.Property<int>("QuestionID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("UploadID");
-
-                    b.HasIndex("QuestionID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("QuestionUploads");
                 });
 
             modelBuilder.Entity("QBCA.Models.Role", b =>
@@ -750,25 +727,6 @@ namespace CNPM_QBCA.Migrations
                     b.Navigation("Subject");
                 });
 
-            modelBuilder.Entity("QBCA.Models.QuestionUpload", b =>
-                {
-                    b.HasOne("QBCA.Models.Question", "Question")
-                        .WithMany("QuestionUploads")
-                        .HasForeignKey("QuestionID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("QBCA.Models.User", "User")
-                        .WithMany("QuestionUploads")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Question");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("QBCA.Models.Subject", b =>
                 {
                     b.HasOne("QBCA.Models.User", "Creator")
@@ -862,8 +820,6 @@ namespace CNPM_QBCA.Migrations
 
                     b.Navigation("ExamQuestions");
 
-                    b.Navigation("QuestionUploads");
-
                     b.Navigation("SimilarQuestions");
                 });
 
@@ -894,8 +850,6 @@ namespace CNPM_QBCA.Migrations
                     b.Navigation("Logins");
 
                     b.Navigation("Notifications");
-
-                    b.Navigation("QuestionUploads");
 
                     b.Navigation("QuestionsCreated");
 

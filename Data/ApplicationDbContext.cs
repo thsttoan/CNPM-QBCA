@@ -17,7 +17,6 @@ namespace QBCA.Data
         public DbSet<CLO> CLOs { get; set; }
         public DbSet<DifficultyLevel> DifficultyLevels { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<QuestionUpload> QuestionUploads { get; set; }
         public DbSet<ExamPlan> ExamPlans { get; set; }
         public DbSet<ExamQuestion> ExamQuestions { get; set; }
         public DbSet<ExamReview> ExamReviews { get; set; }
@@ -94,13 +93,6 @@ namespace QBCA.Data
                 .HasForeignKey(s => s.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // User - QuestionUploads
-            modelBuilder.Entity<QuestionUpload>()
-                .HasOne(qu => qu.User)
-                .WithMany(u => u.QuestionUploads)
-                .HasForeignKey(qu => qu.UserID)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // User - Notifications
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)
@@ -166,13 +158,6 @@ namespace QBCA.Data
                 .HasForeignKey(q => q.DifficultyLevelID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // QuestionUpload - Question
-            modelBuilder.Entity<QuestionUpload>()
-                .HasOne(qu => qu.Question)
-                .WithMany(q => q.QuestionUploads)
-                .HasForeignKey(qu => qu.QuestionID)
-                .OnDelete(DeleteBehavior.Restrict);
-
             // ExamQuestion
             modelBuilder.Entity<ExamQuestion>()
                 .HasOne(eq => eq.ExamPlan)
@@ -228,11 +213,14 @@ namespace QBCA.Data
                 .HasForeignKey(pd => pd.AssignedManagerID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // PlanDistribution.Status  NOT NULL 
+            // PlanDistribution.Status NOT NULL 
             modelBuilder.Entity<PlanDistribution>()
                 .Property(pd => pd.Status)
                 .HasDefaultValue("Assigned")
                 .IsRequired();
+
+            // Question - OPTIONAL: Không đặt IsRequired cho navigation/collection
+            // Collections không cần mapping thêm nếu không có config đặc biệt
         }
     }
 }

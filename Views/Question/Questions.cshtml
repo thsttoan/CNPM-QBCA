@@ -1,35 +1,29 @@
-﻿@model List<QBCA.Models.Subject>
+﻿@model List<QBCA.Models.Question>
 @{
-    ViewBag.Title = "Subject Management";
+    ViewBag.Title = "Question Bank";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 @section SidebarMenu {
     <ul class="sidebar-menu">
-        <li><a href="@Url.Action("Home_RD", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
-        <li><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
-        <li><a href="@Url.Action("CLOs", "CLO")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">CLOs</span></a></li>
-        <li><a href="@Url.Action("DLs", "DifficultyLevel")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">Difficulty Levels</span></a></li>
-        <li><a href="@Url.Action("Plan", "Plan")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
-        <li><a href="@Url.Action("QuestionBank", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
-        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check (AI)</span></a></li>
-        <li><a href="@Url.Action("SubmissionTable", "Submission")"><i class="fas fa-table menu-icon"></i><span class="menu-text">Submission Table</span></a></li>
-        <li><a href="@Url.Action("Exam", "Exam")"><i class="fas fa-file-alt menu-icon"></i><span class="menu-text">Exam Management</span></a></li>
-        <li><a href="@Url.Action("Report", "Report")"><i class="fas fa-chart-bar menu-icon"></i><span class="menu-text">Reports</span></a></li>
-        <li><a href="@Url.Action("Settings", "Config")"><i class="fas fa-cog menu-icon"></i><span class="menu-text">Configuration</span></a></li>
+        <li><a href="@Url.Action("Home_Lecturer", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
+        <li><a href="@Url.Action("MyTasks", "Task")"><i class="fas fa-clipboard-list menu-icon"></i><span class="menu-text">My Tasks</span></a></li>
+        <li><a href="@Url.Action("Questions", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
+        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check</span></a></li>
+        <li><a href="@Url.Action("MockExam", "Exam")"><i class="fas fa-file-signature menu-icon"></i><span class="menu-text">Mock Exam</span></a></li>
         <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
     </ul>
 }
 <div class="container py-4">
     <div class="main-content-area">
         <div style="margin-bottom: 18px;">
-            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Subject Management</h2>
-            <div class="text-secondary" style="font-size:1.18rem;">Manage all subjects for the question bank here.</div>
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Question Bank</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">Manage and update your question bank here.</div>
         </div>
         <div class="mb-4 w-100" style="display: flex; justify-content: flex-start;">
-            <a href="@Url.Action("Create", "Subject")"
+            <a href="@Url.Action("Create", "Question")"
                class="btn btn-signin-custom"
-               style="font-size:1.15rem; min-width:200px;">
-                Add New Subject
+               style="font-size:1.15rem; min-width:240px;">
+                Add New Question
             </a>
         </div>
         @if (TempData["Success"] != null)
@@ -43,35 +37,35 @@
             <table class="table subject-table mb-0">
                 <thead>
                     <tr>
-                        <th style="width:15%;">Subject ID</th>
-                        <th style="width:24%;">Subject Name</th>
-                        <th style="width:15%;">Status</th>
-                        <th style="width:18%;">Created At</th>
-                        <th style="width:17%;">Created By</th>
-                        <th style="width:12%;" class="text-center">Actions</th>
+                        <th style="width:7%;">ID</th>
+                        <th style="width:28%;">Content</th>
+                        <th style="width:13%;">Subject</th>
+                        <th style="width:13%;">CLO</th>
+                        <th style="width:10%;">Difficulty</th>
+                        <th style="width:13%;">Created By</th>
+                        <th style="width:12%;">Created At</th>
+                        <th style="width:7%;" class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        foreach (var subject in Model)
+                        foreach (var q in Model)
                         {
                             <tr>
-                                <td>@subject.SubjectID</td>
-                                <td>@subject.SubjectName</td>
-                                <td>
-                                    <span class="badge @(subject.Status?.ToLower() == "active" ? "bg-success" : "bg-secondary")" style="font-size:1.09em;">
-                                        @subject.Status
-                                    </span>
-                                </td>
-                                <td>@subject.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
-                                <td>@(subject.Creator != null ? subject.Creator.FullName + " (" + subject.Creator.Email + ")" : "N/A")</td>
+                                <td>@q.QuestionID</td>
+                                <td>@q.Content</td>
+                                <td>@q.Subject?.SubjectName</td>
+                                <td>@q.CLO?.Description</td>
+                                <td>@q.DifficultyLevel?.LevelName</td>
+                                <td>@q.Creator?.FullName</td>
+                                <td>@q.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Edit", "Subject", new { id = subject.SubjectID })" class="btn btn-sm btn-outline-primary rounded-pill me-1">Edit</a>
-                                    @using (Html.BeginForm("Delete", "Subject", FormMethod.Post, new { onsubmit = "return confirm('Are you sure you want to delete this subject?');", style = "display:inline;" }))
+                                    <a href="@Url.Action("Edit", "Question", new { id = q.QuestionID })" class="btn btn-sm btn-outline-primary rounded-pill me-1">Edit</a>
+                                    @using (Html.BeginForm("Delete", "Question", FormMethod.Post, new { onsubmit = "return confirm('Are you sure you want to delete this question?');", style = "display:inline;" }))
                                     {
                                         @Html.AntiForgeryToken()
-                                        @Html.Hidden("id", subject.SubjectID)
+                                        @Html.Hidden("id", q.QuestionID)
                                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Delete</button>
                                     }
                                 </td>
@@ -81,9 +75,9 @@
                     else
                     {
                         <tr>
-                            <td colspan="6" class="text-center py-4 text-muted">
+                            <td colspan="8" class="text-center py-4 text-muted">
                                 <i class="fas fa-folder-open fa-lg mb-2"></i><br />
-                                <span style="font-size:1.11rem;">No subjects found.</span>
+                                <span style="font-size:1.11rem;">No questions found.</span>
                             </td>
                         </tr>
                     }
@@ -131,7 +125,7 @@
             border-collapse: separate;
             border-spacing: 0;
             font-size: 1.17rem;
-            min-width: 650px;
+            min-width: 900px;
         }
 
             .subject-table thead tr th {
@@ -180,31 +174,33 @@
         .btn {
             font-size: 1.09em;
         }
+        @@media (max-width: 1100px) {
+            .main-content-area, .table-container
 
-        @@media (max-width: 900px) {
-            .main-content-area, .table-container {
-                margin-left: 4vw !important;
-                margin-right: 4vw !important;
+        {
+            margin-left: 2vw !important;
+            margin-right: 2vw !important;
+        }
+
+        .subject-table {
+            font-size: 1rem;
+        }
+
+            .subject-table thead tr th {
+                font-size: 1rem;
+                padding-left: 10px;
             }
 
-            .subject-table {
+            .subject-table td {
+                padding-left: 10px;
                 font-size: 1rem;
             }
 
-                .subject-table thead tr th {
-                    font-size: 1rem;
-                    padding-left: 10px;
-                }
+        .btn-signin-custom {
+            font-size: 1rem;
+            padding: 12px 0;
+        }
 
-                .subject-table td {
-                    padding-left: 10px;
-                    font-size: 1rem;
-                }
-
-            .btn-signin-custom {
-                font-size: 1rem;
-                padding: 12px 0;
-            }
         }
     </style>
 }

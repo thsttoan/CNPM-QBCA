@@ -8,21 +8,35 @@ namespace QBCA.Models
     {
         [Key]
         public int QuestionID { get; set; }
+
+        [Required]
         public int SubjectID { get; set; }
+
+        [Required]
         public int CLOID { get; set; }
+
+        [Required]
         public int DifficultyLevelID { get; set; }
+
+        [Required]
+        [StringLength(2000)]
         public string Content { get; set; }
+
+        [Required]
         public int CreatedBy { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
+
+        [Required]
         public string Status { get; set; }
 
-        public Subject Subject { get; set; }
-        public CLO CLO { get; set; }
-        public DifficultyLevel DifficultyLevel { get; set; }
-        public User Creator { get; set; }
-        public ICollection<QuestionUpload> QuestionUploads { get; set; }
-        public ICollection<ExamQuestion> ExamQuestions { get; set; }
-        public ICollection<DuplicateCheckResult> DuplicateCheckResults { get; set; }
-        public ICollection<DuplicateCheckResult> SimilarQuestions { get; set; }
+        public Subject? Subject { get; set; }
+        public CLO? CLO { get; set; }
+        public DifficultyLevel? DifficultyLevel { get; set; }
+        public User? Creator { get; set; }
+        public ICollection<ExamQuestion> ExamQuestions { get; set; } = new List<ExamQuestion>();
+        public ICollection<DuplicateCheckResult> DuplicateCheckResults { get; set; } = new List<DuplicateCheckResult>();
+        public ICollection<DuplicateCheckResult> SimilarQuestions { get; set; } = new List<DuplicateCheckResult>();
     }
 }

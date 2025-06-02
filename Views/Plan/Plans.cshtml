@@ -46,7 +46,7 @@
                         <th style="width:9%;">Plan ID</th>
                         <th style="width:15%;">Plan Name</th>
                         <th style="width:15%;">Subject</th>
-                        <th style="width:13%;">Created At</th>
+                        <th style="width:18%;">Created At</th>
                         <th style="width:25%;">Distribution Details</th>
                         <th style="width:10%;" class="text-center">Actions</th>
                     </tr>
@@ -60,7 +60,7 @@
                                 <td>@plan.PlanID</td>
                                 <td>@plan.Name</td>
                                 <td>@plan.Subject?.SubjectName</td>
-                                <td>@plan.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                <td>@plan.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
                                 <td>
                                     @if (plan.Distributions != null && plan.Distributions.Any())
                                     {

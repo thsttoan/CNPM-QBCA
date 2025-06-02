@@ -6,10 +6,10 @@
 @section SidebarMenu {
     <ul class="sidebar-menu">
         <li><a href="@Url.Action("Home_RD", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
-        <li><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
+        <li class="active"><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
         <li><a href="@Url.Action("CLOs", "CLO")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">CLOs</span></a></li>
         <li><a href="@Url.Action("DLs", "DifficultyLevel")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">Difficulty Levels</span></a></li>
-        <li><a href="@Url.Action("Plan", "Distribution")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
+        <li><a href="@Url.Action("Plan", "Plan")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
         <li><a href="@Url.Action("QuestionBank", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
         <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check (AI)</span></a></li>
         <li><a href="@Url.Action("SubmissionTable", "Submission")"><i class="fas fa-table menu-icon"></i><span class="menu-text">Submission Table</span></a></li>
@@ -19,7 +19,8 @@
         <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
     </ul>
 }
-<style>
+@section Styles {
+    <style>
         .neumorphic-box {
             background: #f2f3f7;
             border-radius: 25px;
@@ -29,7 +30,16 @@
             margin: auto;
         }
 
-        .neumorphic-input, .neumorphic-select {
+        .neumorphic-label {
+            font-weight: 600;
+            color: #36395A;
+            margin-bottom: 7px;
+            margin-left: 2px;
+            display: block;
+            letter-spacing: 0.02em;
+        }
+
+        .neumorphic-input, .neumorphic-select, .neumorphic-textarea {
             border: none;
             outline: none;
             background: #f2f3f7;
@@ -39,6 +49,12 @@
             width: 100%;
             box-sizing: border-box;
             font-size: 16px;
+            margin-bottom: 22px;
+        }
+
+        .neumorphic-textarea {
+            min-height: 78px;
+            resize: vertical;
         }
 
         .neumorphic-button {
@@ -47,40 +63,49 @@
             padding: 12px 25px;
             font-weight: 600;
             border: none;
-                border-radius: 12px;
+            border-radius: 12px;
             width: 100%;
             box-sizing: border-box;
             box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
             transition: 0.2s;
+            margin-top: 4px;
+            margin-bottom: 8px;
+            font-size: 1.13rem;
         }
 
-        .neumorphic-button:hover {
-            background-color: #3730A3;
-        }
-</style>
+            .neumorphic-button:hover {
+                background-color: #3730A3;
+            }
 
+        .text-danger.small {
+            font-size: .98em;
+            margin-left: 3px;
+        }
+    </style>
+}
 <section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 120px;">
     <div class="neumorphic-box">
-        <h3 class="text-center fw-bold mb-4 text-dark">➕ Create New Subject</h3>
-
+        <h3 class="text-center fw-bold mb-4 text-dark">
+            <span style="color:#6d82f3;"><i class="fas fa-plus"></i></span> Create New Subject
+        </h3>
         @using (Html.BeginForm("Create", "Subject", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
-            @Html.TextBoxFor(model => model.SubjectName, new {
-            @class = "neumorphic-input",
-                placeholder = "Subject Name (e.g. Calculus I)"
-                })
-        @Html.ValidationMessageFor(model => model.SubjectName, "", new { @class = "text-danger small" })
+            <label class="neumorphic-label" for="SubjectName">Subject Name</label>
+            @Html.TextBoxFor(model => model.SubjectName, new { @class = "neumorphic-input", placeholder = "Subject Name (e.g. Calculus I)", id = "SubjectName" })
+            @Html.ValidationMessageFor(model => model.SubjectName, "", new { @class = "text-danger small" })
 
-        @Html.DropDownListFor(model => model.Status,
-                new SelectList(new[] { "Active", "Inactive" }),
-                new { @class = "neumorphic-select" })
+            <label class="neumorphic-label" for="Status">Status</label>
+            @Html.DropDownListFor(model => model.Status,
+            new SelectList(new[] { "Active", "Inactive" }),
+                "Select Status",
+                new { @class = "neumorphic-select", id = "Status" })
         @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger small" })
 
-        <button type="submit" class="neumorphic-button mb-2">Create</button>
-        <a href="@Url.Action("Subjects", "Subject")" class="btn btn-link w-100 text-center">Cancel</a>
+        <button type="submit" class="neumorphic-button">Create</button>
+        <a href="@Url.Action("Subjects", "Subject")" class="btn btn-link w-100 text-center" style="font-weight:500;">Cancel</a>
                 }
     </div>
 </section>

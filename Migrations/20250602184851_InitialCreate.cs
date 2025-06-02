@@ -252,7 +252,7 @@ namespace CNPM_QBCA.Migrations
                     SubjectID = table.Column<int>(type: "int", nullable: false),
                     CLOID = table.Column<int>(type: "int", nullable: false),
                     DifficultyLevelID = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -324,7 +324,7 @@ namespace CNPM_QBCA.Migrations
                     DifficultyLevelID = table.Column<int>(type: "int", nullable: false),
                     AssignedManagerID = table.Column<int>(type: "int", nullable: true),
                     NumberOfQuestions = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Assigned")
                 },
                 constraints: table =>
                 {
@@ -403,33 +403,6 @@ namespace CNPM_QBCA.Migrations
                         column: x => x.QuestionID,
                         principalTable: "Questions",
                         principalColumn: "QuestionID",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "QuestionUploads",
-                columns: table => new
-                {
-                    UploadID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    QuestionID = table.Column<int>(type: "int", nullable: false),
-                    UploadTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QuestionUploads", x => x.UploadID);
-                    table.ForeignKey(
-                        name: "FK_QuestionUploads_Questions_QuestionID",
-                        column: x => x.QuestionID,
-                        principalTable: "Questions",
-                        principalColumn: "QuestionID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_QuestionUploads_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -567,16 +540,6 @@ namespace CNPM_QBCA.Migrations
                 column: "SubjectID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestionUploads_QuestionID",
-                table: "QuestionUploads",
-                column: "QuestionID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_QuestionUploads_UserID",
-                table: "QuestionUploads",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Subjects_CreatedBy",
                 table: "Subjects",
                 column: "CreatedBy");
@@ -624,9 +587,6 @@ namespace CNPM_QBCA.Migrations
 
             migrationBuilder.DropTable(
                 name: "PlanDistributions");
-
-            migrationBuilder.DropTable(
-                name: "QuestionUploads");
 
             migrationBuilder.DropTable(
                 name: "SubmissionTables");
