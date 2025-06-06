@@ -6,7 +6,7 @@ using System.Security.Claims;
 using QBCA.Models;
 using System.Linq;
 using System.Collections.Generic;
-using QBCA.Data; // Namespace của ApplicationDbContext
+using QBCA.Data;
 
 namespace QBCA.Controllers
 {
@@ -24,7 +24,7 @@ namespace QBCA.Controllers
 
         public IActionResult Index()
         {
-            var roleIdClaim = User.FindFirst("RoleId")?.Value;
+            var roleIdClaim = User.FindFirst("RoleID")?.Value;
             if (!int.TryParse(roleIdClaim, out var roleId))
                 return RedirectToAction("AccessDenied");
 
@@ -41,7 +41,7 @@ namespace QBCA.Controllers
 
         private bool IsRoleAllowed(int expectedRoleId)
         {
-            var roleIdClaim = User.FindFirst("RoleId")?.Value;
+            var roleIdClaim = User.FindFirst("RoleID")?.Value;
             if (!int.TryParse(roleIdClaim, out var roleId))
                 return false;
             return roleId == expectedRoleId;
@@ -109,7 +109,7 @@ namespace QBCA.Controllers
         {
             var email = User.Identity?.Name;
             var fullName = User.FindFirst("FullName")?.Value ?? "Unknown";
-            var roleId = User.FindFirst("RoleId")?.Value ?? "N/A";
+            var roleId = User.FindFirst("RoleID")?.Value ?? "N/A";
 
             ViewBag.Email = email;
             ViewBag.FullName = fullName;
@@ -118,7 +118,6 @@ namespace QBCA.Controllers
             return View();
         }
 
-        // Thêm action Logins để xem lịch sử đăng nhập
         public IActionResult Logins()
         {
             var userIdClaim = User.FindFirst("UserID")?.Value;

@@ -3,22 +3,7 @@
     ViewBag.Title = "Edit Subject";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
-@section SidebarMenu {
-    <ul class="sidebar-menu">
-        <li><a href="@Url.Action("Home_RD", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
-        <li><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
-        <li><a href="@Url.Action("CLOs", "CLO")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">CLOs</span></a></li>
-        <li><a href="@Url.Action("DLs", "DifficultyLevel")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">Difficulty Levels</span></a></li>
-        <li><a href="@Url.Action("Plan", "Plan")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
-        <li><a href="@Url.Action("QuestionBank", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
-        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check (AI)</span></a></li>
-        <li><a href="@Url.Action("SubmissionTable", "Submission")"><i class="fas fa-table menu-icon"></i><span class="menu-text">Submission Table</span></a></li>
-        <li><a href="@Url.Action("Exam", "Exam")"><i class="fas fa-file-alt menu-icon"></i><span class="menu-text">Exam Management</span></a></li>
-        <li><a href="@Url.Action("Report", "Report")"><i class="fas fa-chart-bar menu-icon"></i><span class="menu-text">Reports</span></a></li>
-        <li><a href="@Url.Action("Settings", "Config")"><i class="fas fa-cog menu-icon"></i><span class="menu-text">Configuration</span></a></li>
-        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
-    </ul>
-}
+
 <style>
     .neumorphic-box {
         background: #f2f3f7;

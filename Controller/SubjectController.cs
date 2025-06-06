@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using QBCA.Models;
 using QBCA.Data;
 using System.Linq;
-using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace QBCA.Controllers
 {
@@ -17,6 +17,21 @@ namespace QBCA.Controllers
         public SubjectController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        private void AddNotification(int userId, string message, string relatedType, int? relatedId, int createdBy)
+        {
+            var noti = new Notification
+            {
+                UserID = userId,
+                Message = message,
+                Status = "unread",
+                RelatedEntityType = relatedType,
+                RelatedEntityID = relatedId,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = createdBy
+            };
+            _context.Notifications.Add(noti);
         }
 
         // GET: /Subject/Subjects
@@ -45,10 +60,24 @@ namespace QBCA.Controllers
                 {
                     model.CreatedAt = DateTime.UtcNow;
                     var userIdClaim = User.FindFirst("UserID")?.Value;
+                    int createdBy = 0;
                     if (int.TryParse(userIdClaim, out int userId))
-                        model.CreatedBy = userId;
+                        model.CreatedBy = createdBy = userId;
 
                     _context.Subjects.Add(model);
+                    await _context.SaveChangesAsync();
+
+                    var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+                    foreach (var user in notifyUsers)
+                    {
+                        AddNotification(
+                            user.UserID,
+                            $"Subject \"{model.SubjectName}\" has been created.",
+                            "Subject",
+                            model.SubjectID,
+                            createdBy
+                        );
+                    }
                     await _context.SaveChangesAsync();
 
                     TempData["Success"] = "Subject created successfully!";
@@ -99,6 +128,22 @@ namespace QBCA.Controllers
                     _context.Subjects.Update(subject);
                     await _context.SaveChangesAsync();
 
+                    var userIdClaim = User.FindFirst("UserID")?.Value;
+                    int.TryParse(userIdClaim, out int createdBy);
+
+                    var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+                    foreach (var user in notifyUsers)
+                    {
+                        AddNotification(
+                            user.UserID,
+                            $"Subject \"{subject.SubjectName}\" has been updated.",
+                            "Subject",
+                            subject.SubjectID,
+                            createdBy
+                        );
+                    }
+                    await _context.SaveChangesAsync();
+
                     TempData["Success"] = "Subject updated successfully!";
                     return RedirectToAction("Subjects");
                 }
@@ -124,7 +169,25 @@ namespace QBCA.Controllers
             if (subject == null)
                 return NotFound();
 
+            string subjectName = subject.SubjectName;
+
             _context.Subjects.Remove(subject);
+            await _context.SaveChangesAsync();
+
+            var userIdClaim = User.FindFirst("UserID")?.Value;
+            int.TryParse(userIdClaim, out int createdBy);
+
+            var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+            foreach (var user in notifyUsers)
+            {
+                AddNotification(
+                    user.UserID,
+                    $"Subject \"{subjectName}\" has been deleted.",
+                    "Subject",
+                    id,
+                    createdBy
+                );
+            }
             await _context.SaveChangesAsync();
 
             TempData["Success"] = "Subject deleted successfully!";

@@ -1,0 +1,130 @@
+﻿@model List<QBCA.Models.TaskAssignment>
+@{
+    ViewBag.Title = "Team Tasks";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Team Tasks</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">View tasks assigned to you.</div>
+        </div>
+        <div class="table-container">
+            <table class="table subject-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:7%;">ID</th>
+                        <th style="width:20%;">Task Type</th>
+                        <th style="width:20%;">Status</th>
+                        <th style="width:15%;">Due Date</th>
+                        <th style="width:23%;">Assigned By</th>
+                        <th style="width:15%;">Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var task in Model)
+                        {
+                            <tr>
+                                <td>@task.AssignmentID</td>
+                                <td>@task.TaskType</td>
+                                <td>@task.Status</td>
+                                <td>@(task.DueDate?.AddHours(7).ToString("yyyy-MM-dd") ?? "-")</td>
+                                <td>@task.Assigner?.FullName</td>
+                                <td>@task.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <i class="fas fa-tasks fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">No tasks assigned to you.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.17rem;
+            min-width: 900px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.18rem;
+                text-align: left;
+                padding-left: 24px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+            }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.88rem 0.8rem 0.88rem 24px;
+                font-size: 1.14rem;
+            }
+
+        @@media (max-width: 1100px) {
+            .main-content-area,
+            .table-container {
+                margin-left: 2vw !important;
+                margin-right: 2vw !important;
+            }
+
+            .subject-table {
+                font-size: 1rem;
+            }
+
+                .subject-table thead tr th {
+                    font-size: 1rem;
+                    padding-left: 10px;
+                }
+
+                .subject-table td {
+                    padding-left: 10px;
+                    font-size: 1rem;
+                }
+        }
+    </style>
+}

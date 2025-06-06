@@ -8,22 +8,6 @@
         Model.Distributions = new List<QBCA.Models.PlanDistributionViewModel> { new QBCA.Models.PlanDistributionViewModel() };
     }
 }
-@section SidebarMenu {
-    <ul class="sidebar-menu">
-        <li><a href="@Url.Action("Home_RD", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
-        <li><a href="@Url.Action("Subjects", "Subject")"><i class="fas fa-book menu-icon"></i><span class="menu-text">Subject Management</span></a></li>
-        <li><a href="@Url.Action("CLOs", "CLO")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">CLOs</span></a></li>
-        <li><a href="@Url.Action("DLs", "DifficultyLevel")"><i class="fas fa-list-ol menu-icon"></i><span class="menu-text">Difficulty Levels</span></a></li>
-        <li><a href="@Url.Action("Plan", "Plan")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Plan & Distribution</span></a></li>
-        <li><a href="@Url.Action("QuestionBank", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
-        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check (AI)</span></a></li>
-        <li><a href="@Url.Action("SubmissionTable", "Submission")"><i class="fas fa-table menu-icon"></i><span class="menu-text">Submission Table</span></a></li>
-        <li><a href="@Url.Action("Exam", "Exam")"><i class="fas fa-file-alt menu-icon"></i><span class="menu-text">Exam Management</span></a></li>
-        <li><a href="@Url.Action("Report", "Report")"><i class="fas fa-chart-bar menu-icon"></i><span class="menu-text">Reports</span></a></li>
-        <li><a href="@Url.Action("Settings", "Config")"><i class="fas fa-cog menu-icon"></i><span class="menu-text">Configuration</span></a></li>
-        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
-    </ul>
-}
 <style>
     .neumorphic-box {
         background: #f2f3f7;
@@ -143,7 +127,7 @@
                     <tr>
                         <th>Difficulty Level</th>
                         <th>Number of Questions</th>
-                        <th>Manager</th>
+                        <th>Manager Role</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -163,11 +147,11 @@
                             @Html.ValidationMessage("Distributions[" + i + "].NumberOfQuestions", "", new { @class = "text-danger small" })
                         </td>
                         <td>
-                            @Html.DropDownListFor(m => m.Distributions[i].AssignedManagerID,
-                                                        new SelectList(Model.AllManagers, "UserID", "FullName", Model.Distributions[i].AssignedManagerID),
-                                                        "Select Manager",
+                            @Html.DropDownListFor(m => m.Distributions[i].AssignedManagerRoleID,
+                                                        new SelectList(Model.AllManagerRoles, "RoleID", "RoleName", Model.Distributions[i].AssignedManagerRoleID),
+                                                        "Select Manager Role",
                                                         new { @class = "neumorphic-select" })
-                            @Html.ValidationMessage("Distributions[" + i + "].AssignedManagerID", "", new { @class = "text-danger small" })
+                            @Html.ValidationMessage("Distributions[" + i + "].AssignedManagerRoleID", "", new { @class = "text-danger small" })
                         </td>
                         <td>
                             <button type="button" class="remove-dist-btn" onclick="removeDistributionRow(this)">X</button>
@@ -184,11 +168,11 @@
 </section>
 <script>
     var difficulties = @Html.Raw(JsonSerializer.Serialize(
-                Model.AllDifficultyLevels.Select(x => new { x.DifficultyLevelID, x.LevelName })
-        ));
-    var managers = @Html.Raw(JsonSerializer.Serialize(
-                Model.AllManagers.Select(x => new { x.UserID, x.FullName })
-        ));
+                                                                Model.AllDifficultyLevels.Select(x => new { x.DifficultyLevelID, x.LevelName })
+                                ));
+    var roles = @Html.Raw(JsonSerializer.Serialize(
+                                                                Model.AllManagerRoles.Select(x => new { x.RoleID, x.RoleName })
+                                ));
 
     function addDistributionRow() {
         var idx = $("#dist-tbody tr").length;
@@ -203,9 +187,9 @@
                 <input type="number" name="Distributions[${idx}].NumberOfQuestions" class="neumorphic-input" min="1" placeholder="Number" />
             </td>
             <td>
-                <select name="Distributions[${idx}].AssignedManagerID" class="neumorphic-select">
-                    <option value="">Select Manager</option>
-                    ${managers.map(m => `<option value="${m.UserID}">${m.FullName}</option>`).join('')}
+                <select name="Distributions[${idx}].AssignedManagerRoleID" class="neumorphic-select">
+                    <option value="">Select Manager Role</option>
+                    ${roles.map(r => `<option value="${r.RoleID}">${r.RoleName}</option>`).join('')}
                 </select>
             </td>
             <td>

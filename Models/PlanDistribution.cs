@@ -15,8 +15,10 @@ namespace QBCA.Models
         public int DifficultyLevelID { get; set; }
         public DifficultyLevel DifficultyLevel { get; set; }
 
-        public int? AssignedManagerID { get; set; }
-        public User AssignedManager { get; set; }
+        // Sử dụng Role thay vì User
+        [Required]
+        public int AssignedManagerRoleID { get; set; }
+        public Role AssignedManagerRole { get; set; }
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be > 0")]

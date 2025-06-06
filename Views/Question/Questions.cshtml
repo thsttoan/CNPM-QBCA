@@ -3,16 +3,7 @@
     ViewBag.Title = "Question Bank";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
-@section SidebarMenu {
-    <ul class="sidebar-menu">
-        <li><a href="@Url.Action("Home_Lecturer", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
-        <li><a href="@Url.Action("MyTasks", "Task")"><i class="fas fa-clipboard-list menu-icon"></i><span class="menu-text">My Tasks</span></a></li>
-        <li><a href="@Url.Action("Questions", "Question")"><i class="fas fa-database menu-icon"></i><span class="menu-text">Question Bank</span></a></li>
-        <li><a href="@Url.Action("CheckDuplicate", "Duplicate")"><i class="fas fa-search menu-icon"></i><span class="menu-text">Duplicate Check</span></a></li>
-        <li><a href="@Url.Action("MockExam", "Exam")"><i class="fas fa-file-signature menu-icon"></i><span class="menu-text">Mock Exam</span></a></li>
-        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
-    </ul>
-}
+
 <div class="container py-4">
     <div class="main-content-area">
         <div style="margin-bottom: 18px;">

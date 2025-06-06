@@ -1,0 +1,208 @@
+﻿@model List<QBCA.Models.Notification>
+@{
+    ViewBag.Title = "Notifications";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Notifications</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">
+                Here you can view all notifications related to your assignments and updates.
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="table subject-table mb-0" id="noti-table">
+                <thead>
+                    <tr>
+                        <th style="width:28%;">Message</th>
+                        <th style="width:14%;">Entity</th>
+                        <th style="width:16%;">Time</th>
+                        <th style="width:15%;">Created By</th>
+                        <th style="width:12%;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var n in Model)
+                        {
+                            <tr id="row-@n.NotificationID" class="@(n.Status.ToUpper() == "UNREAD" ? "table-primary" : "")">
+                                <td>
+                                    @n.Message
+                                    @if (!string.IsNullOrEmpty(n.RelatedEntityType) && n.RelatedEntityID.HasValue)
+                                    {
+                                        <span class="text-muted ms-2" style="font-size:0.97em;">
+                                            [@n.RelatedEntityType #@n.RelatedEntityID]
+                                        </span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(n.RelatedEntityType) && n.RelatedEntityID.HasValue)
+                                    {
+                                        @($"{n.RelatedEntityType} #{n.RelatedEntityID}")
+                                    }
+                                </td>
+                                <td>@n.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>
+                                    @if (n.CreatedByUser != null)
+                                    {
+                                        @n.CreatedByUser.FullName
+                                        <br />
+                                        <span class="text-secondary" style="font-size:0.97em;">@n.CreatedByUser.Email</span>
+                                    }
+                                    else
+                                    {
+                                        @n.CreatedBy.ToString()
+                                    }
+                                </td>
+                                <td>
+                                    <span id="status-@n.NotificationID" class="badge @(n.Status.ToUpper() == "UNREAD" ? "bg-warning text-dark" : "bg-success")" style="font-size:1em;">
+                                        @n.Status.ToUpper()
+                                    </span>
+                                    <button type="button" class="btn btn-sm ms-2 @(n.Status.ToUpper() == "UNREAD" ? "btn-success" : "btn-warning")"
+                                            onclick="toggleStatus(@n.NotificationID, '@(n.Status.ToUpper() == "UNREAD" ? "READ" : "UNREAD")')">
+                                        @(n.Status.ToUpper() == "UNREAD" ? "Mark as READ" : "Mark as UNREAD")
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="fas fa-bell fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">You have no notifications.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        function toggleStatus(id, newStatus) {
+            $.ajax({
+                url: '@Url.Action("MarkAsReadOrUnread", "Notifications")',
+                type: 'POST',
+                data: { id: id, status: newStatus },
+                success: function (data) {
+                    if (data && data.success) {
+                        var row = $('#row-' + id);
+                        var statusSpan = $('#status-' + id);
+                        var btn = row.find('button');
+                        if (data.status === 'UNREAD') {
+                            row.addClass('table-primary');
+                            statusSpan.removeClass('bg-success').addClass('bg-warning text-dark').text('UNREAD');
+                            btn.removeClass('btn-warning').addClass('btn-success').text('Mark as READ').attr('onclick', "toggleStatus(" + id + ", 'READ')");
+                        } else {
+                            row.removeClass('table-primary');
+                            statusSpan.removeClass('bg-warning text-dark').addClass('bg-success').text('READ');
+                            btn.removeClass('btn-success').addClass('btn-warning').text('Mark as UNREAD').attr('onclick', "toggleStatus(" + id + ", 'UNREAD')");
+                        }
+                    }
+                },
+                error: function (xhr) {
+                    alert("Error: " + xhr.status + " - " + xhr.statusText);
+                }
+            });
+        }
+    </script>
+}
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.17rem;
+            min-width: 650px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.18rem;
+                text-align: left;
+                padding-left: 24px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+            }
+
+                .subject-table tbody tr:last-child {
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.88rem 0.8rem 0.88rem 24px;
+                font-size: 1.14rem;
+            }
+
+        .badge {
+            font-size: 1.09em;
+            border-radius: 6px;
+            padding: 0.54em 1.1em;
+            font-weight: 500;
+        }
+
+        .btn {
+            font-size: 1.09em;
+        }
+
+        @@media (max-width: 900px) {
+            .main-content-area, .table-container {
+                margin-left: 4vw !important;
+                margin-right: 4vw !important;
+            }
+
+            .subject-table {
+                font-size: 1rem;
+            }
+
+                .subject-table thead tr th {
+                    font-size: 1rem;
+                    padding-left: 10px;
+                }
+
+                .subject-table td {
+                    padding-left: 10px;
+                    font-size: 1rem;
+                }
+        }
+    </style>
+}

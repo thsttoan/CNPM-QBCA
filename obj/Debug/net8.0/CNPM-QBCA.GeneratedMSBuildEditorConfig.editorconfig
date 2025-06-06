@@ -96,6 +96,18 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlmZmljdWx0eUxldmVsXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/CNPM/Project/CNPM-QBCA/Views/Duplicatecheck/Check.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHVwbGljYXRlY2hlY2tcQ2hlY2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Duplicatecheck/CheckResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHVwbGljYXRlY2hlY2tcQ2hlY2tSZXN1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Duplicatecheck/HomeCheck.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHVwbGljYXRlY2hlY2tcSG9tZUNoZWNrLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/CNPM/Project/CNPM-QBCA/Views/Home/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -124,16 +136,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb21lX1N1YmplY3RMZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/CNPM/Project/CNPM-QBCA/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
 [E:/CNPM/Project/CNPM-QBCA/Views/Home/Logins.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb2dpbnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/CNPM/Project/CNPM-QBCA/Views/Home/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Notifications/Notifications.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uc1xOb3RpZmljYXRpb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/CNPM/Project/CNPM-QBCA/Views/Plan/Create.cshtml]
@@ -164,8 +176,32 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUXVlc3Rpb25cUXVlc3Rpb25zLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/CNPM/Project/CNPM-QBCA/Views/Question/ReviewQuestions.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUXVlc3Rpb25cUmV2aWV3UXVlc3Rpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/CNPM/Project/CNPM-QBCA/Views/Shared/_LayoutHome.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRIb21lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Shared/_SidebarExamHead.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyRXhhbUhlYWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Shared/_SidebarHeadDept.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFySGVhZERlcHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Shared/_SidebarLecturer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyTGVjdHVyZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Shared/_SidebarRD.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyUkQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Shared/_SidebarSubjectLeader.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TaWRlYmFyU3ViamVjdExlYWRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/CNPM/Project/CNPM-QBCA/Views/Subject/Create.cshtml]
@@ -178,6 +214,18 @@ build_metadata.AdditionalFiles.CssScope =
 
 [E:/CNPM/Project/CNPM-QBCA/Views/Subject/Subjects.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3ViamVjdFxTdWJqZWN0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Task/AssignToLecturers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza1xBc3NpZ25Ub0xlY3R1cmVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Task/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/Task/TeamTasks.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFza1xUZWFtVGFza3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/CNPM/Project/CNPM-QBCA/Pages/Shared/_Layout.cshtml]

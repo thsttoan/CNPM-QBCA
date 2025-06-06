@@ -93,11 +93,18 @@ namespace QBCA.Data
                 .HasForeignKey(s => s.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // User - Notifications
+            // User - Notifications (người nhận)
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany(u => u.Notifications)
                 .HasForeignKey(n => n.UserID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // User - NotificationsCreated (người tạo notification)
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.CreatedByUser)
+                .WithMany() // nếu muốn: .WithMany(u => u.NotificationsCreated)
+                .HasForeignKey(n => n.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Login - User & Role
@@ -206,11 +213,11 @@ namespace QBCA.Data
                 .HasForeignKey(pd => pd.DifficultyLevelID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // PlanDistribution - AssignedManager (User)
+            // PlanDistribution - AssignedManagerRole (Role)
             modelBuilder.Entity<PlanDistribution>()
-                .HasOne(pd => pd.AssignedManager)
+                .HasOne(pd => pd.AssignedManagerRole)
                 .WithMany()
-                .HasForeignKey(pd => pd.AssignedManagerID)
+                .HasForeignKey(pd => pd.AssignedManagerRoleID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // PlanDistribution.Status NOT NULL 
@@ -219,7 +226,6 @@ namespace QBCA.Data
                 .HasDefaultValue("Assigned")
                 .IsRequired();
 
-            // Question - OPTIONAL: Không đặt IsRequired cho navigation/collection
             // Collections không cần mapping thêm nếu không có config đặc biệt
         }
     }

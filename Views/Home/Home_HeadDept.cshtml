@@ -5,15 +5,7 @@
     ViewBag.RoleName = "Head of Department";
     ViewBag.AvatarInitials = "HD";
 }
-@section SidebarMenu {
-    <ul class="sidebar-menu">
-        <li><a href="@Url.Action("Home_HeadDept", "Home")"><i class="fas fa-tachometer-alt menu-icon"></i><span class="menu-text">Dashboard</span></a></li>
-        <li><a href="@Url.Action("Plans", "Plan")"><i class="fas fa-tasks menu-icon"></i><span class="menu-text">Assigned Plans</span></a></li>
-        <li><a href="@Url.Action("AssignTasks", "Task")"><i class="fas fa-user-plus menu-icon"></i><span class="menu-text">Assign Tasks</span></a></li>
-        <li><a href="@Url.Action("SubmissionApproval", "Submission")"><i class="fas fa-check-square menu-icon"></i><span class="menu-text">Submission Approval</span></a></li>
-        <li><a href="@Url.Action("Notifications", "Home")"><i class="fas fa-bell menu-icon"></i><span class="menu-text">Notifications</span></a></li>
-    </ul>
-}
+
 <main class="dashboard-container">
     <div class="welcome-banner">
         <h1>Welcome, Head of Department!</h1>

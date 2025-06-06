@@ -29,6 +29,19 @@ namespace QBCA.Controllers
             return View("QuestionBank", questions); // Views/Question/QuestionBank.cshtml
         }
 
+        // CHO SUBJECT LEADER: chỉ xem
+        public async Task<IActionResult> ReviewQuestions()
+        {
+            var questions = await _context.Questions
+                .Include(q => q.Subject)
+                .Include(q => q.CLO)
+                .Include(q => q.DifficultyLevel)
+                .Include(q => q.Creator)
+                .OrderByDescending(q => q.CreatedAt)
+                .ToListAsync();
+            return View("ReviewQuestions", questions); // Views/Question/ReviewQuestions.cshtml
+        }
+
         // CHO LECTURER: xem + CRUD
         public async Task<IActionResult> Questions()
         {

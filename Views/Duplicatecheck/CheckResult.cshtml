@@ -1,0 +1,97 @@
+﻿@model QBCA.Controllers.DuplicateResultViewModel
+@{
+    ViewBag.Title = "Duplicate Check Result (AI)";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px 30px;
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .neumorphic-label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 7px;
+        display: block;
+        letter-spacing: 0.02em;
+    }
+
+    .neumorphic-result-list {
+        max-height: 240px;
+        overflow-y: auto;
+        border: 1px solid #e7e7e7;
+        border-radius: 10px;
+        background: #fff;
+        padding: 14px;
+        margin-bottom: 12px;
+    }
+
+    .neumorphic-button {
+        background-color: #4F46E5;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+        transition: 0.2s;
+        margin-top: 12px;
+        margin-bottom: 8px;
+        font-size: 1.13rem;
+    }
+
+        .neumorphic-button:hover {
+            background-color: #3730A3;
+        }
+</style>
+
+<section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 120px;">
+    <div class="neumorphic-box">
+        <h3 class="fw-bold mb-3 text-center text-dark">
+            <span style="color:#6d82f3;"><i class="fas fa-check-circle"></i></span> Duplicate Check Result
+        </h3>
+        <div class="mb-3">
+            <span class="neumorphic-label">Checked Question:</span>
+            <div class="alert alert-primary mb-2" style="border-radius:10px;">
+                <b>@Model.Question.QuestionID</b>: @Model.Question.Content
+                <div class="small text-muted mt-1">
+                    <i class="fas fa-book"></i> @Model.Question.Subject?.SubjectName
+                </div>
+            </div>
+        </div>
+        <span class="neumorphic-label">Result:</span>
+        <div class="neumorphic-result-list">
+            @if (Model.Duplicates.Any())
+            {
+                foreach (var dup in Model.Duplicates)
+                {
+                    <div class="mb-3">
+                        <div>
+                            <b>@dup.Item1.QuestionID</b>: @dup.Item1.Content
+                        </div>
+                        <div class="small text-muted">
+                            <i class="fas fa-book"></i> @dup.Item1.Subject?.SubjectName
+                            | <span class="text-secondary">Similarity: @dup.Item2.ToString("P1")</span>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-success text-center" style="font-size:1.12rem;">
+                    <i class="fas fa-check"></i> No semantic duplicates found!
+                </div>
+            }
+        </div>
+        <form asp-action="Check" method="get">
+            <button type="submit" class="neumorphic-button text-center mt-2" style="width:100%;">Back to Check</button>
+        </form>
+    </div>
+</section>

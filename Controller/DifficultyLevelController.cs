@@ -5,6 +5,7 @@ using QBCA.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace QBCA.Controllers
 {
@@ -14,6 +15,22 @@ namespace QBCA.Controllers
         public DifficultyLevelController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        // Hàm gửi notification cho 1 user
+        private void AddNotification(int userId, string message, string relatedType, int? relatedId, int createdBy)
+        {
+            var noti = new Notification
+            {
+                UserID = userId,
+                Message = message,
+                Status = "unread",
+                RelatedEntityType = relatedType,
+                RelatedEntityID = relatedId,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = createdBy
+            };
+            _context.Notifications.Add(noti);
         }
 
         // GET: /DifficultyLevel/DLs
@@ -60,6 +77,26 @@ namespace QBCA.Controllers
 
                 _context.DifficultyLevels.Add(dl);
                 await _context.SaveChangesAsync();
+
+                var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+                string subjectName = _context.Subjects.Find(dl.SubjectID)?.SubjectName;
+
+                // LẤY userID NGƯỜI TẠO
+                var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+                int.TryParse(userIdClaim, out int createdBy);
+
+                foreach (var user in notifyUsers)
+                {
+                    AddNotification(
+                        user.UserID,
+                        $"Difficulty level \"{dl.LevelName}\" for subject \"{subjectName}\" has been created.",
+                        "DifficultyLevel",
+                        dl.DifficultyLevelID,
+                        createdBy
+                    );
+                }
+                await _context.SaveChangesAsync();
+
                 TempData["Success"] = "DifficultyLevel created successfully!";
                 return RedirectToAction("DLs");
             }
@@ -132,7 +169,77 @@ namespace QBCA.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+            string subjectName = _context.Subjects.Find(dl.SubjectID)?.SubjectName;
+
+            // LẤY userID NGƯỜI SỬA
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+            int.TryParse(userIdClaim, out int createdBy);
+
+            foreach (var user in notifyUsers)
+            {
+                AddNotification(
+                    user.UserID,
+                    $"Difficulty level \"{dl.LevelName}\" for subject \"{subjectName}\" has been updated.",
+                    "DifficultyLevel",
+                    dl.DifficultyLevelID,
+                    createdBy
+                );
+            }
+            await _context.SaveChangesAsync();
+
             TempData["Success"] = "Difficulty Level updated successfully!";
+            return RedirectToAction("DLs");
+        }
+
+        // POST: /DifficultyLevel/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var dl = await _context.DifficultyLevels
+                .Include(d => d.Questions)
+                .FirstOrDefaultAsync(d => d.DifficultyLevelID == id);
+
+            if (dl == null)
+                return NotFound();
+
+            string levelName = dl.LevelName;
+            string subjectName = _context.Subjects.Find(dl.SubjectID)?.SubjectName;
+
+            dl.Questions?.Clear();
+
+            try
+            {
+                _context.DifficultyLevels.Remove(dl);
+                await _context.SaveChangesAsync();
+
+                var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+
+                // LẤY userID NGƯỜI XÓA
+                var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+                int.TryParse(userIdClaim, out int createdBy);
+
+                foreach (var user in notifyUsers)
+                {
+                    AddNotification(
+                        user.UserID,
+                        $"Difficulty level \"{levelName}\" for subject \"{subjectName}\" has been deleted.",
+                        "DifficultyLevel",
+                        id,
+                        createdBy
+                    );
+                }
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "Difficulty Level deleted successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error deleting Difficulty Level: " + ex.Message;
+            }
+
             return RedirectToAction("DLs");
         }
     }

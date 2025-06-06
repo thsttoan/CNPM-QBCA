@@ -17,7 +17,7 @@ namespace QBCA.Models
 
         public List<Subject> AllSubjects { get; set; } = new List<Subject>();
         public List<DifficultyLevel> AllDifficultyLevels { get; set; } = new List<DifficultyLevel>();
-        public List<User> AllManagers { get; set; } = new List<User>();
+        public List<Role> AllManagerRoles { get; set; } = new List<Role>(); 
 
         public List<PlanDistributionViewModel> Distributions { get; set; } = new List<PlanDistributionViewModel>();
     }
@@ -35,7 +35,8 @@ namespace QBCA.Models
         [Display(Name = "Number of Questions")]
         public int NumberOfQuestions { get; set; }
 
-        [Display(Name = "Assign to Manager")]
-        public int? AssignedManagerID { get; set; }
+        [Required(ErrorMessage = "Manager Role is required.")]
+        [Display(Name = "Manager Role")]
+        public int? AssignedManagerRoleID { get; set; }
     }
 }

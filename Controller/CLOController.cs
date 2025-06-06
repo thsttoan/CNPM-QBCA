@@ -5,6 +5,7 @@ using QBCA.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace QBCA.Controllers
 {
@@ -14,6 +15,21 @@ namespace QBCA.Controllers
         public CLOController(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        private void AddNotification(int userId, string message, string relatedType, int? relatedId, int createdBy)
+        {
+            var noti = new Notification
+            {
+                UserID = userId,
+                Message = message,
+                Status = "unread",
+                RelatedEntityType = relatedType,
+                RelatedEntityID = relatedId,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = createdBy
+            };
+            _context.Notifications.Add(noti);
         }
 
         // GET: /CLO/CLOs
@@ -61,6 +77,26 @@ namespace QBCA.Controllers
 
                 _context.CLOs.Add(clo);
                 await _context.SaveChangesAsync();
+
+                var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+                string subjectName = _context.Subjects.Find(clo.SubjectID)?.SubjectName;
+
+                // LẤY userID NGƯỜI TẠO
+                var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+                int.TryParse(userIdClaim, out int createdBy);
+
+                foreach (var user in notifyUsers)
+                {
+                    AddNotification(
+                        user.UserID,
+                        $"CLO \"{clo.Code}\" for subject \"{subjectName}\" has been created.",
+                        "CLO",
+                        clo.CLOID,
+                        createdBy
+                    );
+                }
+                await _context.SaveChangesAsync();
+
                 TempData["Success"] = "CLO created successfully!";
                 return RedirectToAction("CLOs");
             }
@@ -121,7 +157,7 @@ namespace QBCA.Controllers
             clo.Description = vm.Description;
             clo.SubjectID = vm.SubjectID.Value;
 
-            // Cập nhật danh sách câu hỏi
+            // Update 
             clo.Questions.Clear();
             if (vm.SelectedQuestionIDs != null && vm.SelectedQuestionIDs.Count > 0)
             {
@@ -135,7 +171,77 @@ namespace QBCA.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+            string subjectName = _context.Subjects.Find(clo.SubjectID)?.SubjectName;
+
+            // LẤY userID NGƯỜI SỬA
+            var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+            int.TryParse(userIdClaim, out int createdBy);
+
+            foreach (var user in notifyUsers)
+            {
+                AddNotification(
+                    user.UserID,
+                    $"CLO \"{clo.Code}\" for subject \"{subjectName}\" has been updated.",
+                    "CLO",
+                    clo.CLOID,
+                    createdBy
+                );
+            }
+            await _context.SaveChangesAsync();
+
             TempData["Success"] = "CLO updated successfully!";
+            return RedirectToAction("CLOs");
+        }
+
+        // POST: /CLO/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var clo = await _context.CLOs
+                .Include(c => c.Questions)
+                .FirstOrDefaultAsync(c => c.CLOID == id);
+
+            if (clo == null)
+                return NotFound();
+
+            string cloCode = clo.Code;
+            string subjectName = _context.Subjects.Find(clo.SubjectID)?.SubjectName;
+
+            clo.Questions?.Clear();
+
+            try
+            {
+                _context.CLOs.Remove(clo);
+                await _context.SaveChangesAsync();
+
+                var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
+
+                // LẤY userID NGƯỜI XÓA
+                var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+                int.TryParse(userIdClaim, out int createdBy);
+
+                foreach (var user in notifyUsers)
+                {
+                    AddNotification(
+                        user.UserID,
+                        $"CLO \"{cloCode}\" for subject \"{subjectName}\" has been deleted.",
+                        "CLO",
+                        id,
+                        createdBy
+                    );
+                }
+                await _context.SaveChangesAsync();
+
+                TempData["Success"] = "CLO deleted successfully!";
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error deleting CLO: " + ex.Message;
+            }
+
             return RedirectToAction("CLOs");
         }
     }

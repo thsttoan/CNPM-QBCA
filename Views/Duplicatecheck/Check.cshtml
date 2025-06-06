@@ -1,0 +1,96 @@
+﻿@model List<QBCA.Models.Question>
+@{
+    ViewBag.Title = "Semantic Duplicate Check";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        max-width: 480px;
+        margin: auto;
+    }
+
+    .neumorphic-label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 7px;
+        margin-left: 2px;
+        display: block;
+        letter-spacing: 0.02em;
+    }
+
+    .neumorphic-question-list {
+        max-height: 180px;
+        overflow-y: auto;
+        border: 1px solid #e7e7e7;
+        border-radius: 8px;
+        background: #fff;
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+
+    .neumorphic-button {
+        background-color: #4F46E5;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+        transition: 0.2s;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-size: 1.13rem;
+    }
+
+        .neumorphic-button:hover {
+            background-color: #3730A3;
+        }
+</style>
+<section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 120px;">
+    <div class="neumorphic-box">
+        <h3 class="text-center fw-bold mb-4 text-dark">
+            <span style="color:#6d82f3;"><i class="fas fa-search"></i></span> Semantic Duplicate Check
+        </h3>
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger text-center mb-3" style="border-radius:10px;">
+                <i class="fas fa-exclamation-triangle me-2"></i> @TempData["Error"]
+            </div>
+        }
+        <form asp-action="Check" method="post">
+            <label class="neumorphic-label mb-2" for="QuestionID">Select a question to check:</label>
+            <div class="neumorphic-question-list">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var q in Model)
+                    {
+                        <div class="form-check mb-1">
+                            <input class="form-check-input" type="radio"
+                                   name="id" value="@q.QuestionID" id="q_@q.QuestionID" required />
+                            <label for="q_@q.QuestionID" class="form-check-label">
+                                <span class="fw-bold" style="color:#4F46E5;">@q.QuestionID</span>:
+                                @q.Content
+                                <span class="text-muted small ms-1">(@q.Subject?.SubjectName)</span>
+                            </label>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center py-3 text-muted">
+                        <i class="fas fa-folder-open fa-lg mb-2"></i><br />
+                        <span>No questions available.</span>
+                    </div>
+                }
+            </div>
+            <button type="submit" class="neumorphic-button">Check</button>
+            <a href="@Url.Action("HomeCheck", "DuplicateCheck")" class="btn btn-link w-100 text-center" style="font-weight:500;">Back to Home Check</a>
+        </form>
+    </div>
+</section>

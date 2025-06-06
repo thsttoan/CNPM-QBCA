@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Duplicate Check (AI)";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+<div class="container py-4">
+    <h2>Duplicate Check (AI)</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+    @if (ViewBag.Result != null)
+    {
+        <div class="alert alert-success">@ViewBag.Result</div>
+    }
+
+    <form asp-action="CheckDuplicate" asp-controller="Duplicate" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="questionText">Enter English Question to Check</label>
+            <textarea name="questionText" id="questionText" class="form-control" rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Check Duplicate</button>
+    </form>
+</div>

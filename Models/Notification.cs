@@ -12,6 +12,10 @@ namespace QBCA.Models
         public int? RelatedEntityID { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public User User { get; set; }
+        public int CreatedBy { get; set; }            // ID của người tạo thông báo
+
+        // Navigation properties
+        public User User { get; set; }                // Người nhận thông báo
+        public User CreatedByUser { get; set; }       // Người tạo thông báo (nếu cần include thông tin)
     }
 }

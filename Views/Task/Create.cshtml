@@ -1,0 +1,126 @@
+@model QBCA.Models.TaskAssignmentCreateViewModel
+@{
+    ViewBag.Title = "Assign New Task";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        max-width: 480px;
+        margin: auto;
+    }
+
+    .neumorphic-label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 7px;
+        margin-left: 2px;
+        display: block;
+        letter-spacing: 0.02em;
+    }
+
+    .neumorphic-input, .neumorphic-select {
+        border: none;
+        outline: none;
+        background: #f2f3f7;
+        border-radius: 12px;
+        padding: 14px 20px;
+        box-shadow: inset 6px 6px 10px #d1d9e6, inset -6px -6px 10px #ffffff;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+        margin-bottom: 22px;
+    }
+
+    .neumorphic-button {
+        background-color: #4F46E5;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+        transition: 0.2s;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-size: 1.13rem;
+    }
+
+        .neumorphic-button:hover {
+            background-color: #3730A3;
+        }
+
+    .text-danger.small {
+        font-size: .98em;
+        margin-left: 3px;
+    }
+</style>
+
+<section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 120px;">
+    <div class="neumorphic-box">
+        <h3 class="text-center fw-bold mb-4 text-dark">
+            <span style="color:#6d82f3;"><i class="fas fa-tasks"></i></span> Assign New Task
+        </h3>
+
+        @using (Html.BeginForm("Create", "Task", FormMethod.Post, new { @id = "taskForm" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+            <!-- Assigned To -->
+            <label class="neumorphic-label" for="AssignedTo">Assign To</label>
+            @Html.DropDownListFor(m => m.AssignedTo,
+            new SelectList(Model.AllUsers, "UserID", "FullName"),
+                "Select User",
+                new { @class = "neumorphic-select", id = "AssignedTo" })
+        @Html.ValidationMessageFor(m => m.AssignedTo, "", new { @class = "text-danger small" })
+
+        <!-- Task Type -->
+        <label class="neumorphic-label" for="TaskType">Task Type</label>
+        @Html.DropDownListFor(m => m.TaskType,
+                new SelectList(Model.TaskTypeOptions),
+                "Select Task Type",
+                new { @class = "neumorphic-select", id = "TaskType" })
+        @Html.ValidationMessageFor(m => m.TaskType, "", new { @class = "text-danger small" })
+
+        <!-- Status -->
+        <label class="neumorphic-label" for="Status">Status</label>
+        @Html.DropDownListFor(m => m.Status,
+                new SelectList(Model.StatusOptions),
+                "Select Status",
+                new { @class = "neumorphic-select", id = "Status" })
+        @Html.ValidationMessageFor(m => m.Status, "", new { @class = "text-danger small" })
+
+        <!-- Due Date -->
+        <label class="neumorphic-label" for="DueDate">Due Date</label>
+        @Html.TextBoxFor(m => m.DueDate, "{0:yyyy-MM-dd}", new { @class = "neumorphic-input", type = "date", id = "DueDate" })
+        @Html.ValidationMessageFor(m => m.DueDate, "", new { @class = "text-danger small" })
+
+        <button type="submit" class="neumorphic-button">Assign</button>
+        <a href="@Url.Action("AssignToLecturers", "Task")" class="btn btn-link w-100 text-center" style="font-weight:500;">Cancel</a>
+                }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.getElementById("taskForm").addEventListener("submit", function (e) {
+            const dueDateInput = document.getElementById("DueDate");
+            const dueDate = new Date(dueDateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (dueDate < today) {
+                e.preventDefault();
+                alert("Due Date must be today or later.");
+                dueDateInput.focus();
+            }
+        });
+    </script>
+}

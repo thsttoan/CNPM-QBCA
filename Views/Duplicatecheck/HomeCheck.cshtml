@@ -1,0 +1,180 @@
+﻿@model List<QBCA.Models.DuplicateCheckResult>
+@{
+    ViewBag.Title = "Duplicate Check - History";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Duplicate Check (AI)</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">History of duplicate semantic checks between questions.</div>
+        </div>
+        <div class="mb-4 w-100" style="display: flex; justify-content: flex-start;">
+            <a href="@Url.Action("Check", "DuplicateCheck")"
+               class="btn btn-signin-custom"
+               style="font-size:1.15rem; min-width:200px;">
+                Check for Semantic Duplicates
+            </a>
+        </div>
+        <div class="table-container px-2 pt-2 pb-3">
+            <table class="table subject-table mb-0 text-center align-middle">
+                <thead>
+                    <tr>
+                        <th style="width:8%;">ID</th>
+                        <th style="width:32%;">Original Question</th>
+                        <th style="width:32%;">Potential Duplicate</th>
+                        <th style="width:10%;">Similarity</th>
+                        <th style="width:12%;">Checked At</th>
+                        <th style="width:6%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.CheckID</td>
+                                <td class="text-start">@item.Question?.Content</td>
+                                <td class="text-start">@item.SimilarQuestion?.Content</td>
+                                <td>@((item.SimilarityScore * 100).ToString("0.0") + "%")</td>
+                                <td>
+                                    @{
+                                        var checkedAtVN = item.CheckedAt.AddHours(7);
+                                    }
+                                    @checkedAtVN.ToString("M/d/yyyy")<br>
+                                    @checkedAtVN.ToString("HH:mm")
+                                </td>
+                                <td>
+                                    @using (Html.BeginForm("DeleteHistory", "DuplicateCheck", FormMethod.Post, new { onsubmit = "return confirm('Are you sure to delete this history record?');", style = "display:inline;" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.Hidden("id", item.CheckID)
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <i class="fas fa-folder-open fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">No duplicate check history found!</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .btn-signin-custom {
+            background: #6d82f3;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            padding: 14px 0;
+            transition: background 0.2s;
+            text-align: center;
+            margin-bottom: 4px;
+            box-shadow: 0 2px 8px #0001;
+            font-size: 1.16rem;
+            font-weight: 600;
+            display: block;
+        }
+
+            .btn-signin-custom:hover, .btn-signin-custom:focus {
+                background: #5a6ed0;
+                color: #fff;
+            }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.12rem;
+            min-width: 650px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.13rem;
+                text-align: center;
+                padding: 12px 6px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.82rem 0.7rem;
+                font-size: 1.08rem;
+            }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+            }
+
+                .subject-table tbody tr:last-child {
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+
+        @@media (max-width: 900px) {
+            .main-content-area, .table-container
+
+        {
+            margin-left: 4vw !important;
+            margin-right: 4vw !important;
+        }
+
+        .subject-table {
+            font-size: 1rem;
+        }
+
+            .subject-table thead tr th {
+                font-size: 1rem;
+                padding-left: 10px;
+            }
+
+            .subject-table td {
+                padding-left: 6px;
+                font-size: 1rem;
+            }
+
+        .btn-signin-custom {
+            font-size: 1rem;
+            padding: 12px 0;
+        }
+
+        }
+    </style>
+}
