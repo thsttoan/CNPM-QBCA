@@ -8,7 +8,7 @@ namespace QBCA.Models
         public int DistributionID { get; set; }
 
         [Required]
-        public int PlanID { get; set; }
+        public int ExamPlanID { get; set; }
         public ExamPlan ExamPlan { get; set; }
 
         [Required]
@@ -16,14 +16,11 @@ namespace QBCA.Models
         public DifficultyLevel DifficultyLevel { get; set; }
 
         [Required]
-        public int AssignedManagerRoleID { get; set; }
-        public Role AssignedManagerRole { get; set; }
-
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be > 0")]
         public int NumberOfQuestions { get; set; }
 
-        [Required]
-        public string Status { get; set; } = "Assigned";
+        public int? AssignedManagerRoleID { get; set; }
+        public Role AssignedManagerRole { get; set; }
+
+        public string Status { get; set; }
     }
 }

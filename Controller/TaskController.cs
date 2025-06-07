@@ -64,12 +64,19 @@ namespace QBCA.Controllers
             if (int.TryParse(userIdClaim, out int userId))
                 createdBy = userId;
 
+            // Xử lý ép kiểu int? -> int cho ExamPlanID
+            int examPlanId = vm.ExamPlanID ?? 0;
+
             var task = new TaskAssignment
             {
+                ExamPlanID = examPlanId,
                 AssignedBy = createdBy,
                 AssignedTo = vm.AssignedTo,
+                Role = vm.Role,
+                Description = vm.Description,
                 TaskType = vm.TaskType,
                 Status = vm.Status,
+                AssignedAt = DateTime.UtcNow,
                 DueDate = vm.DueDate,
                 CreatedAt = DateTime.UtcNow
             };
@@ -85,7 +92,7 @@ namespace QBCA.Controllers
 
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Task has been successfully assigned.";            
+            TempData["SuccessMessage"] = "Task has been successfully assigned.";
 
             return RedirectToAction("AssignToLecturers");
         }
@@ -101,7 +108,10 @@ namespace QBCA.Controllers
             var vm = new TaskAssignmentCreateViewModel
             {
                 AssignmentID = task.AssignmentID,
+                ExamPlanID = task.ExamPlanID,
                 AssignedTo = task.AssignedTo,
+                Role = task.Role,
+                Description = task.Description,
                 TaskType = task.TaskType,
                 Status = task.Status,
                 DueDate = task.DueDate
@@ -126,7 +136,13 @@ namespace QBCA.Controllers
                 return NotFound();
             }
 
+            // Xử lý ép kiểu int? -> int cho ExamPlanID
+            int examPlanId = vm.ExamPlanID ?? 0;
+
+            task.ExamPlanID = examPlanId;
             task.AssignedTo = vm.AssignedTo;
+            task.Role = vm.Role;
+            task.Description = vm.Description;
             task.TaskType = vm.TaskType;
             task.Status = vm.Status;
             task.DueDate = vm.DueDate;
@@ -164,13 +180,14 @@ namespace QBCA.Controllers
 
         // CHO SUBJECT LEADER XEM CÁC NHIỆM VỤ ĐƯỢC GIAO CHO MÌNH
         public async Task<IActionResult> TeamTasks()
-        { 
+        {
             var userIdClaim = User.FindFirst("UserID")?.Value;
             if (!int.TryParse(userIdClaim, out int userId))
                 return Unauthorized();
 
             var tasks = await _context.TaskAssignments
                 .Include(t => t.Assigner)
+                .Include(t => t.ExamPlan)
                 .Where(t => t.AssignedTo == userId)
                 .OrderByDescending(t => t.DueDate)
                 .ToListAsync();
@@ -187,6 +204,7 @@ namespace QBCA.Controllers
                 userId = parsedUserId;
             var tasks = await _context.TaskAssignments
                 .Include(t => t.Assignee)
+                .Include(t => t.ExamPlan)
                 .Where(t => t.AssignedBy == userId)
                 .ToListAsync();
             return View("AssignToLecturers", tasks); // Views/Task/AssignToLecturers.cshtml

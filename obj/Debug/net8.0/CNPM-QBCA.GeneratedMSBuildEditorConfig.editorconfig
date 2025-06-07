@@ -108,6 +108,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRHVwbGljYXRlY2hlY2tcSG9tZUNoZWNrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/CNPM/Project/CNPM-QBCA/Views/ExamManager/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhhbU1hbmFnZXJcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/CNPM/Project/CNPM-QBCA/Views/ExamManager/ExamManagers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhhbU1hbmFnZXJcRXhhbU1hbmFnZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/CNPM/Project/CNPM-QBCA/Views/ExamPlan/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhhbVBsYW5cQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

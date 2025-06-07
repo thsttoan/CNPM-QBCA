@@ -5,7 +5,7 @@ namespace QBCA.Models
 {
     public class ExamPlanCreateViewModel
     {
-        public int? PlanID { get; set; }
+        public int? ExamPlanID { get; set; }
 
         [Required(ErrorMessage = "Plan name is required.")]
         [Display(Name = "Plan Name")]
@@ -14,6 +14,17 @@ namespace QBCA.Models
         [Required(ErrorMessage = "Subject is required.")]
         [Display(Name = "Subject")]
         public int SubjectID { get; set; }
+
+        [Required(ErrorMessage = "Status is required.")]
+        [Display(Name = "Status")]
+        public string Status { get; set; }
+
+        public List<string> StatusOptions { get; set; } = new List<string>
+        {
+            "Pending",
+            "Approved",
+            "Rejected"
+        };
 
         public List<Subject> AllSubjects { get; set; } = new List<Subject>();
         public List<DifficultyLevel> AllDifficultyLevels { get; set; } = new List<DifficultyLevel>();

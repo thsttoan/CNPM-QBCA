@@ -1,0 +1,134 @@
+﻿@model List<QBCA.Models.ExamPlan>
+@{
+    ViewBag.Title = "Exam Manager";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Exam Manager</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">Manage all exam plans and their workflow here.</div>
+        </div>
+        <div class="table-container">
+            <table class="table subject-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:10%;">ID</th>
+                        <th style="width:22%;">Plan Name</th>
+                        <th style="width:17%;">Subject</th>
+                        <th style="width:13%;">Status</th>
+                        <th style="width:25%;">Distributions</th>
+                        <th style="width:13%;" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var plan in Model)
+                        {
+                            <tr>
+                                <td>@plan.ExamPlanID</td>
+                                <td>@plan.Name</td>
+                                <td>@plan.Subject?.SubjectName</td>
+                                <td>
+                                    <span class="badge bg-@(plan.Status == "Approved" ? "success" : plan.Status == "Pending" ? "warning text-dark" : "secondary")">
+                                        @plan.Status
+                                    </span>
+                                </td>
+                                <td>
+                                    @if (plan.Distributions != null && plan.Distributions.Any())
+                                    {
+                                        foreach (var dist in plan.Distributions)
+                                        {
+                                            <div>
+                                                <strong>@dist.DifficultyLevel?.LevelName</strong>: @dist.NumberOfQuestions
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No distributions</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Details", "ExamManager", new { id = plan.ExamPlanID })" class="btn btn-sm btn-outline-primary rounded-pill">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <i class="fas fa-folder-open fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">No exam plans found.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.17rem;
+            min-width: 650px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.18rem;
+                text-align: left;
+                padding-left: 24px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+            }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.88rem 0.8rem 0.88rem 24px;
+                font-size: 1.14rem;
+            }
+
+        .badge {
+            font-size: 1.09em;
+            border-radius: 6px;
+            padding: 0.54em 1.1em;
+            font-weight: 500;
+        }
+    </style>
+}

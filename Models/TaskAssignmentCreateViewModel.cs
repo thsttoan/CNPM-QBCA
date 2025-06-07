@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace QBCA.Models
@@ -7,13 +8,25 @@ namespace QBCA.Models
     {
         public int AssignmentID { get; set; }
 
+        // Liên kết với ExamPlan
+        [Display(Name = "Exam Plan")]
+        public int? ExamPlanID { get; set; }
+
         [Required(ErrorMessage = "Assignee is required.")]
         [Display(Name = "Assign To")]
         public int AssignedTo { get; set; }
 
+        // Vai trò (Reviewer, Creator, Manager,...)
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+
         [Required(ErrorMessage = "Task type is required.")]
         [Display(Name = "Task Type")]
         public string TaskType { get; set; }
+
+        // Mô tả nhiệm vụ
+        [Display(Name = "Description")]
+        public string Description { get; set; }
 
         [Required(ErrorMessage = "Status is required.")]
         public string Status { get; set; }
@@ -36,7 +49,6 @@ namespace QBCA.Models
         public List<string> StatusOptions { get; set; } = new List<string>
         {
             "Pending", "In Progress", "Completed"
-
         };
     }
 }

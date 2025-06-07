@@ -43,6 +43,7 @@ namespace QBCA.Controllers
                     .ThenInclude(d => d.DifficultyLevel)
                 .Include(p => p.Distributions)
                     .ThenInclude(d => d.AssignedManagerRole)
+                .Include(p => p.CreatedByUser) // Ensure navigation property is included
                 .ToListAsync();
             return View("ExamPlans", plans);
         }
@@ -57,7 +58,8 @@ namespace QBCA.Controllers
                 AllManagerRoles = _context.Roles
                     .Where(r => ManagerRoleIds.Contains(r.RoleID))
                     .ToList(),
-                Distributions = new List<PlanDistributionViewModel> { new PlanDistributionViewModel() }
+                Distributions = new List<PlanDistributionViewModel> { new PlanDistributionViewModel() },
+                StatusOptions = new List<string> { "Pending", "Approved", "Rejected" }
             };
             return View(vm);
         }
@@ -69,11 +71,29 @@ namespace QBCA.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Lấy userId từ claim
+                var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
+                int createdBy = 0;
+                int.TryParse(userIdClaim, out createdBy);
+
+                // Đảm bảo UserID tồn tại trong bảng Users
+                if (createdBy == 0 || !_context.Users.Any(u => u.UserID == createdBy))
+                {
+                    ModelState.AddModelError("", "Invalid or missing user. Please login again.");
+                    model.AllSubjects = _context.Subjects.ToList();
+                    model.AllDifficultyLevels = _context.DifficultyLevels.ToList();
+                    model.AllManagerRoles = _context.Roles.Where(r => ManagerRoleIds.Contains(r.RoleID)).ToList();
+                    model.StatusOptions = new List<string> { "Pending", "Approved", "Rejected" };
+                    return View(model);
+                }
+
                 var examPlan = new ExamPlan
                 {
                     Name = model.PlanName,
                     SubjectID = model.SubjectID,
-                    CreatedAt = System.DateTime.UtcNow
+                    Status = model.Status,
+                    CreatedAt = System.DateTime.UtcNow,
+                    CreatedBy = createdBy    // Đảm bảo luôn lưu CreatedBy
                 };
                 _context.ExamPlans.Add(examPlan);
                 await _context.SaveChangesAsync();
@@ -85,7 +105,7 @@ namespace QBCA.Controllers
                     {
                         var entity = new ExamPlanDistribution
                         {
-                            PlanID = examPlan.PlanID,
+                            ExamPlanID = examPlan.ExamPlanID,
                             DifficultyLevelID = dist.DifficultyLevelID,
                             NumberOfQuestions = dist.NumberOfQuestions,
                             AssignedManagerRoleID = dist.AssignedManagerRoleID ?? 0
@@ -95,10 +115,8 @@ namespace QBCA.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                // Gửi notification (giống controller cũ)
+                // Gửi notification
                 var subjectName = _context.Subjects.Find(examPlan.SubjectID)?.SubjectName;
-                var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
-                int.TryParse(userIdClaim, out int createdBy);
 
                 foreach (var dist in model.Distributions)
                 {
@@ -112,7 +130,7 @@ namespace QBCA.Controllers
                                 user.UserID,
                                 $"Exam Plan \"{examPlan.Name}\" for subject \"{subjectName}\" with distribution '{_context.DifficultyLevels.Find(dist.DifficultyLevelID)?.LevelName}' has been created.",
                                 "ExamPlan",
-                                examPlan.PlanID,
+                                examPlan.ExamPlanID,
                                 createdBy
                             );
                         }
@@ -126,7 +144,7 @@ namespace QBCA.Controllers
                             rd.UserID,
                             $"Exam Plan \"{examPlan.Name}\" for subject \"{subjectName}\" with distribution '{_context.DifficultyLevels.Find(dist.DifficultyLevelID)?.LevelName}' has been created.",
                             "ExamPlan",
-                            examPlan.PlanID,
+                            examPlan.ExamPlanID,
                             createdBy
                         );
                     }
@@ -139,6 +157,7 @@ namespace QBCA.Controllers
             model.AllSubjects = _context.Subjects.ToList();
             model.AllDifficultyLevels = _context.DifficultyLevels.ToList();
             model.AllManagerRoles = _context.Roles.Where(r => ManagerRoleIds.Contains(r.RoleID)).ToList();
+            model.StatusOptions = new List<string> { "Pending", "Approved", "Rejected" };
             return View(model);
         }
 
@@ -149,14 +168,15 @@ namespace QBCA.Controllers
 
             var examPlan = await _context.ExamPlans
                 .Include(p => p.Distributions)
-                .FirstOrDefaultAsync(p => p.PlanID == id);
+                .FirstOrDefaultAsync(p => p.ExamPlanID == id);
             if (examPlan == null) return NotFound();
 
             var vm = new ExamPlanCreateViewModel
             {
-                PlanID = examPlan.PlanID,
+                ExamPlanID = examPlan.ExamPlanID,
                 PlanName = examPlan.Name,
                 SubjectID = examPlan.SubjectID,
+                Status = examPlan.Status,
                 AllSubjects = _context.Subjects.ToList(),
                 AllDifficultyLevels = _context.DifficultyLevels.ToList(),
                 AllManagerRoles = _context.Roles
@@ -168,7 +188,8 @@ namespace QBCA.Controllers
                     DifficultyLevelID = d.DifficultyLevelID,
                     NumberOfQuestions = d.NumberOfQuestions,
                     AssignedManagerRoleID = d.AssignedManagerRoleID
-                }).ToList()
+                }).ToList(),
+                StatusOptions = new List<string> { "Pending", "Approved", "Rejected" }
             };
             return View(vm);
         }
@@ -178,18 +199,19 @@ namespace QBCA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ExamPlanCreateViewModel model)
         {
-            if (model.PlanID == null) return NotFound();
+            if (model.ExamPlanID == null) return NotFound();
 
             if (ModelState.IsValid)
             {
                 var examPlan = await _context.ExamPlans
                     .Include(p => p.Distributions)
-                    .FirstOrDefaultAsync(p => p.PlanID == model.PlanID);
+                    .FirstOrDefaultAsync(p => p.ExamPlanID == model.ExamPlanID);
 
                 if (examPlan == null) return NotFound();
 
                 examPlan.Name = model.PlanName;
                 examPlan.SubjectID = model.SubjectID;
+                examPlan.Status = model.Status;
 
                 _context.ExamPlanDistributions.RemoveRange(examPlan.Distributions);
                 if (model.Distributions != null)
@@ -198,7 +220,7 @@ namespace QBCA.Controllers
                     {
                         var entity = new ExamPlanDistribution
                         {
-                            PlanID = examPlan.PlanID,
+                            ExamPlanID = examPlan.ExamPlanID,
                             DifficultyLevelID = dist.DifficultyLevelID,
                             NumberOfQuestions = dist.NumberOfQuestions,
                             AssignedManagerRoleID = dist.AssignedManagerRoleID ?? 0
@@ -210,7 +232,7 @@ namespace QBCA.Controllers
 
                 // Xóa notification cũ liên quan đến plan này
                 var oldNotifications = _context.Notifications
-                    .Where(n => n.RelatedEntityType == "ExamPlan" && n.RelatedEntityID == examPlan.PlanID)
+                    .Where(n => n.RelatedEntityType == "ExamPlan" && n.RelatedEntityID == examPlan.ExamPlanID)
                     .ToList();
                 _context.Notifications.RemoveRange(oldNotifications);
                 await _context.SaveChangesAsync();
@@ -218,7 +240,8 @@ namespace QBCA.Controllers
                 // Gửi lại notification mới
                 var subjectName = _context.Subjects.Find(examPlan.SubjectID)?.SubjectName;
                 var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
-                int.TryParse(userIdClaim, out int createdBy);
+                int createdBy = 0;
+                int.TryParse(userIdClaim, out createdBy);
 
                 foreach (var dist in model.Distributions)
                 {
@@ -232,7 +255,7 @@ namespace QBCA.Controllers
                                 user.UserID,
                                 $"Exam Plan \"{examPlan.Name}\" for subject \"{subjectName}\" with distribution '{_context.DifficultyLevels.Find(dist.DifficultyLevelID)?.LevelName}' has been updated.",
                                 "ExamPlan",
-                                examPlan.PlanID,
+                                examPlan.ExamPlanID,
                                 createdBy
                             );
                         }
@@ -246,7 +269,7 @@ namespace QBCA.Controllers
                             rd.UserID,
                             $"Exam Plan \"{examPlan.Name}\" for subject \"{subjectName}\" with distribution '{_context.DifficultyLevels.Find(dist.DifficultyLevelID)?.LevelName}' has been updated.",
                             "ExamPlan",
-                            examPlan.PlanID,
+                            examPlan.ExamPlanID,
                             createdBy
                         );
                     }
@@ -259,6 +282,7 @@ namespace QBCA.Controllers
             model.AllSubjects = _context.Subjects.ToList();
             model.AllDifficultyLevels = _context.DifficultyLevels.ToList();
             model.AllManagerRoles = _context.Roles.Where(r => ManagerRoleIds.Contains(r.RoleID)).ToList();
+            model.StatusOptions = new List<string> { "Pending", "Approved", "Rejected" };
             return View(model);
         }
 
@@ -269,7 +293,7 @@ namespace QBCA.Controllers
         {
             var examPlan = await _context.ExamPlans
                 .Include(p => p.Distributions)
-                .FirstOrDefaultAsync(p => p.PlanID == id);
+                .FirstOrDefaultAsync(p => p.ExamPlanID == id);
 
             if (examPlan != null)
             {
@@ -278,7 +302,7 @@ namespace QBCA.Controllers
 
                 // Xóa notification liên quan đến plan này
                 var notifications = _context.Notifications
-                    .Where(n => n.RelatedEntityType == "ExamPlan" && n.RelatedEntityID == examPlan.PlanID)
+                    .Where(n => n.RelatedEntityType == "ExamPlan" && n.RelatedEntityID == examPlan.ExamPlanID)
                     .ToList();
                 _context.Notifications.RemoveRange(notifications);
 

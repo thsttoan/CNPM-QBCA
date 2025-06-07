@@ -24,7 +24,7 @@ namespace QBCA.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<DuplicateCheckResult> DuplicateCheckResults { get; set; }
-        public DbSet<ExamPlanDistribution> ExamPlanDistributions { get; set; } // Đổi tên DbSet cho đúng entity
+        public DbSet<ExamPlanDistribution> ExamPlanDistributions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,13 @@ namespace QBCA.Data
                 .HasOne(t => t.Assignee)
                 .WithMany(u => u.TaskAssignmentsReceived)
                 .HasForeignKey(t => t.AssignedTo)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // TaskAssignment - ExamPlan
+            modelBuilder.Entity<TaskAssignment>()
+                .HasOne(t => t.ExamPlan)
+                .WithMany(ep => ep.TaskAssignments)
+                .HasForeignKey(t => t.ExamPlanID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // DuplicateCheckResult - Question & SimilarQuestion
@@ -64,9 +71,9 @@ namespace QBCA.Data
                 .HasForeignKey(s => s.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // User - ExamPlansCreated
+            // User - ExamPlansCreated (chỉ dùng 1 navigation property duy nhất: CreatedByUser)
             modelBuilder.Entity<ExamPlan>()
-                .HasOne(e => e.Creator)
+                .HasOne(e => e.CreatedByUser)
                 .WithMany(u => u.ExamPlansCreated)
                 .HasForeignKey(e => e.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -168,7 +175,7 @@ namespace QBCA.Data
             modelBuilder.Entity<ExamQuestion>()
                 .HasOne(eq => eq.ExamPlan)
                 .WithMany(ep => ep.ExamQuestions)
-                .HasForeignKey(eq => eq.PlanID)
+                .HasForeignKey(eq => eq.ExamPlanID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ExamQuestion>()
@@ -209,7 +216,7 @@ namespace QBCA.Data
             modelBuilder.Entity<ExamPlanDistribution>()
                 .HasOne(pd => pd.ExamPlan)
                 .WithMany(ep => ep.Distributions)
-                .HasForeignKey(pd => pd.PlanID)
+                .HasForeignKey(pd => pd.ExamPlanID)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ExamPlanDistribution - DifficultyLevel

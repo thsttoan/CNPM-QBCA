@@ -1,0 +1,228 @@
+﻿@model QBCA.Models.ExamPlan
+@{
+    ViewBag.Title = "Exam Plan Details";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Exam Plan: @Model.Name</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">
+                <strong>Subject:</strong> @Model.Subject?.SubjectName &nbsp;|&nbsp;
+                <strong>Status:</strong>
+                <span class="badge bg-@(Model.Status == "Approved" ? "success" : Model.Status == "Pending" ? "warning text-dark" : "secondary")">
+                    @Model.Status
+                </span>
+            </div>
+            <div>
+                <strong>Created At:</strong> @Model.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-lg-6 mb-3 mb-lg-0">
+                <div class="table-container">
+                    <h5 class="fw-semibold mb-2">Distributions</h5>
+                    <ul class="mb-0" style="padding-left: 1rem;">
+                        @if (Model.Distributions != null && Model.Distributions.Any())
+                        {
+                            foreach (var d in Model.Distributions)
+                            {
+                                <li>
+                                    <strong>@d.DifficultyLevel?.LevelName</strong>: @d.NumberOfQuestions
+                                    <span class="text-muted ms-2">
+                                        (@(d.AssignedManagerRole != null ? d.AssignedManagerRole.RoleName : "No manager"))
+                                    </span>
+                                    <span class="badge bg-secondary ms-2">@d.Status</span>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="text-muted">No distributions</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="table-container">
+                    <h5 class="fw-semibold mb-2">Questions in Exam</h5>
+                    <ul class="mb-0" style="padding-left: 1rem;">
+                        @if (Model.ExamQuestions != null && Model.ExamQuestions.Any())
+                        {
+                            foreach (var q in Model.ExamQuestions)
+                            {
+                                <li>@q.Question?.Content</li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="text-muted">No questions submitted.</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container mb-4">
+            <h5 class="fw-semibold mb-2">Task Assignments</h5>
+            <table class="table subject-table mb-0">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Role</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Assigned At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.TaskAssignments != null && Model.TaskAssignments.Any())
+                    {
+                        foreach (var t in Model.TaskAssignments)
+                        {
+                            <tr>
+                                <td>@t.Assignee?.FullName</td>
+                                <td>@t.Role</td>
+                                <td>@t.Description</td>
+                                <td>
+                                    <span class="badge bg-@(t.Status == "Assigned" ? "primary" : t.Status == "Completed" ? "success" : "secondary")">
+                                        @t.Status
+                                    </span>
+                                </td>
+                                <td>@t.AssignedAt.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">
+                                <i class="fas fa-user-friends fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">No assignments found.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Form giao nhiệm vụ -->
+        <div class="mb-4">
+            <form asp-action="AssignTask" method="post" class="row g-2 align-items-center">
+                <input type="hidden" name="planId" value="@Model.ExamPlanID" />
+                <div class="col-md-2">
+                    <select name="assignedTo" class="form-select form-select-sm">
+                        @if (ViewBag.AllUsers != null)
+                        {
+                            foreach (var u in ViewBag.AllUsers as List<QBCA.Models.User>)
+                            {
+                                <option value="@u.UserID">@u.FullName</option>
+                            }
+                        }
+                        else
+                        {
+                            <option disabled selected>No users found</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input name="role" class="form-control form-control-sm" placeholder="Role" />
+                </div>
+                <div class="col-md-3">
+                    <input name="description" class="form-control form-control-sm" placeholder="Description" />
+                </div>
+                <div class="col-md-2">
+                    <input name="taskType" class="form-control form-control-sm" placeholder="Task Type" />
+                </div>
+                <div class="col-md-2">
+                    <input type="date" name="dueDate" class="form-control form-control-sm" />
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" class="btn btn-success btn-sm">Assign</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Form nộp câu hỏi -->
+        <div class="mb-4">
+            <form asp-action="SubmitQuestion" method="post" class="row g-2 align-items-center">
+                <input type="hidden" name="planId" value="@Model.ExamPlanID" />
+                <div class="col-md-6">
+                    <select name="questionId" class="form-select form-select-sm">
+                        @if (ViewBag.AllQuestions != null)
+                        {
+                            foreach (var q in ViewBag.AllQuestions as List<QBCA.Models.Question>)
+                            {
+                                <option value="@q.QuestionID">@q.Content</option>
+                            }
+                        }
+                        else
+                        {
+                            <option disabled selected>No questions found</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <input name="comment" class="form-control form-control-sm" placeholder="Comment" />
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-sm">Submit Question</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-2">
+            <a href="@Url.Action("ExamManagers", "ExamManager")" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.08rem;
+            min-width: 600px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.1rem;
+                text-align: left;
+                padding-left: 18px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.7rem 0.6rem 0.7rem 18px;
+                font-size: 1.09rem;
+            }
+
+        .badge {
+            font-size: 1.05em;
+            border-radius: 6px;
+            padding: 0.5em 1.1em;
+            font-weight: 500;
+        }
+    </style>
+}

@@ -7,7 +7,7 @@ namespace QBCA.Models
     public class ExamPlan
     {
         [Key]
-        public int PlanID { get; set; }
+        public int ExamPlanID { get; set; }
 
         [Required]
         public int SubjectID { get; set; }
@@ -19,12 +19,15 @@ namespace QBCA.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Thêm property này nếu bạn có thông tin ai tạo kế hoạch
+        // Foreign key and navigation property for creator
         public int? CreatedBy { get; set; }
-        public User Creator { get; set; }
+        public virtual User CreatedByUser { get; set; }
+
+        public string Status { get; set; }
 
         public ICollection<ExamPlanDistribution> Distributions { get; set; } = new List<ExamPlanDistribution>();
         public ICollection<SubmissionTable> SubmissionTables { get; set; } = new List<SubmissionTable>();
         public ICollection<ExamQuestion> ExamQuestions { get; set; } = new List<ExamQuestion>();
+        public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
     }
 }

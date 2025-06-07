@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace QBCA.Models
@@ -9,7 +10,7 @@ namespace QBCA.Models
         public int ExamQuestionID { get; set; }
 
         [Required]
-        public int PlanID { get; set; }
+        public int ExamPlanID { get; set; }
 
         [Required]
         public int QuestionID { get; set; }
@@ -18,6 +19,8 @@ namespace QBCA.Models
 
         [StringLength(500)]
         public string Comment { get; set; }
+
+        public DateTime SubmittedAt { get; set; } 
 
         public ExamPlan ExamPlan { get; set; }
         public Question Question { get; set; }

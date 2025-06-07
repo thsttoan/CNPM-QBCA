@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace QBCA.Models
 {
@@ -22,5 +23,8 @@ namespace QBCA.Models
 
         public ExamQuestion ExamQuestion { get; set; }
         public User Reviewer { get; set; }
+
+        // (optional) Thêm thời gian review nếu muốn đồng bộ với các chỗ khác
+        public DateTime? ReviewedAt { get; set; }
     }
 }

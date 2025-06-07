@@ -105,7 +105,7 @@
         @using (Html.BeginForm("Edit", "ExamPlan", FormMethod.Post, new { id = "plan-form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.PlanID)
+            @Html.HiddenFor(model => model.ExamPlanID)
             @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
             <label class="neumorphic-label" for="PlanName">Plan Name</label>
@@ -118,6 +118,13 @@
                 "Select Subject",
                 new { @class = "neumorphic-select", id = "SubjectID" })
         @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger small" })
+
+        <label class="neumorphic-label" for="Status">Status</label>
+        @Html.DropDownListFor(model => model.Status,
+                new SelectList(Model.StatusOptions, Model.Status),
+                "Select Status",
+                new { @class = "neumorphic-select", id = "Status" })
+        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger small" })
 
         <hr style="margin: 18px 0 12px 0;">
         <h5 class="mb-2" style="color:#6d82f3; font-weight:600;">Plan Distribution Details</h5>
@@ -169,11 +176,11 @@
 </section>
 <script>
     var difficulties = @Html.Raw(JsonSerializer.Serialize(
-                                                                                                                                Model.AllDifficultyLevels.Select(x => new { x.DifficultyLevelID, x.LevelName })
-                                                                ));
+                Model.AllDifficultyLevels.Select(x => new { x.DifficultyLevelID, x.LevelName })
+        ));
     var roles = @Html.Raw(JsonSerializer.Serialize(
-                                                                                                                                Model.AllManagerRoles.Select(x => new { x.RoleID, x.RoleName })
-                                                                ));
+                Model.AllManagerRoles.Select(x => new { x.RoleID, x.RoleName })
+        ));
 
     function addDistributionRow() {
         var idx = $("#dist-tbody tr").length;
