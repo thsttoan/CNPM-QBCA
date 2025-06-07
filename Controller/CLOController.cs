@@ -81,7 +81,6 @@ namespace QBCA.Controllers
                 var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
                 string subjectName = _context.Subjects.Find(clo.SubjectID)?.SubjectName;
 
-                // LẤY userID NGƯỜI TẠO
                 var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
                 int.TryParse(userIdClaim, out int createdBy);
 
@@ -175,7 +174,6 @@ namespace QBCA.Controllers
             var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
             string subjectName = _context.Subjects.Find(clo.SubjectID)?.SubjectName;
 
-            // LẤY userID NGƯỜI SỬA
             var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
             int.TryParse(userIdClaim, out int createdBy);
 
@@ -219,7 +217,6 @@ namespace QBCA.Controllers
 
                 var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
 
-                // LẤY userID NGƯỜI XÓA
                 var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
                 int.TryParse(userIdClaim, out int createdBy);
 
@@ -237,9 +234,13 @@ namespace QBCA.Controllers
 
                 TempData["Success"] = "CLO deleted successfully!";
             }
+            catch (DbUpdateException dbEx)
+            {
+                TempData["Error"] = "Cannot delete this CLO because there are related data or foreign key constraints. Please check and remove all related questions or dependent records before deleting!";
+            }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error deleting CLO: " + ex.Message;
+                TempData["Error"] = "An error occurred while deleting the CLO: " + ex.Message;
             }
 
             return RedirectToAction("CLOs");

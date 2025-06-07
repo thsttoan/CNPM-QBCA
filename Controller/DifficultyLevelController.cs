@@ -17,7 +17,6 @@ namespace QBCA.Controllers
             _context = context;
         }
 
-        // Hàm gửi notification cho 1 user
         private void AddNotification(int userId, string message, string relatedType, int? relatedId, int createdBy)
         {
             var noti = new Notification
@@ -235,9 +234,13 @@ namespace QBCA.Controllers
 
                 TempData["Success"] = "Difficulty Level deleted successfully!";
             }
+            catch (DbUpdateException dbEx)
+            {
+                TempData["Error"] = "Cannot delete this Difficulty Level because there are related data or foreign key constraints. Please check and remove all related questions or dependent records before deleting!";
+            }
             catch (Exception ex)
             {
-                TempData["Error"] = "Error deleting Difficulty Level: " + ex.Message;
+                TempData["Error"] = "An error occurred while deleting the Difficulty Level: " + ex.Message;
             }
 
             return RedirectToAction("DLs");

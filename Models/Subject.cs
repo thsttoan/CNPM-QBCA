@@ -24,6 +24,6 @@ namespace QBCA.Models
         public ICollection<Question> Questions { get; set; } = new List<Question>();
         public ICollection<DifficultyLevel> DifficultyLevels { get; set; } = new List<DifficultyLevel>();
 
-        public ICollection<Plan> Plans { get; set; } = new List<Plan>();
+        // Đã xoá thuộc tính Plans vì Plan đã bị loại bỏ hoàn toàn!
     }
 }

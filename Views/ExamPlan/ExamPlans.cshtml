@@ -1,20 +1,20 @@
-﻿@model List<QBCA.Models.Subject>
+﻿@model List<QBCA.Models.ExamPlan>
 @{
-    ViewBag.Title = "Subject Management";
+    ViewBag.Title = "Exam Plan & Distribution Management";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 
 <div class="container py-4">
     <div class="main-content-area">
         <div style="margin-bottom: 18px;">
-            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Subject Management</h2>
-            <div class="text-secondary" style="font-size:1.18rem;">Manage all subjects for the question bank here.</div>
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Exam Plan & Distribution Management</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">Manage all question distribution plans for your subjects here.</div>
         </div>
         <div class="mb-4 w-100" style="display: flex; justify-content: flex-start;">
-            <a href="@Url.Action("Create", "Subject")"
+            <a href="@Url.Action("Create", "ExamPlan")"
                class="btn btn-signin-custom"
-               style="font-size:1.15rem; min-width:200px;">
-                Add New Subject
+               style="font-size:1.15rem; min-width:240px;">
+                Add New Exam Plan & Distribution
             </a>
         </div>
         @if (TempData["Success"] != null)
@@ -24,46 +24,68 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="top:9px;"></button>
             </div>
         }
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger alert-dismissible fade show py-2 px-3" role="alert" style="border-radius:10px;">
-                <i class="fas fa-exclamation-circle me-2"></i> @TempData["Error"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="top:9px;"></button>
-            </div>
-        }
         <div class="table-container">
             <table class="table subject-table mb-0">
                 <thead>
                     <tr>
-                        <th style="width:15%;">Subject ID</th>
-                        <th style="width:24%;">Subject Name</th>
+                        <th style="width:9%;">Plan ID</th>
+                        <th style="width:15%;">Plan Name</th>
+                        <th style="width:15%;">Subject</th>
                         <th style="width:18%;">Created At</th>
-                        <th style="width:17%;">Created By</th>
-                        <th style="width:15%;">Status</th>
-                        <th style="width:12%;" class="text-center">Actions</th>
+                        <th style="width:25%;">Distribution Details</th>
+                        <th style="width:10%;" class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        foreach (var subject in Model)
+                        foreach (var plan in Model)
                         {
                             <tr>
-                                <td>@subject.SubjectID</td>
-                                <td>@subject.SubjectName</td>
-                                <td>@subject.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
-                                <td>@(subject.Creator != null ? subject.Creator.FullName + " (" + subject.Creator.Email + ")" : "N/A")</td>
+                                <td>@plan.PlanID</td>
+                                <td>@plan.Name</td>
+                                <td>@plan.Subject?.SubjectName</td>
+                                <td>@plan.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
                                 <td>
-                                    <span class="badge @(subject.Status?.ToLower() == "active" ? "bg-success" : "bg-secondary")" style="font-size:1.09em;">
-                                        @subject.Status
-                                    </span>
+                                    @if (plan.Distributions != null && plan.Distributions.Any())
+                                    {
+                                        <ul class="mb-0 ps-3" style="font-size:1.08rem; list-style:none; padding-left:0;">
+                                            @foreach (var d in plan.Distributions)
+                                            {
+                                                <li style="margin-bottom:8px; padding-left:0;">
+                                                    <div>
+                                                        <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
+                                                        <b>Difficulty Level:</b> @d.DifficultyLevel?.LevelName
+                                                    </div>
+                                                    <div>
+                                                        <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
+                                                        <b>Number of Questions:</b> @d.NumberOfQuestions
+                                                    </div>
+                                                    <div>
+                                                        <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
+                                                        <b>Manager Role:</b>
+                                                        @(d.AssignedManagerRole != null ? d.AssignedManagerRole.RoleName : Html.Raw("<span class='text-muted'>Not assigned</span>"))
+                                                    </div>
+                                                    <div>
+                                                        <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
+                                                        <b>Status:</b>
+                                                        <span class="badge bg-secondary ms-1">@d.Status</span>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No distributions.</span>
+                                    }
                                 </td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Edit", "Subject", new { id = subject.SubjectID })" class="btn btn-sm btn-outline-primary rounded-pill me-1">Edit</a>
-                                    @using (Html.BeginForm("Delete", "Subject", FormMethod.Post, new { onsubmit = "return confirm('Are you sure you want to delete this subject?');", style = "display:inline;" }))
+                                    <a href="@Url.Action("Edit", "ExamPlan", new { id = plan.PlanID })" class="btn btn-sm btn-outline-primary rounded-pill me-1">Edit</a>
+                                    @using (Html.BeginForm("Delete", "ExamPlan", FormMethod.Post, new { onsubmit = "return confirm('Are you sure you want to delete this plan?');", style = "display:inline;" }))
                                     {
                                         @Html.AntiForgeryToken()
-                                        @Html.Hidden("id", subject.SubjectID)
+                                        @Html.Hidden("id", plan.PlanID)
                                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Delete</button>
                                     }
                                 </td>
@@ -75,7 +97,7 @@
                         <tr>
                             <td colspan="6" class="text-center py-4 text-muted">
                                 <i class="fas fa-folder-open fa-lg mb-2"></i><br />
-                                <span style="font-size:1.11rem;">No subjects found.</span>
+                                <span style="font-size:1.11rem;">No plans found.</span>
                             </td>
                         </tr>
                     }
@@ -123,7 +145,7 @@
             border-collapse: separate;
             border-spacing: 0;
             font-size: 1.17rem;
-            min-width: 650px;
+            min-width: 900px;
         }
 
             .subject-table thead tr th {
@@ -173,10 +195,14 @@
             font-size: 1.09em;
         }
 
-        @@media (max-width: 900px) {
+        ul.ps-3 {
+            padding-left: 1.5rem !important;
+        }
+
+        @@media (max-width: 1100px) {
             .main-content-area, .table-container {
-                margin-left: 4vw !important;
-                margin-right: 4vw !important;
+                margin-left: 2vw !important;
+                margin-right: 2vw !important;
             }
 
             .subject-table {

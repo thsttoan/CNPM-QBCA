@@ -30,7 +30,7 @@ namespace QBCA.Models
 
         public List<string> TaskTypeOptions { get; set; } = new List<string>
         {
-            "Review", "CreateQuestion", "ApprovePlan"
+            "Review", "Create Question", "Approve Plan"
         };
 
         public List<string> StatusOptions { get; set; } = new List<string>

@@ -7,13 +7,20 @@ namespace QBCA.Models
     {
         [Key]
         public int ExamQuestionID { get; set; }
+
+        [Required]
         public int PlanID { get; set; }
+
+        [Required]
         public int QuestionID { get; set; }
+
         public bool Approved { get; set; }
+
+        [StringLength(500)]
         public string Comment { get; set; }
 
         public ExamPlan ExamPlan { get; set; }
         public Question Question { get; set; }
-        public ICollection<ExamReview> ExamReviews { get; set; }
+        public ICollection<ExamReview> ExamReviews { get; set; } = new List<ExamReview>();
     }
 }

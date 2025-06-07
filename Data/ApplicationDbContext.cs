@@ -24,8 +24,7 @@ namespace QBCA.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<TaskAssignment> TaskAssignments { get; set; }
         public DbSet<DuplicateCheckResult> DuplicateCheckResults { get; set; }
-        public DbSet<Plan> Plans { get; set; }
-        public DbSet<PlanDistribution> PlanDistributions { get; set; }
+        public DbSet<ExamPlanDistribution> ExamPlanDistributions { get; set; } // Đổi tên DbSet cho đúng entity
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -93,17 +92,17 @@ namespace QBCA.Data
                 .HasForeignKey(s => s.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // User - Notifications (người nhận)
+            // User - Notifications (receiver)
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.User)
                 .WithMany(u => u.Notifications)
                 .HasForeignKey(n => n.UserID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // User - NotificationsCreated (người tạo notification)
+            // User - NotificationsCreated (creator)
             modelBuilder.Entity<Notification>()
                 .HasOne(n => n.CreatedByUser)
-                .WithMany() // nếu muốn: .WithMany(u => u.NotificationsCreated)
+                .WithMany()
                 .HasForeignKey(n => n.CreatedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -185,48 +184,53 @@ namespace QBCA.Data
                 .HasForeignKey(er => er.ExamQuestionID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // SubmissionTable
+            // SubmissionTable - ExamPlan
             modelBuilder.Entity<SubmissionTable>()
                 .HasOne(st => st.ExamPlan)
                 .WithMany(ep => ep.SubmissionTables)
                 .HasForeignKey(st => st.PlanID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Plan - Subject
-            modelBuilder.Entity<Plan>()
-                .HasOne(p => p.Subject)
-                .WithMany(s => s.Plans)
-                .HasForeignKey(p => p.SubjectID)
+            // SubmissionTable - Approver (User)
+            modelBuilder.Entity<SubmissionTable>()
+                .HasOne(st => st.Approver)
+                .WithMany()
+                .HasForeignKey(st => st.ApprovedBy)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // PlanDistribution - Plan
-            modelBuilder.Entity<PlanDistribution>()
-                .HasOne(pd => pd.Plan)
-                .WithMany(p => p.Distributions)
+            // Question - SubmissionTable
+            modelBuilder.Entity<Question>()
+                .HasOne(q => q.SubmissionTable)
+                .WithMany(st => st.Questions)
+                .HasForeignKey(q => q.SubmissionID)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ExamPlanDistribution - ExamPlan
+            modelBuilder.Entity<ExamPlanDistribution>()
+                .HasOne(pd => pd.ExamPlan)
+                .WithMany(ep => ep.Distributions)
                 .HasForeignKey(pd => pd.PlanID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // PlanDistribution - DifficultyLevel
-            modelBuilder.Entity<PlanDistribution>()
+            // ExamPlanDistribution - DifficultyLevel
+            modelBuilder.Entity<ExamPlanDistribution>()
                 .HasOne(pd => pd.DifficultyLevel)
                 .WithMany()
                 .HasForeignKey(pd => pd.DifficultyLevelID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // PlanDistribution - AssignedManagerRole (Role)
-            modelBuilder.Entity<PlanDistribution>()
+            // ExamPlanDistribution - AssignedManagerRole (Role)
+            modelBuilder.Entity<ExamPlanDistribution>()
                 .HasOne(pd => pd.AssignedManagerRole)
                 .WithMany()
                 .HasForeignKey(pd => pd.AssignedManagerRoleID)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // PlanDistribution.Status NOT NULL 
-            modelBuilder.Entity<PlanDistribution>()
+            // ExamPlanDistribution.Status NOT NULL 
+            modelBuilder.Entity<ExamPlanDistribution>()
                 .Property(pd => pd.Status)
                 .HasDefaultValue("Assigned")
                 .IsRequired();
-
-            // Collections không cần mapping thêm nếu không có config đặc biệt
         }
     }
 }

@@ -1,51 +1,52 @@
-﻿@model List<QBCA.Models.Question>
+﻿@model List<QBCA.Models.SubmissionTable>
 @{
-    ViewBag.Title = "Question Bank";
+    ViewBag.Title = "Submission Table";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 
 <div class="container py-4">
     <div class="main-content-area">
         <div style="margin-bottom: 18px;">
-            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Question Bank</h2>
-            <div class="text-secondary" style="font-size:1.18rem;">View all questions in the bank here.</div>
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Submission Table</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">View all exam submissions here.</div>
         </div>
         <div class="table-container">
             <table class="table subject-table mb-0">
                 <thead>
                     <tr>
-                        <th style="width:7%;">ID</th>
-                        <th style="width:23%;">Content</th>
-                        <th style="width:14%;">Subject</th>
-                        <th style="width:11%;">CLO</th>
-                        <th style="width:13%;">Difficulty</th>
-                        <th style="width:14%;">Created By</th>
+                        <th style="width:5%;">ID</th>
+                        <th style="width:16%;">Exam Plan</th>
+                        <th style="width:13%;">Created By</th>
                         <th style="width:13%;">Created At</th>
-                        <th style="width:5%;">Actions</th>
+                        <th style="width:10%;">Status</th>
+                        <th style="width:16%;">Reviewer Comment</th>
+                        <th style="width:13%;">Approved By</th>
+                        <th style="width:13%;">Approved At</th>
+                        <th style="width:8%;">Duplicate Rate</th>
+                        <th style="width:8%;">Questions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        foreach (var q in Model)
+                        foreach (var s in Model)
                         {
                             <tr>
-                                <td>@q.QuestionID</td>
-                                <td>@q.Content</td>
-                                <td>@q.Subject?.SubjectName</td>
-                                <td>@q.CLO?.Description</td>
-                                <td>@q.DifficultyLevel?.LevelName</td>
-                                <td>@q.Creator?.FullName</td>
-                                <td>@q.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
-                                <td class="text-center">
-                                    @using (Html.BeginForm("Delete", "Question", FormMethod.Post, new { onsubmit = "return confirm('Are you sure you want to delete this question?');", style = "display:inline;" }))
-                                    {
-                                        @Html.AntiForgeryToken()
-                                        @Html.Hidden("id", q.QuestionID)
-                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill" title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    }
+                                <td>@s.SubmissionID</td>
+                                <td>@s.ExamPlan?.Name</td>
+                                <td>@s.Creator?.FullName</td>
+                                <td>@s.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@s.FinalStatus</td>
+                                <td>@s.ReviewerComment</td>
+                                <td>@s.Approver?.FullName</td>
+                                <td>
+                                    @(s.ApprovedAt.HasValue? s.ApprovedAt.Value.AddHours(7).ToString("yyyy-MM-dd HH:mm") : "-")
+                                </td>
+                                <td>
+                                    @(s.DuplicateRate.HasValue? s.DuplicateRate.Value.ToString("P2") : "-")
+                                </td>
+                                <td>
+                                    @(s.Questions != null ? s.Questions.Count() : 0)
                                 </td>
                             </tr>
                         }
@@ -53,9 +54,9 @@
                     else
                     {
                         <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
+                            <td colspan="10" class="text-center py-4 text-muted">
                                 <i class="fas fa-folder-open fa-lg mb-2"></i><br />
-                                <span style="font-size:1.11rem;">No questions found.</span>
+                                <span style="font-size:1.11rem;">No submissions found.</span>
                             </td>
                         </tr>
                     }
@@ -83,7 +84,7 @@
             border-collapse: separate;
             border-spacing: 0;
             font-size: 1.17rem;
-            min-width: 900px;
+            min-width: 1100px;
         }
 
             .subject-table thead tr th {

@@ -31,6 +31,10 @@ namespace QBCA.Models
         [Required]
         public string Status { get; set; }
 
+        // >>>>> BỔ SUNG CHO SUBMISSION TABLE <<<<<
+        public int? SubmissionID { get; set; }
+        public SubmissionTable? SubmissionTable { get; set; }
+
         public Subject? Subject { get; set; }
         public CLO? CLO { get; set; }
         public DifficultyLevel? DifficultyLevel { get; set; }

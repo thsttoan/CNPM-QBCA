@@ -76,7 +76,10 @@
             @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
 
             <label class="neumorphic-label" for="LevelName">Level Name</label>
-            @Html.TextBoxFor(model => model.LevelName, new { @class = "neumorphic-input", placeholder = "Level Name", id = "LevelName" })
+            @Html.DropDownListFor(model => model.LevelName,
+                new SelectList(new List<string> { "Easy", "Medium", "Hard" }),
+                "Select Level",
+                new { @class = "neumorphic-select", id = "LevelName" })
             @Html.ValidationMessageFor(model => model.LevelName, "", new { @class = "text-danger small" })
 
             <label class="neumorphic-label" for="SubjectID">Subject</label>

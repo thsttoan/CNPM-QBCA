@@ -83,12 +83,22 @@ namespace QBCA.Controllers
             try
             {
                 var targetEmbedding = await _aiService.GetEmbeddingAsync(target.Content);
+                var targetTopic = ExtractMainTopic(target.Content);
 
                 foreach (var q in others)
                 {
+                    var qTopic = ExtractMainTopic(q.Content);
+
+                    // Nếu cả hai câu hỏi đều có chủ đề chính (tức là dạng "công thức tính ...")
+                    // và chủ đề không giống nhau thì KHÔNG báo duplicate dù similarity cao
+                    if (!string.IsNullOrWhiteSpace(targetTopic) && !string.IsNullOrWhiteSpace(qTopic) && targetTopic != qTopic)
+                    {
+                        continue;
+                    }
+
                     var emb = await _aiService.GetEmbeddingAsync(q.Content);
                     var sim = GeminiService.CosineSimilarity(targetEmbedding, emb);
-                    if (sim > 0.85)
+                    if (sim > 0.92)
                     {
                         duplicates.Add((q, sim));
 
@@ -150,6 +160,28 @@ namespace QBCA.Controllers
                 TempData["Error"] = $"An error occurred: {ex.Message}";
                 return RedirectToAction("Check");
             }
+        }
+
+        /// <summary>
+        /// Tách keyword/chủ đề chính sau "công thức tính ..." hoặc "tính ..."
+        /// Nếu không phải dạng câu hỏi công thức thì trả về rỗng.
+        /// </summary>
+        public string ExtractMainTopic(string content)
+        {
+            content = content.ToLowerInvariant();
+            var keyword = "";
+
+            if (content.Contains("công thức tính"))
+            {
+                var parts = content.Split(new[] { "công thức tính" }, StringSplitOptions.None);
+                if (parts.Length > 1) keyword = parts[1].Trim(new[] { '.', ' ', ':' });
+            }
+            else if (content.Contains("tính"))
+            {
+                var parts = content.Split(new[] { "tính" }, StringSplitOptions.None);
+                if (parts.Length > 1) keyword = parts[1].Trim(new[] { '.', ' ', ':' });
+            }
+            return keyword;
         }
     }
 

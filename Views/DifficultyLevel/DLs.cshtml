@@ -24,6 +24,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="top:9px;"></button>
             </div>
         }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show py-2 px-3" role="alert" style="border-radius:10px;">
+                <i class="fas fa-exclamation-circle me-2"></i> @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="top:9px;"></button>
+            </div>
+        }
         <div class="table-container">
             <table class="table subject-table mb-0">
                 <thead>
@@ -45,7 +52,7 @@
                                 <td>@level.LevelName</td>
                                 <td>@level.SubjectID</td>
                                 <td>@level.Subject?.SubjectName</td>
-                                
+
                                 <td class="text-center">
                                     <a href="@Url.Action("Edit", "DifficultyLevel", new { id = level.DifficultyLevelID })" class="btn btn-sm btn-outline-primary rounded-pill me-1">Edit</a>
                                     @using (Html.BeginForm("Delete", "DifficultyLevel", FormMethod.Post, new { onsubmit = "return confirm('Are you sure you want to delete this difficulty level?');", style = "display:inline;" }))
