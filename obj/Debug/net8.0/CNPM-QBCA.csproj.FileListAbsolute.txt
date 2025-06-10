@@ -151,9 +151,7 @@ E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtim
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 E:\CNPM\Project\CNPM-QBCA\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\scopedcss\bundle\CNPM-QBCA.styles.css
-E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\scopedcss\projectbundle\CNPM-QBCA.bundle.scp.css
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\staticwebassets.build.json
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\staticwebassets.build.json.cache
 E:\CNPM\Project\CNPM-QBCA\obj\Debug\net8.0\staticwebassets.development.json
