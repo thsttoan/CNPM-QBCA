@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "E:\\CNPM\\Project\\CNPM-QBCA\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|e:\\cnpm\\project\\cnpm-qbca\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D4D0F950-1E9A-4988-BD08-9FCE0489BA01}|CNPM-QBCA.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|e:\\cnpm\\project\\cnpm-qbca\\cnpm-qbca.web\\controller\\examcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|solutionrelative:cnpm-qbca.web\\controller\\examcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|e:\\cnpm\\project\\cnpm-qbca\\cnpm-qbca.web\\controller\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|solutionrelative:cnpm-qbca.web\\controller\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|e:\\cnpm\\project\\cnpm-qbca\\cnpm-qbca.web\\controller\\examplancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|solutionrelative:cnpm-qbca.web\\controller\\examplancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|e:\\cnpm\\project\\cnpm-qbca\\cnpm-qbca.web\\controller\\exammanagercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|solutionrelative:cnpm-qbca.web\\controller\\exammanagercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3BFF942F-B7EF-4F72-9B2B-2577D5B70A2D}|CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj|e:\\cnpm\\project\\cnpm-qbca\\cnpm-qbca.repositories\\models\\exam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3BFF942F-B7EF-4F72-9B2B-2577D5B70A2D}|CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj|solutionrelative:cnpm-qbca.repositories\\models\\exam.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|e:\\cnpm\\project\\cnpm-qbca\\cnpm-qbca.web\\views\\exam\\submitexam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{9760A707-4247-24DC-143B-8EDFFA820D79}|CNPM-QBCA.Web\\CNPM-QBCA.Web.csproj|solutionrelative:cnpm-qbca.web\\views\\exam\\submitexam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3BFF942F-B7EF-4F72-9B2B-2577D5B70A2D}|CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj|e:\\cnpm\\project\\cnpm-qbca\\cnpm-qbca.repositories\\models\\examplan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3BFF942F-B7EF-4F72-9B2B-2577D5B70A2D}|CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj|solutionrelative:cnpm-qbca.repositories\\models\\examplan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,15 +46,93 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\HomeController.cs",
+              "RelativeDocumentMoniker": "CNPM-QBCA.Web\\Controller\\HomeController.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\HomeController.cs",
+              "RelativeToolTip": "CNPM-QBCA.Web\\Controller\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T23:52:47.259Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ExamPlanController.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\ExamPlanController.cs",
+              "RelativeDocumentMoniker": "CNPM-QBCA.Web\\Controller\\ExamPlanController.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\ExamPlanController.cs*",
+              "RelativeToolTip": "CNPM-QBCA.Web\\Controller\\ExamPlanController.cs*",
+              "ViewState": "AgIAACgBAAAAAAAAAAAAwIcAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T23:51:59.08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ExamManagerController.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\ExamManagerController.cs",
+              "RelativeDocumentMoniker": "CNPM-QBCA.Web\\Controller\\ExamManagerController.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\ExamManagerController.cs",
+              "RelativeToolTip": "CNPM-QBCA.Web\\Controller\\ExamManagerController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T23:51:54.444Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-09T03:19:13.65Z",
+              "Title": "ExamController.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\ExamController.cs",
+              "RelativeDocumentMoniker": "CNPM-QBCA.Web\\Controller\\ExamController.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Controller\\ExamController.cs",
+              "RelativeToolTip": "CNPM-QBCA.Web\\Controller\\ExamController.cs",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T23:51:42.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SubmitExam.cshtml",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Views\\Exam\\SubmitExam.cshtml",
+              "RelativeDocumentMoniker": "CNPM-QBCA.Web\\Views\\Exam\\SubmitExam.cshtml",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Web\\Views\\Exam\\SubmitExam.cshtml",
+              "RelativeToolTip": "CNPM-QBCA.Web\\Views\\Exam\\SubmitExam.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-12T23:51:00.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ExamPlan.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\Models\\ExamPlan.cs",
+              "RelativeDocumentMoniker": "CNPM-QBCA.Repositories\\Models\\ExamPlan.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\Models\\ExamPlan.cs",
+              "RelativeToolTip": "CNPM-QBCA.Repositories\\Models\\ExamPlan.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAA0wBsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T23:50:08.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Exam.cs",
+              "DocumentMoniker": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\Models\\Exam.cs",
+              "RelativeDocumentMoniker": "CNPM-QBCA.Repositories\\Models\\Exam.cs",
+              "ToolTip": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\Models\\Exam.cs",
+              "RelativeToolTip": "CNPM-QBCA.Repositories\\Models\\Exam.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T23:49:59.398Z",
               "EditorCaption": ""
             }
           ]

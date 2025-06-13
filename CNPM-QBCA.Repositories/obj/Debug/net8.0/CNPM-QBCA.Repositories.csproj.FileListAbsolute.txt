@@ -1,0 +1,15 @@
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\bin\Debug\net8.0\CNPM-QBCA.Repositories.deps.json
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\bin\Debug\net8.0\CNPM-QBCA.Repositories.runtimeconfig.json
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\bin\Debug\net8.0\CNPM-QBCA.Repositories.dll
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\bin\Debug\net8.0\CNPM-QBCA.Repositories.pdb
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.csproj.AssemblyReference.cache
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.GeneratedMSBuildEditorConfig.editorconfig
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.AssemblyInfoInputs.cache
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.AssemblyInfo.cs
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.csproj.CoreCompileInputs.cache
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.sourcelink.json
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.dll
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\refint\CNPM-QBCA.Repositories.dll
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.pdb
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\CNPM-QBCA.Repositories.genruntimeconfig.cache
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Repositories\obj\Debug\net8.0\ref\CNPM-QBCA.Repositories.dll

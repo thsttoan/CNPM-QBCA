@@ -1,0 +1,16 @@
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\bin\Debug\net8.0\CNPM-QBCA.Business.deps.json
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\bin\Debug\net8.0\CNPM-QBCA.Business.dll
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\bin\Debug\net8.0\CNPM-QBCA.Business.pdb
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\bin\Debug\net8.0\CNPM-QBCA.Repositories.dll
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\bin\Debug\net8.0\CNPM-QBCA.Repositories.pdb
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.csproj.AssemblyReference.cache
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.GeneratedMSBuildEditorConfig.editorconfig
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.AssemblyInfoInputs.cache
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.AssemblyInfo.cs
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.csproj.CoreCompileInputs.cache
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.sourcelink.json
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBC.419A0091.Up2Date
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.dll
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\refint\CNPM-QBCA.Business.dll
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\CNPM-QBCA.Business.pdb
+E:\CNPM\Project\CNPM-QBCA\CNPM-QBCA.Business\obj\Debug\net8.0\ref\CNPM-QBCA.Business.dll
