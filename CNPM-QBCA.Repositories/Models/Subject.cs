@@ -18,12 +18,13 @@ namespace QBCA.Models
 
         [Required]
         public string Status { get; set; }
+       
+
 
         public ICollection<CLO> CLOs { get; set; } = new List<CLO>();
         public ICollection<ExamPlan> ExamPlans { get; set; } = new List<ExamPlan>();
         public ICollection<Question> Questions { get; set; } = new List<Question>();
         public ICollection<DifficultyLevel> DifficultyLevels { get; set; } = new List<DifficultyLevel>();
 
-        // Đã xoá thuộc tính Plans vì Plan đã bị loại bỏ hoàn toàn!
     }
 }

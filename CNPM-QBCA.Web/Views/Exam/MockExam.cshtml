@@ -1,0 +1,98 @@
+﻿@model CNPM_QBCA.Models.MockExamViewModel
+@{
+    ViewBag.Title = "Mock Exam";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        max-width: 750px;
+        margin: auto;
+    }
+
+    .neumorphic-label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 7px;
+        margin-left: 2px;
+        display: block;
+        letter-spacing: 0.02em;
+    }
+
+    .neumorphic-textarea {
+        border: none;
+        outline: none;
+        background: #f2f3f7;
+        border-radius: 12px;
+        padding: 14px 20px;
+        box-shadow: inset 6px 6px 10px #d1d9e6, inset -6px -6px 10px #ffffff;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+        resize: vertical;
+        margin-bottom: 22px;
+    }
+
+    .neumorphic-button {
+        background-color: #4F46E5;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+        transition: 0.2s;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-size: 1.13rem;
+    }
+
+        .neumorphic-button:hover {
+            background-color: #3730A3;
+        }
+
+    .question-box {
+        margin-bottom: 30px;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 0.9em;
+    }
+</style>
+
+<section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 100px;">
+    <div class="neumorphic-box">
+        <h3 class="text-center fw-bold mb-4 text-dark">
+            <span style="color:#6d82f3;"><i class="fas fa-book-open"></i></span>
+            @Model.ExamTitle - Mock Exam
+        </h3>
+
+        <form asp-action="MockExam" asp-controller="Exam" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="AssignmentID" />
+
+            @for (int i = 0; i < Model.Questions.Count; i++)
+            {
+                var q = Model.Questions[i];
+                <div class="question-box">
+                    <label class="neumorphic-label">Question @(i + 1): @q.Content</label>
+                    <textarea name="Answers[@q.QuestionID]" rows="3" class="neumorphic-textarea" placeholder="Enter your answer..." required></textarea>
+                </div>
+            }
+
+            <label class="neumorphic-label">General feedback on the exam:</label>
+            <textarea name="Feedback" rows="4" class="neumorphic-textarea" placeholder="Enter your feedback..."></textarea>
+
+            <button type="submit" class="neumorphic-button">
+                <i class="fas fa-paper-plane me-2"></i> Submit Mock Exam
+            </button>
+        </form>
+    </div>
+</section>

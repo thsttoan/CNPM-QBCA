@@ -1,0 +1,98 @@
+﻿@model QBCA.ViewModels.SubmissionApprovalViewModel
+@{
+    ViewBag.Title = "Approve Submission";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 50px;
+        max-width: 650px;
+        margin: 80px auto;
+        font-size: 18px;
+    }
+
+    .neumorphic-label {
+        font-weight: 700;
+        font-size: 20px;
+        color: #36395A;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .neumorphic-input, .neumorphic-select, .neumorphic-textarea {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: none;
+        margin-bottom: 25px;
+        background: #f2f3f7;
+        box-shadow: inset 6px 6px 10px #d1d9e6, inset -6px -6px 10px #ffffff;
+        font-size: 18px;
+    }
+
+    .neumorphic-button {
+        width: 100%;
+        padding: 16px;
+        border-radius: 14px;
+        background-color: #4F46E5;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        border: none;
+        transition: background 0.3s;
+        box-shadow: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff;
+    }
+
+        .neumorphic-button:hover {
+            background-color: #3730A3;
+            cursor: pointer;
+        }
+
+    h3 {
+        color: #4F46E5;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 35px;
+        text-align: center;
+    }
+</style>
+
+<div class="neumorphic-box">
+    <h3>📝 Approve Submission</h3>
+
+    @using (Html.BeginForm("Approve", "SubmissionApproval", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <!-- Submission Dropdown -->
+        <label class="neumorphic-label">Submission</label>
+        @Html.DropDownListFor(m => m.SubmissionTableID,
+        new SelectList(Model.AllSubmissions, "SubmissionID", "ExamPlan.Name"),
+        "-- Select Submission --",
+        new { @class = "neumorphic-select" })
+
+    <!-- Approver Dropdown -->
+    <label class="neumorphic-label">Approved By</label>
+    @Html.DropDownListFor(m => m.ApprovedByID,
+        new SelectList(Model.AllApprovers, "UserID", "FullName"),
+        "-- Select Approver --",
+        new { @class = "neumorphic-select" })
+
+    <!-- Status Dropdown -->
+    <label class="neumorphic-label">Status</label>
+    @Html.DropDownListFor(m => m.Status,
+        new SelectList(new List<string> { "Approved", "Pending", "Rejected" }),
+        "-- Select Status --",
+        new { @class = "neumorphic-select" })
+
+    <!-- Feedback -->
+    <label class="neumorphic-label">Feedback (Optional)</label>
+    @Html.TextAreaFor(m => m.Feedback, 4, 50, new { @class = "neumorphic-textarea", placeholder = "Enter optional feedback for the submission..." })
+
+    <button type="submit" class="neumorphic-button">✅ Submit Approval</button>
+        }
+</div>

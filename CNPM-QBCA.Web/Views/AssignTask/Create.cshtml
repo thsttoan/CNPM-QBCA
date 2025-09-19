@@ -1,0 +1,138 @@
+﻿@model QBCA.ViewModels.AssignTaskViewModel
+@{
+    ViewBag.Title = "Create New Task";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-wrapper {
+        max-width: 720px;
+        margin: 80px auto;
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 10px 10px 20px #d1d9e6, -10px -10px 20px #ffffff;
+        padding: 50px;
+    }
+
+    .neumorphic-title {
+        font-size: 30px;
+        font-weight: 700;
+        color: #4F46E5;
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 18px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+        width: 100%;
+        padding: 16px 20px;
+        border-radius: 14px;
+        border: none;
+        font-size: 17px;
+        background: #f2f3f7;
+        box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
+        margin-bottom: 25px;
+        transition: 0.3s ease;
+    }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            box-shadow: inset 3px 3px 8px #d1d9e6, inset -3px -3px 8px #ffffff;
+        }
+
+    .btn-submit {
+        background-color: #4F46E5;
+        color: white;
+        padding: 15px;
+        width: 100%;
+        font-size: 18px;
+        border-radius: 14px;
+        font-weight: 600;
+        border: none;
+        box-shadow: 4px 4px 10px #d1d9e6, -4px -4px 10px #ffffff;
+        transition: 0.3s ease;
+    }
+
+        .btn-submit:hover {
+            background-color: #3730A3;
+            cursor: pointer;
+        }
+
+    .text-danger {
+        font-size: 0.95rem;
+        color: red;
+        margin-top: -12px;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .alert-success {
+        background-color: #e6fffa;
+        color: #065f46;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 25px;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
+    }
+</style>
+
+<div class="neumorphic-wrapper">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert-success">
+            ✅ @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <h3 class="neumorphic-title">🆕 Create New Task</h3>
+
+    <form asp-action="Create" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label asp-for="TaskType">Task Title</label>
+            <input asp-for="TaskType" placeholder="e.g. Review Exam Questions..." />
+            <span asp-validation-for="TaskType" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AssignedToID">Assign To</label>
+            <select asp-for="AssignedToID" asp-items="@(new SelectList(Model.AllLecturers, "UserID", "FullName"))">
+                <option value="">-- Select Lecturer --</option>
+            </select>
+            <span asp-validation-for="AssignedToID" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Deadline">Deadline</label>
+            <input asp-for="Deadline" type="date" />
+            <span asp-validation-for="Deadline" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Status">Status</label>
+            <select asp-for="Status">
+                <option value="">-- Select Status --</option>
+                <option value="Assigned">Assigned</option>
+                <option value="InProgress">In Progress</option>
+                <option value="Completed">Completed</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">✅ Create Task</button>
+    </form>
+</div>
+
+

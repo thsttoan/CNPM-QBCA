@@ -25,5 +25,7 @@ namespace QBCA.Models
 
         public Exam Exam { get; set; } 
         public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
+        public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
     }
+
 }

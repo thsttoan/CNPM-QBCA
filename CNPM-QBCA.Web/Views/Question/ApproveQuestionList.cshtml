@@ -1,0 +1,233 @@
+﻿@model List<QBCA.Models.Question>
+@{
+    ViewBag.Title = "Approve Final Questions";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Approve Final Questions</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">Review and approve selected questions below.</div>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        @using (Html.BeginForm("ApproveQuestionList", "Question", FormMethod.Post, new { id = "approve-form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="table-container">
+                <table class="table subject-table mb-0">
+                    <thead>
+                        <tr>
+                            <th style="width:6%;">✔</th>
+                            <th style="width:30%;">Content</th>
+                            <th style="width:13%;">Subject</th>
+                            <th style="width:13%;">CLO</th>
+                            <th style="width:10%;">Difficulty</th>
+                            <th style="width:14%;">Created By</th>
+                            <th style="width:14%;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var q in Model)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox" name="selectedQuestionIds" value="@q.QuestionID" />
+                                    </td>
+                                    <td>@q.Content</td>
+                                    <td>@q.Subject?.SubjectName</td>
+                                    <td>@q.CLO?.Description</td>
+                                    <td>@q.DifficultyLevel?.LevelName</td>
+                                    <td>@q.Creator?.FullName</td>
+                                    <td>
+                                        @if (q.Status == "Active")
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Inactive</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                    <i class="fas fa-folder-open fa-lg mb-2"></i><br />
+                                    <span style="font-size:1.11rem;">No pending questions found.</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-4 w-100 d-flex justify-content-start align-items-center">
+                <button type="submit" class="btn btn-approve-custom me-3">
+                    <i class="fas fa-check-circle me-2"></i> Approve Selected
+                </button>
+                <a href="@Url.Action("ReviewQuestions", "Question")"
+                   class="btn btn-link"
+                   style="font-size:1.1rem;">Back</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("approve-form");
+
+            form.addEventListener("submit", function (e) {
+                const checkboxes = form.querySelectorAll("input[name='selectedQuestionIds']:checked");
+
+                if (checkboxes.length === 0) {
+                    e.preventDefault();
+                    alert("⚠ Please select at least one question to approve.");
+                    return false;
+                }
+
+                const confirmApprove = confirm("Are you sure you want to approve the selected questions?");
+                if (!confirmApprove) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.17rem;
+            min-width: 900px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.18rem;
+                text-align: left;
+                padding-left: 24px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+            }
+
+                .subject-table tbody tr:last-child {
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.88rem 0.8rem 0.88rem 24px;
+                font-size: 1.14rem;
+            }
+
+        @@media (max-width: 1100px) {
+            .main-content-area, .table-container
+
+        {
+            margin-left: 2vw !important;
+            margin-right: 2vw !important;
+        }
+
+        .subject-table {
+            font-size: 1rem;
+        }
+
+            .subject-table thead tr th {
+                font-size: 1rem;
+                padding-left: 10px;
+            }
+
+            .subject-table td {
+                padding-left: 10px;
+                font-size: 1rem;
+            }
+        }
+
+        .neumorphic-button {
+            background-color: #4F46E5;
+            color: white;
+            padding: 12px 25px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+            font-size: 1.13rem;
+        }
+
+            .neumorphic-button:hover {
+                background-color: #3730A3;
+            }
+
+        .btn-approve-custom {
+            font-size: 1.15rem;
+            min-width: 240px;
+            padding: 10px 22px;
+            font-weight: 600;
+            background-color: #4F46E5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+            transition: 0.2s;
+        }
+
+            .btn-approve-custom:hover {
+                background-color: #3730A3;
+                color: white;
+            }
+    </style>
+}

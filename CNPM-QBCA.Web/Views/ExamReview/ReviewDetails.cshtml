@@ -1,0 +1,45 @@
+﻿@using QBCA.ViewModels.ReviewExam
+@model ReviewExamDetailViewModel
+
+@{
+    ViewBag.Title = "Review Exam Details";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div class="card shadow p-4 rounded-4 bg-light">
+            <h2 class="mb-4 text-primary">Review Exam Details</h2>
+
+            <dl class="row">
+                <dt class="col-sm-3">Exam Title:</dt>
+                <dd class="col-sm-9">@Model.ExamTitle</dd>
+
+                <dt class="col-sm-3">Lecturer:</dt>
+                <dd class="col-sm-9">@Model.LecturerName</dd>
+
+                <dt class="col-sm-3">Subject:</dt>
+                <dd class="col-sm-9">@Model.SubjectName</dd>
+
+                <dt class="col-sm-3">Status:</dt>
+                <dd class="col-sm-9">
+                    <span class="badge bg-@(Model.Status == "Approved" ? "success" : Model.Status == "Rejected" ? "danger" : "warning")">
+                        @Model.Status
+                    </span>
+                </dd>
+
+                <dt class="col-sm-3">Submitted Date:</dt>
+                <dd class="col-sm-9">@Model.SubmittedDate.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Due Date:</dt>
+                <dd class="col-sm-9">@Model.DueDate?.ToString("yyyy-MM-dd") ?? "N/A"</dd>
+
+                <dt class="col-sm-3">Reviewed At:</dt>
+                <dd class="col-sm-9">@Model.ReviewedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+
+                <dt class="col-sm-3">Comment:</dt>
+                <dd class="col-sm-9">@Model.Comment</dd>
+            </dl>
+        </div>
+    </div>
+</div>

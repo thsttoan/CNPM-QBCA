@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj": {}
+    "E:\\Completed\\CNPM\\Project\\CNPM-QBCA - CaNhan\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj": {}
   },
   "projects": {
-    "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj": {
+    "E:\\Completed\\CNPM\\Project\\CNPM-QBCA - CaNhan\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj",
+        "projectUniqueName": "E:\\Completed\\CNPM\\Project\\CNPM-QBCA - CaNhan\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj",
         "projectName": "CNPM-QBCA.Repositories",
-        "projectPath": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj",
+        "projectPath": "E:\\Completed\\CNPM\\Project\\CNPM-QBCA - CaNhan\\CNPM-QBCA.Repositories\\CNPM-QBCA.Repositories.csproj",
         "packagesPath": "C:\\Users\\letru\\.nuget\\packages\\",
-        "outputPath": "E:\\CNPM\\Project\\CNPM-QBCA\\CNPM-QBCA.Repositories\\obj\\",
+        "outputPath": "E:\\Completed\\CNPM\\Project\\CNPM-QBCA - CaNhan\\CNPM-QBCA.Repositories\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\VisualStudio\\Shared\\NuGetPackages"
@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc.Abstractions": {
+              "target": "Package",
+              "version": "[2.3.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[9.0.5, )"
@@ -63,6 +67,18 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.5, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.Extensions.Configuration.FileExtensions": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[9.0.6, )"
             }
           },
           "imports": [

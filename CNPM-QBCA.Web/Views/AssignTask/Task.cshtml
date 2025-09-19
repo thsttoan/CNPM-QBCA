@@ -1,0 +1,184 @@
+﻿@model IEnumerable<QBCA.ViewModels.AssignTaskViewModel>
+@{
+    ViewBag.Title = "Assigned Tasks";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .task-container {
+        max-width: 1200px;
+        margin: 60px auto;
+        padding: 45px;
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 10px 10px 20px #d1d9e6, -10px -10px 20px #ffffff;
+    }
+
+    .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+        .header-row h3 {
+            color: #4F46E5;
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+    .btn-create {
+        background: #4F46E5;
+        color: white;
+        padding: 12px 26px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 16px;
+        border: none;
+        box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+        text-decoration: none;
+        transition: 0.3s ease;
+    }
+
+        .btn-create:hover {
+            background: #3730A3;
+        }
+
+    form label {
+        font-weight: 600;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    select {
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        margin-bottom: 18px;
+        background-color: #fff;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        padding: 14px 18px;
+        text-align: center;
+        font-size: 16.5px;
+    }
+
+    th {
+        background-color: #e0e5ec;
+        color: #333;
+        font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9fafb;
+    }
+
+    .badge {
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .badge.assigned {
+            background-color: #e0f2fe;
+            color: #1e3a8a;
+        }
+
+        .badge.inprogress {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+    .action-links a {
+        margin: 0 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 16px;
+        color: #4F46E5;
+    }
+
+        .action-links a:hover {
+            text-decoration: underline;
+        }
+
+    .text-muted {
+        font-style: italic;
+        color: #999;
+    }
+</style>
+
+<div class="task-container">
+    <div class="header-row">
+        <h3>🗂 Assigned Tasks</h3>
+        <a href="@Url.Action("Create", "AssignTask")" class="btn-create">+ Create New Task</a>
+    </div>
+
+    <form method="get" asp-action="Task">
+        <label for="assignedTo">📌 Filter by Lecturer:</label>
+        <select name="assignedTo" onchange="this.form.submit()">
+            <option value="">-- All Lecturers --</option>
+            @foreach (var name in ViewBag.AllLecturers as List<string>)
+            {
+                <option value="@name" @(Context.Request.Query["assignedTo"] == name ? "selected" : "")>@name</option>
+            }
+        </select>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Task Title</th>
+                <th>Assigned To</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Assigned At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int i = 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.TaskType</td>
+                        <td>@item.AssignedToName</td>
+                        <td>
+                            <span class="badge @item.Status.ToLower()">@item.Status</span>
+                        </td>
+                        <td>@item.Deadline.ToString("dd/MM/yyyy")</td>
+                        <td>@item.AssignedAt.ToString("dd/MM/yyyy")</td>
+                        <td class="action-links">
+                            <a href="@Url.Action("Edit", "AssignTask", new { id = item.TaskID })">✏️ Edit</a>
+                            <a href="@Url.Action("Details", "AssignTask", new { id = item.TaskID })">👁 Details</a>
+                            <a href="@Url.Action("Delete", "AssignTask", new { id = item.TaskID })" style="color:red;">❌ Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted">🔍 No tasks assigned.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

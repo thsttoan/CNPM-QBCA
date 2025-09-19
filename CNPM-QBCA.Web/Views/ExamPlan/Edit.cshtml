@@ -82,20 +82,25 @@
             color: white;
         }
 
-    .remove-dist-btn {
-        background: #ef4444;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 6px 10px;
-        font-weight: 600;
-        margin-left: 6px;
+    #dist-table th, #dist-table td {
+        text-align: center;
+        vertical-align: middle;
     }
 
-        .remove-dist-btn:hover {
-            background: #b91c1c;
-            color: white;
-        }
+    #dist-table th {
+        font-weight: 600;
+        color: #36395A;
+    }
+
+    #dist-table td {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    #dist-table .neumorphic-select,
+    #dist-table .neumorphic-input {
+        margin-bottom: 0;
+    }
 </style>
 <section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 120px;">
     <div class="neumorphic-box">
@@ -130,13 +135,17 @@
         <h5 class="mb-2" style="color:#6d82f3; font-weight:600;">Plan Distribution Details</h5>
         <button type="button" class="add-dist-btn" onclick="addDistributionRow()">+ Add Distribution</button>
         <div>
-            <table class="table table-sm table-borderless" id="dist-table">
+            <table class="table table-sm table-borderless" id="dist-table" style="table-layout: fixed; width: 100%;">
+                <colgroup>
+                    <col style="width: 33%;">
+                    <col style="width: 33%;">
+                    <col style="width: 34%;">
+                </colgroup>
                 <thead>
                     <tr>
                         <th>Difficulty Level</th>
                         <th>Number of Questions</th>
                         <th>Manager Role</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="dist-tbody">
@@ -161,9 +170,6 @@
                                                         new { @class = "neumorphic-select" })
                             @Html.ValidationMessage("Distributions[" + i + "].AssignedManagerRoleID", "", new { @class = "text-danger small" })
                         </td>
-                        <td>
-                            <button type="button" class="remove-dist-btn" onclick="removeDistributionRow(this)">X</button>
-                        </td>
                     </tr>
                                         }
                 </tbody>
@@ -175,15 +181,17 @@
     </div>
 </section>
 <script>
-    var difficulties = @Html.Raw(JsonSerializer.Serialize(
-                Model.AllDifficultyLevels.Select(x => new { x.DifficultyLevelID, x.LevelName })
-        ));
     var roles = @Html.Raw(JsonSerializer.Serialize(
                 Model.AllManagerRoles.Select(x => new { x.RoleID, x.RoleName })
         ));
+    var initialDifficulties = @Html.Raw(JsonSerializer.Serialize(
+                Model.AllDifficultyLevels.Select(x => new { x.DifficultyLevelID, x.LevelName })
+        ));
+    window.filteredDifficulties = initialDifficulties;
 
     function addDistributionRow() {
         var idx = $("#dist-tbody tr").length;
+        var difficulties = window.filteredDifficulties || [];
         var row = `<tr>
             <td>
                 <select name="Distributions[${idx}].DifficultyLevelID" class="neumorphic-select">
@@ -200,23 +208,34 @@
                     ${roles.map(r => `<option value="${r.RoleID}">${r.RoleName}</option>`).join('')}
                 </select>
             </td>
-            <td>
-                <button type="button" class="remove-dist-btn" onclick="removeDistributionRow(this)">X</button>
-            </td>
         </tr>`;
         $("#dist-tbody").append(row);
     }
-    function removeDistributionRow(btn) {
-        if ($("#dist-tbody tr").length > 1) {
-            $(btn).closest("tr").remove();
-            // Reindex lại name các input
-            $("#dist-tbody tr").each(function(i, tr){
-                $(tr).find("select[name^='Distributions'],input[name^='Distributions']").each(function(){
-                    var name = $(this).attr("name");
-                    var newName = name.replace(/Distributions\[\d+\]/, "Distributions[" + i + "]");
-                    $(this).attr("name", newName);
+
+    $("#SubjectID").change(function () {
+        var subjectId = $(this).val();
+        if (!subjectId) return;
+        $.ajax({
+            url: '/ExamPlan/GetDifficultyLevelsBySubject/' + subjectId,
+            method: 'GET',
+            success: function (data) {
+                window.filteredDifficulties = data;
+                $("#dist-tbody tr").each(function () {
+                    var ddl = $(this).find("select[name$='.DifficultyLevelID']");
+                    var selected = ddl.val();
+                    ddl.empty();
+                    ddl.append('<option value="">Select Level</option>');
+                    data.forEach(function (item) {
+                        ddl.append('<option value="' + item.DifficultyLevelID + '"' +
+                            (selected == item.DifficultyLevelID ? ' selected' : '') +
+                            '>' + item.LevelName + '</option>');
+                    });
                 });
-            });
-        }
-    }
+            }
+        });
+    });
+
+    $(function() {
+        $("#SubjectID").trigger("change");
+    });
 </script>

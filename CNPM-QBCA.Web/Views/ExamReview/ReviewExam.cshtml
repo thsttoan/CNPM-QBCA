@@ -1,0 +1,122 @@
+﻿@using QBCA.ViewModels.ReviewExam
+@model IEnumerable<ReviewExamDetailViewModel>
+
+@{
+    ViewBag.Title = "Review Exams";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div class="mb-4">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Review Exams</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">View exams assigned to you for review and feedback.</div>
+        </div>
+
+        <div class="table-container">
+            <table class="table subject-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:6%;">ID</th>
+                        <th style="width:24%;">Exam Title</th>
+                        <th style="width:17%;">Lecturer</th>
+                        <th style="width:17%;">Subject</th>
+                        <th style="width:12%;">Status</th>
+                        <th style="width:14%;">Reviewed At</th>
+                        <th style="width:10%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ReviewID</td>
+                                <td>@item.ExamTitle</td>
+                                <td>@item.LecturerName</td>
+                                <td>@item.SubjectName</td>
+                                <td>
+                                    <span class="badge bg-@(item.Status == "Approved" ? "success" : item.Status == "Rejected" ? "danger" : "warning")">
+                                        @item.Status
+                                    </span>
+                                </td>
+                                <td>@item.ReviewedAt.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    <a class="btn btn-outline-primary btn-sm"
+                                       href="@Url.Action("ReviewDetails", "ExamReview", new { id = item.ReviewID })">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="fas fa-clipboard-list fa-lg mb-2"></i><br />
+                                <span style="font-size:1.12rem;">No review tasks found.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.14rem;
+            min-width: 1080px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.16rem;
+                text-align: left;
+                padding-left: 24px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+            }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.88rem 0.8rem 0.88rem 24px;
+                font-size: 1.13rem;
+            }
+    </style>
+}

@@ -30,8 +30,10 @@ namespace QBCA.Models
 
         [Required]
         public ICollection<ExamQuestion> ExamQuestions { get; set; } = new List<ExamQuestion>();
+        public ICollection<ExamApproveTask> ApproveTasks { get; set; }
 
         [StringLength(500)]
         public string Description { get; set; }
+        public int ExamPlanID { get; set; }
     }
 }

@@ -1,0 +1,163 @@
+﻿@using QBCA.Models
+@model IEnumerable<QBCA.ViewModels.AssignedPlanViewModel>
+@{
+    ViewBag.Title = "Assigned Plans";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 17px;
+    }
+
+    .neumorphic-table {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 30px;
+        margin: 40px auto;
+        max-width: 95%;
+    }
+
+    h3 {
+        font-size: 1.7rem;
+        font-weight: bold;
+        color: #4F46E5;
+    }
+
+    .neumorphic-button {
+        display: inline-block;
+        padding: 10px 20px;
+        margin: 4px;
+        font-size: 1rem;
+        color: #4F46E5;
+        background: #f2f3f7;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .neumorphic-button:hover {
+            box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
+            background: #e6e8f0;
+        }
+
+    .badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: white;
+        text-transform: capitalize;
+    }
+
+    .assigned {
+        background-color: #6366F1;
+    }
+
+    .completed {
+        background-color: #10B981;
+    }
+
+    .overdue {
+        background-color: #EF4444;
+    }
+
+    .inprogress {
+        background-color: #F59E0B;
+    }
+
+    .finalapproved {
+        background-color: #2563EB;
+    }
+
+    .rejectedfinal {
+        background-color: #DC2626;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 14px 18px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #e0e5ec;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9fc;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+</style>
+
+<div class="neumorphic-table">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>📋 Assigned Plans</h3>
+        <a href="@Url.Action("Create", "AssignedPlan")" class="neumorphic-button">➕ Create New Plan</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Assigned To</th>
+                <th>Distribution</th>
+                <th>Status</th>
+                <th>Assigned At</th>
+                <th>Deadline</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int i = 1;
+                foreach (var item in Model)
+                {
+                    var statusClass = item.Status?.ToString().ToLowerInvariant().Replace(" ", "") ?? "unknown";
+
+                    bool isOverdue = item.Deadline < DateTime.Now && item.Status != AssignedPlanStatus.Completed;
+                    string deadlineColor = isOverdue ? "color:#DC2626;" : "";
+
+
+                    <tr>
+                        <td>@(i++)</td>
+                        <td>@item.SubjectName</td>
+                        <td>@item.AssignedToName</td>
+                        <td>@item.DistributionStatus</td>
+                        <span class="badge @(statusClass)">
+                            @item.Status?.ToString().Replace("Final", "Final ")
+                        </span>
+                        <td>@item.AssignedDate.ToString("dd/MM/yyyy")</td>
+                        <td style="@deadlineColor">@item.Deadline.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a href="@Url.Action("Edit", "AssignedPlan", new { id = item.AssignedPlanID })" class="neumorphic-button">✏️ Edit</a>
+                            <a href="@Url.Action("Details", "AssignedPlan", new { id = item.AssignedPlanID })" class="neumorphic-button">📄 Details</a>
+                            <a href="@Url.Action("Delete", "AssignedPlan", new { id = item.AssignedPlanID })" class="neumorphic-button" style="color: #EF4444;">🗑️ Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" class="text-center text-muted">🔍 No assigned plans found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

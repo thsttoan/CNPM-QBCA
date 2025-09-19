@@ -1,0 +1,115 @@
+﻿@model QBCA.Models.TaskAssignment
+@{
+    ViewBag.Title = "Task Details";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        max-width: 480px;
+        margin: auto;
+    }
+
+    .neumorphic-label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 7px;
+        margin-left: 2px;
+        display: block;
+        letter-spacing: 0.02em;
+    }
+
+    .neumorphic-text {
+        border: none;
+        background: #f2f3f7;
+        border-radius: 12px;
+        padding: 14px 20px;
+        box-shadow: inset 6px 6px 10px #d1d9e6, inset -6px -6px 10px #ffffff;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+        margin-bottom: 22px;
+        color: #333;
+    }
+
+    .neumorphic-button {
+        background-color: #4F46E5;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+        transition: 0.2s;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-size: 1.13rem;
+    }
+
+        .neumorphic-button:hover {
+            background-color: #3730A3;
+        }
+
+    .btn-cancel {
+        font-weight: 500;
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+    }
+</style>
+
+<section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 120px;">
+    <div class="neumorphic-box">
+        <h3 class="text-center fw-bold mb-4 text-dark">
+            <span style="color:#6d82f3;"><i class="fas fa-info-circle"></i></span> Task Details
+        </h3>
+
+        <!-- Task Info Display -->
+        <label class="neumorphic-label">Task ID</label>
+        <div class="neumorphic-text">@Model.AssignmentID</div>
+
+        <label class="neumorphic-label">Title</label>
+        <div class="neumorphic-text">@Model.ExamPlan?</div>
+
+        <label class="neumorphic-label">Description</label>
+        <div class="neumorphic-text">@Model.Description</div>
+
+        <label class="neumorphic-label">Assigned By</label>
+        <div class="neumorphic-text">@Model.Assigner?.FullName ?</div>
+
+        <label class="neumorphic-label">Role</label>
+        <div class="neumorphic-text">@Model.Assigner?.Role ?</div>
+
+        <label class="neumorphic-label">Deadline</label>
+        <div class="neumorphic-text">@Model.DueDate?.ToString("dd/MM/yyyy") </div>
+
+        <label class="neumorphic-label">Status</label>
+        <div class="neumorphic-text">@Model.Status</div>
+
+        <label class="neumorphic-label">Distribution</label>
+        <div class="neumorphic-text">@Model.Distribution?.ToString() </div>
+
+        <label class="neumorphic-label">Exam Plan Note</label>
+        <div class="neumorphic-text">@Model.ExamPlan?.ToString()  </div>
+
+        <!-- Status Update Form -->
+        <form asp-action="UpdateStatus" asp-controller="MyTask" method="post">
+            <input type="hidden" name="id" value="@Model.AssignmentID" />
+            <label class="neumorphic-label" for="newStatus">Update Status</label>
+            <select name="newStatus" class="neumorphic-text" id="newStatus">
+                <option value="Pending" @(Model.Status == "Pending" ? "selected" : "")>Pending</option>
+                <option value="In Progress" @(Model.Status == "In Progress" ? "selected" : "")>In Progress</option>
+                <option value="Completed" @(Model.Status == "Completed" ? "selected" : "")>Completed</option>
+            </select>
+            <button type="submit" class="neumorphic-button">Update Status</button>
+        </form>
+
+        <a href="@Url.Action("MyTasks", "MyTask")" class="btn btn-link btn-cancel">← Back to My Tasks</a>
+    </div>
+</section>

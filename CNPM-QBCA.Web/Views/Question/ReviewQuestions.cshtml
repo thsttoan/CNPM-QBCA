@@ -1,4 +1,4 @@
-﻿@model List<QBCA.Models.Question>
+@model List<QBCA.Models.Question>
 @{
     ViewBag.Title = "Review Questions";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
@@ -15,12 +15,13 @@
                 <thead>
                     <tr>
                         <th style="width:7%;">ID</th>
-                        <th style="width:28%;">Content</th>
+                        <th style="width:20%;">Content</th>
                         <th style="width:13%;">Subject</th>
                         <th style="width:13%;">CLO</th>
                         <th style="width:10%;">Difficulty</th>
                         <th style="width:13%;">Created By</th>
                         <th style="width:12%;">Created At</th>
+                        <th style="width:12%;">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,13 +37,14 @@
                                 <td>@q.DifficultyLevel?.LevelName</td>
                                 <td>@q.Creator?.FullName</td>
                                 <td>@q.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>@q.Status</td>
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">
+                            <td colspan="8" class="text-center py-4 text-muted">
                                 <i class="fas fa-folder-open fa-lg mb-2"></i><br />
                                 <span style="font-size:1.11rem;">No questions found.</span>
                             </td>

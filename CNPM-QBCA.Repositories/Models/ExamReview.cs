@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CNPM_QBCA.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace QBCA.Models
@@ -26,5 +27,7 @@ namespace QBCA.Models
 
         // (optional) Thêm thời gian review nếu muốn đồng bộ với các chỗ khác
         public DateTime? ReviewedAt { get; set; }
+        public virtual ICollection<TaskModel> Tasks { get; set; } = new List<TaskModel>();
+
     }
 }

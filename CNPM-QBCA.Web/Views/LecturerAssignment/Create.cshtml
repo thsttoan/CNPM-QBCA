@@ -1,0 +1,105 @@
+﻿@model QBCA.Models.LecturerAssignment
+@{
+    ViewBag.Title = "Assigned To Lecturers";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .form-card {
+        background: #f5f7fc;
+        border-radius: 22px;
+        padding: 35px;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 12px 12px 24px #d1d9e6, -12px -12px 24px #ffffff;
+    }
+
+    .form-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #2e3369;
+        margin-bottom: 24px;
+        text-align: center;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        display: block;
+        color: #343a40;
+    }
+
+    .form-input, .form-select {
+        width: 100%;
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 14px;
+        background: #f5f7fc;
+        box-shadow: inset 6px 6px 12px #d1d9e6, inset -6px -6px 12px #ffffff;
+        font-size: 1rem;
+    }
+
+    .form-submit {
+        width: 100%;
+        background-color: #5c6bf2;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        margin-top: 8px;
+        box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+        transition: background 0.2s ease;
+    }
+
+        .form-submit:hover {
+            background-color: #4754d8;
+        }
+
+    .form-cancel {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+        font-weight: 500;
+        color: #6d82f3;
+        text-decoration: none;
+    }
+
+        .form-cancel:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<section class="bg-light" style="min-height: 85vh; display: flex; align-items: center;">
+    <div style="margin: 0 auto;">
+        <div class="form-card">
+            <h2 class="form-title">
+                <i class="fas fa-tasks me-2" style="color: #6d82f3;"></i>Assign New Task
+            </h2>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <label class="form-label" for="AssignedTo">Assign To</label>
+                @Html.DropDownListFor(m => m.AssignedTo, new SelectList(new[] { "Lecturer" }), "Select User", new { @class = "form-select", id = "AssignedTo" })
+
+                <label class="form-label" for="TaskType">Task Type</label>
+                @Html.DropDownListFor(m => m.TaskType, new SelectList(new[] { "Review Exam", "Check Difficulty", "Write Feedback" }), "Select Task Type", new { @class = "form-select", id = "TaskType" })
+
+                <label class="form-label" for="Status">Status</label>
+                @Html.DropDownListFor(m => m.Status, new SelectList(new[] { "Pending", "In Progress", "Completed" }), "Select Status", new { @class = "form-select", id = "Status" })
+
+                <label class="form-label" for="DueDate">Due Date</label>
+                @Html.TextBoxFor(m => m.DueDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-input", id = "DueDate" })
+
+                <button type="submit" class="form-submit">Create</button>
+                <a href="@Url.Action("AssignToLecturers", "LecturerAssignment")" class="form-cancel">Cancel</a>
+            }
+        </div>
+    </div>
+</section>
+
+

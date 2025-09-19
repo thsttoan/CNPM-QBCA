@@ -1,0 +1,188 @@
+@model QBCA.Models.ExamCreateViewModel
+@{
+    ViewBag.Title = "Edit Exam";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        max-width: 650px;
+        margin: auto;
+    }
+
+    .neumorphic-label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 7px;
+        margin-left: 2px;
+        display: block;
+        letter-spacing: 0.02em;
+    }
+
+    .neumorphic-input, .neumorphic-select, .neumorphic-textarea {
+        border: none;
+        outline: none;
+        background: #f2f3f7;
+        border-radius: 12px;
+        padding: 14px 20px;
+        box-shadow: inset 6px 6px 10px #d1d9e6, inset -6px -6px 10px #ffffff;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px;
+        margin-bottom: 22px;
+    }
+
+    .neumorphic-button {
+        background-color: #4F46E5;
+        color: white;
+        padding: 12px 25px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+        transition: 0.2s;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-size: 1.13rem;
+    }
+
+        .neumorphic-button:hover {
+            background-color: #3730A3;
+        }
+
+    .text-danger {
+        color: red;
+        font-size: 0.9em;
+    }
+
+    .question-label {
+        margin-top: 14px;
+    }
+</style>
+
+<section class="min-vh-100 d-flex align-items-start justify-content-center bg-light" style="padding-top: 120px;">
+    <div class="neumorphic-box">
+        <h3 class="text-center fw-bold mb-4 text-dark">
+            <span style="color:#6d82f3;"><i class="fas fa-edit"></i></span> Edit Exam
+        </h3>
+
+        @using (Html.BeginForm("Edit", "Exam", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.ExamID)
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger small" })
+
+            <label class="neumorphic-label" for="Title">Exam Title</label>
+            @Html.TextBoxFor(m => m.Title, new { @class = "neumorphic-input", placeholder = "Enter exam title", required = "required" })
+            @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger small" })
+
+            <label class="neumorphic-label" for="StartDate">Start Date</label>
+            @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}", new { @class = "neumorphic-input", type = "date", required = "required" })
+            @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger small" })
+
+            <label class="neumorphic-label" for="EndDate">End Date</label>
+            @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}", new { @class = "neumorphic-input", type = "date", required = "required" })
+            @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger small" })
+
+            <label class="neumorphic-label" for="DistributionID">Exam Distribution</label>
+            @Html.DropDownListFor(m => m.DistributionID,
+            new SelectList(ViewBag.Distributions, "DistributionID", "DistributionID", Model.DistributionID),
+                "Select Distribution",
+                new { @class = "neumorphic-select", id = "DistributionID", required = "required" })
+        @Html.ValidationMessageFor(m => m.DistributionID, "", new { @class = "text-danger small" })
+
+        <div id="questionSlots"></div>
+        @Html.ValidationMessageFor(m => m.QuestionIDs, "", new { @class = "text-danger small" })
+
+        <label class="neumorphic-label" for="Description">Description</label>
+        @Html.TextAreaFor(m => m.Description, 4, 40, new { @class = "neumorphic-textarea", placeholder = "Enter any notes or description" })
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger small" })
+
+        <button type="submit" class="neumorphic-button">Update Exam</button>
+        <a href="@Url.Action("SubmittedExams", "Exam")" class="btn btn-link w-100 text-center" style="font-weight:500;">Cancel</a>
+                }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        const distributions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Distributions));
+        const questions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Questions ?? new List<object>()));
+        const selectedQuestionIDs = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.QuestionIDs ?? new List<int>()));
+
+        function stripHtml(html) {
+            let div = document.createElement("div");
+            div.innerHTML = html;
+            return div.textContent || div.innerText || "";
+        }
+
+        function renderQuestionSlots(distributionID) {
+            const selectedDist = distributions.find(d => d.DistributionID === distributionID);
+            const container = document.getElementById("questionSlots");
+            container.innerHTML = "";
+
+            if (!selectedDist || !Array.isArray(questions) || questions.length === 0) {
+                container.innerHTML = '<div class="text-danger small">⚠️ The list of questions has not been loaded.</div>';
+                return;
+            }
+
+            const numQuestions = selectedDist.NumberOfQuestions;
+            const selectedIDsSet = new Set();
+
+            for (let i = 0; i < numQuestions; i++) {
+                const label = document.createElement("label");
+                label.className = "neumorphic-label question-label";
+                label.innerText = `Question ${i + 1}`;
+
+                const select = document.createElement("select");
+                select.name = "QuestionIDs[]";
+                select.className = "neumorphic-select mb-2";
+                select.required = true;
+
+                const defaultOption = document.createElement("option");
+                defaultOption.text = "Select a question";
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                select.appendChild(defaultOption);
+
+                questions.forEach(q => {
+                    const option = document.createElement("option");
+                    option.value = q.QuestionID;
+                    option.text = stripHtml(q.Content).substring(0, 77) + (q.Content.length > 80 ? "..." : "");
+
+                    // Check if this question is selected in same slot
+                    if (selectedQuestionIDs[i] && selectedQuestionIDs[i] === q.QuestionID) {
+                        option.selected = true;
+                        defaultOption.selected = false;
+                        selectedIDsSet.add(q.QuestionID);
+                    }
+                    select.appendChild(option);
+                });
+
+                container.appendChild(label);
+                container.appendChild(select);
+            }
+        }
+
+        document.getElementById("DistributionID").addEventListener("change", function () {
+            const distID = parseInt(this.value);
+            if (!isNaN(distID)) {
+                renderQuestionSlots(distID);
+            }
+        });
+
+        window.onload = function () {
+            const currentDistID = parseInt(document.getElementById("DistributionID").value);
+            if (!isNaN(currentDistID)) {
+                renderQuestionSlots(currentDistID);
+            }
+        };
+    </script>
+}

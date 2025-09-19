@@ -6,6 +6,8 @@ namespace QBCA.Models
 {
     public class ExamCreateViewModel
     {
+        public int ExamID { get; set; }
+
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
 

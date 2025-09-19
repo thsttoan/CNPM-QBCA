@@ -4,6 +4,1513 @@
     "title": "CNPM-QBCA.Web",
     "version": "1.0"
   },
-  "paths": { },
-  "components": { }
+  "paths": {
+    "/Exam/MockExam": {
+      "get": {
+        "tags": [
+          "Exam"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Exam"
+        ],
+        "parameters": [
+          {
+            "name": "AssignmentID",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ExamTitle",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Questions",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Question"
+              }
+            }
+          },
+          {
+            "name": "Answers",
+            "in": "query",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "Feedback",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssignedPlan": {
+        "required": [
+          "assignedByID",
+          "assignedToID",
+          "deadline",
+          "distributionID",
+          "examPlanID",
+          "status",
+          "taskType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlanID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlan": {
+            "$ref": "#/components/schemas/ExamPlan"
+          },
+          "distributionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "distribution": {
+            "$ref": "#/components/schemas/ExamPlanDistribution"
+          },
+          "assignedToID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignedTo": {
+            "$ref": "#/components/schemas/User"
+          },
+          "assignedByID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignedBy": {
+            "$ref": "#/components/schemas/User"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assignedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskType": {
+            "$ref": "#/components/schemas/TaskTypeEnum"
+          },
+          "status": {
+            "$ref": "#/components/schemas/AssignedPlanStatus"
+          },
+          "finalApprovedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "finalFeedback": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssignedPlanStatus": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "CLO": {
+        "required": [
+          "code",
+          "description",
+          "subjectID"
+        ],
+        "type": "object",
+        "properties": {
+          "cloid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subjectID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "code": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DifficultyLevel": {
+        "required": [
+          "levelName",
+          "subjectID"
+        ],
+        "type": "object",
+        "properties": {
+          "difficultyLevelID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subjectID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "levelName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DuplicateCheckResult": {
+        "type": "object",
+        "properties": {
+          "checkID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "similarQuestionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "similarityScore": {
+            "type": "number",
+            "format": "double"
+          },
+          "checkType": {
+            "type": "string",
+            "nullable": true
+          },
+          "checkedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "question": {
+            "$ref": "#/components/schemas/Question"
+          },
+          "similarQuestion": {
+            "$ref": "#/components/schemas/Question"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Exam": {
+        "required": [
+          "distributionID",
+          "endDate",
+          "examQuestions",
+          "startDate",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "examID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "distributionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlanDistribution": {
+            "$ref": "#/components/schemas/ExamPlanDistribution"
+          },
+          "submitDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "submittedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "submitter": {
+            "$ref": "#/components/schemas/User"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "examQuestions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamQuestion"
+            }
+          },
+          "approveTasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamApproveTask"
+            },
+            "nullable": true
+          },
+          "description": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "examPlanID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExamApproveTask": {
+        "type": "object",
+        "properties": {
+          "examApproveTaskID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exam": {
+            "$ref": "#/components/schemas/Exam"
+          },
+          "assignedToUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignedTo": {
+            "$ref": "#/components/schemas/User"
+          },
+          "assignedByUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignedBy": {
+            "$ref": "#/components/schemas/User"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "feedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "approvedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isFinalVersion": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExamPlan": {
+        "required": [
+          "name",
+          "subjectID"
+        ],
+        "type": "object",
+        "properties": {
+          "examPlanID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subjectID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdByUser": {
+            "$ref": "#/components/schemas/User"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "distributions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamPlanDistribution"
+            },
+            "nullable": true
+          },
+          "submissionTables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionTable"
+            },
+            "nullable": true
+          },
+          "examQuestions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamQuestion"
+            },
+            "nullable": true
+          },
+          "taskAssignments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExamPlanDistribution": {
+        "required": [
+          "difficultyLevelID",
+          "examPlanID",
+          "numberOfQuestions"
+        ],
+        "type": "object",
+        "properties": {
+          "distributionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlanID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlan": {
+            "$ref": "#/components/schemas/ExamPlan"
+          },
+          "difficultyLevelID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "difficultyLevel": {
+            "$ref": "#/components/schemas/DifficultyLevel"
+          },
+          "numberOfQuestions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignedManagerRoleID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "assignedManagerRole": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "exam": {
+            "$ref": "#/components/schemas/Exam"
+          },
+          "taskAssignments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "nullable": true
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExamQuestion": {
+        "required": [
+          "examID",
+          "examPlanID",
+          "questionID"
+        ],
+        "type": "object",
+        "properties": {
+          "examQuestionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlanID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "questionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approved": {
+            "type": "boolean"
+          },
+          "comment": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "examPlan": {
+            "$ref": "#/components/schemas/ExamPlan"
+          },
+          "question": {
+            "$ref": "#/components/schemas/Question"
+          },
+          "examReviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamReview"
+            },
+            "nullable": true
+          },
+          "exam": {
+            "$ref": "#/components/schemas/Exam"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExamReview": {
+        "required": [
+          "examQuestionID",
+          "reviewerID",
+          "reviewResult"
+        ],
+        "type": "object",
+        "properties": {
+          "reviewID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examQuestionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewerID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewResult": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "reviewNotes": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "examQuestion": {
+            "$ref": "#/components/schemas/ExamQuestion"
+          },
+          "reviewer": {
+            "$ref": "#/components/schemas/User"
+          },
+          "reviewedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "loginID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "passwordHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastLogin": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MockExam": {
+        "type": "object",
+        "properties": {
+          "mockExamID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignmentID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lecturerID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "answersJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "feedback": {
+            "type": "string",
+            "nullable": true
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MockExamAnswer"
+            },
+            "nullable": true
+          },
+          "feedbacks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MockFeedback"
+            },
+            "nullable": true
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MockQuestion"
+            },
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskModel"
+            },
+            "nullable": true
+          },
+          "taskAssignment": {
+            "$ref": "#/components/schemas/TaskAssignment"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MockExamAnswer": {
+        "type": "object",
+        "properties": {
+          "mockExamAnswerID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mockExamId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lecturerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "answerJson": {
+            "type": "string",
+            "nullable": true
+          },
+          "submittedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "mockExam": {
+            "$ref": "#/components/schemas/MockExam"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MockFeedback": {
+        "type": "object",
+        "properties": {
+          "mockFeedbackID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mockExamId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lecturerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "comments": {
+            "type": "string",
+            "nullable": true
+          },
+          "feedbackDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskModel"
+            },
+            "nullable": true
+          },
+          "mockExam": {
+            "$ref": "#/components/schemas/MockExam"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MockQuestion": {
+        "type": "object",
+        "properties": {
+          "mockQuestionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mockExamId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mockExam": {
+            "$ref": "#/components/schemas/MockExam"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "optionA": {
+            "type": "string",
+            "nullable": true
+          },
+          "optionB": {
+            "type": "string",
+            "nullable": true
+          },
+          "optionC": {
+            "type": "string",
+            "nullable": true
+          },
+          "optionD": {
+            "type": "string",
+            "nullable": true
+          },
+          "correctAnswer": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "notificationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "relatedEntityType": {
+            "type": "string",
+            "nullable": true
+          },
+          "relatedEntityID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "createdByUser": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Question": {
+        "required": [
+          "cloid",
+          "content",
+          "createdAt",
+          "createdBy",
+          "difficultyLevelID",
+          "status",
+          "subjectID"
+        ],
+        "type": "object",
+        "properties": {
+          "questionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subjectID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "cloid": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "difficultyLevelID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "maxLength": 2000,
+            "minLength": 0,
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "submissionID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "submissionTable": {
+            "$ref": "#/components/schemas/SubmissionTable"
+          },
+          "subject": {
+            "$ref": "#/components/schemas/Subject"
+          },
+          "clo": {
+            "$ref": "#/components/schemas/CLO"
+          },
+          "difficultyLevel": {
+            "$ref": "#/components/schemas/DifficultyLevel"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/User"
+          },
+          "examQuestions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamQuestion"
+            },
+            "nullable": true
+          },
+          "duplicateCheckResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuplicateCheckResult"
+            },
+            "nullable": true
+          },
+          "similarQuestions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DuplicateCheckResult"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Role": {
+        "required": [
+          "roleName"
+        ],
+        "type": "object",
+        "properties": {
+          "roleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roleName": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Subject": {
+        "required": [
+          "status",
+          "subjectName"
+        ],
+        "type": "object",
+        "properties": {
+          "subjectID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subjectName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/User"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "clOs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CLO"
+            },
+            "nullable": true
+          },
+          "examPlans": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamPlan"
+            },
+            "nullable": true
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            },
+            "nullable": true
+          },
+          "difficultyLevels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DifficultyLevel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubmissionApproval": {
+        "required": [
+          "approvedBy",
+          "assignedPlanID",
+          "status",
+          "submissionTableID"
+        ],
+        "type": "object",
+        "properties": {
+          "submissionApprovalID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "submissionTableID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "submissionTable": {
+            "$ref": "#/components/schemas/SubmissionTable"
+          },
+          "assignedPlanID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignedPlan": {
+            "$ref": "#/components/schemas/AssignedPlan"
+          },
+          "approvedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "approver": {
+            "$ref": "#/components/schemas/User"
+          },
+          "approvedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
+          },
+          "feedback": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubmissionTable": {
+        "required": [
+          "createdAt",
+          "createdBy",
+          "planID"
+        ],
+        "type": "object",
+        "properties": {
+          "submissionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "planID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlan": {
+            "$ref": "#/components/schemas/ExamPlan"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/User"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finalStatus": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "reviewerComment": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "approvedBy": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "approver": {
+            "$ref": "#/components/schemas/User"
+          },
+          "approvedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "duplicateRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "duplicateReport": {
+            "type": "string",
+            "nullable": true
+          },
+          "questions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            },
+            "nullable": true
+          },
+          "submissionApprovals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionApproval"
+            },
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskAssignment": {
+        "required": [
+          "assignedTo",
+          "description",
+          "distributionID",
+          "examPlanID",
+          "status",
+          "taskType"
+        ],
+        "type": "object",
+        "properties": {
+          "assignmentID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlanID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "examPlan": {
+            "$ref": "#/components/schemas/ExamPlan"
+          },
+          "distributionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "distribution": {
+            "$ref": "#/components/schemas/ExamPlanDistribution"
+          },
+          "assignedBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assigner": {
+            "$ref": "#/components/schemas/User"
+          },
+          "assignedTo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignee": {
+            "$ref": "#/components/schemas/User"
+          },
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskType": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "description": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "assignedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dueDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskModel": {
+        "type": "object",
+        "properties": {
+          "taskModelId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedTo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "assignee": {
+            "$ref": "#/components/schemas/User"
+          },
+          "createdBy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "creator": {
+            "$ref": "#/components/schemas/User"
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assignedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "nullable": true
+          },
+          "taskType": {
+            "type": "string",
+            "nullable": true
+          },
+          "notificationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "notification": {
+            "$ref": "#/components/schemas/Notification"
+          },
+          "examPlanID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "examPlan": {
+            "$ref": "#/components/schemas/ExamPlan"
+          },
+          "distributionID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "distribution": {
+            "$ref": "#/components/schemas/ExamPlanDistribution"
+          },
+          "examReviewID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "examReview": {
+            "$ref": "#/components/schemas/ExamReview"
+          },
+          "mockExamID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "mockExam": {
+            "$ref": "#/components/schemas/MockExam"
+          },
+          "feedbackID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "feedback": {
+            "$ref": "#/components/schemas/MockFeedback"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaskTypeEnum": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "userID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "passwordHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "roleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          },
+          "taskAssignmentsAssigned": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "nullable": true
+          },
+          "taskAssignmentsReceived": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "nullable": true
+          },
+          "subjectsCreated": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subject"
+            },
+            "nullable": true
+          },
+          "examPlansCreated": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamPlan"
+            },
+            "nullable": true
+          },
+          "examReviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamReview"
+            },
+            "nullable": true
+          },
+          "questionsCreated": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            },
+            "nullable": true
+          },
+          "submissionTablesCreated": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionTable"
+            },
+            "nullable": true
+          },
+          "submissionApprovals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubmissionApproval"
+            },
+            "nullable": true
+          },
+          "notifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            },
+            "nullable": true
+          },
+          "logins": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Login"
+            },
+            "nullable": true
+          },
+          "tasksAssigned": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskModel"
+            },
+            "nullable": true
+          },
+          "tasksCreated": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskModel"
+            },
+            "nullable": true
+          },
+          "assignedTasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExamApproveTask"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }

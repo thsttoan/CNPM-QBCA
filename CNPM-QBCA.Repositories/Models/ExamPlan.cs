@@ -23,5 +23,7 @@ namespace QBCA.Models
         public ICollection<SubmissionTable> SubmissionTables { get; set; } = new List<SubmissionTable>();
         public ICollection<ExamQuestion> ExamQuestions { get; set; } = new List<ExamQuestion>();
         public ICollection<TaskAssignment> TaskAssignments { get; set; } = new List<TaskAssignment>();
+
+        public string Title { get; set; } = string.Empty;
     }
 }

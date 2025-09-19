@@ -1,0 +1,168 @@
+﻿@model List<QBCA.Models.TaskAssignment>
+@{
+    ViewBag.Title = "My Tasks";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">My Tasks</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">View and manage your assigned tasks here.</div>
+        </div>
+
+        <div class="table-container">
+            <table class="table subject-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:10%;">Task ID</th>
+                        <th style="width:20%;">Title</th>
+                        <th style="width:30%;">Assigned By</th>
+                        <th style="width:15%;">Deadline</th>
+                        <th style="width:15%;">Status</th>
+                        <th style="width:10%;">Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var task in Model)
+                        {
+                            <tr>
+                                <td>@task.AssignmentID</td>
+                                <td>@task.Description</td>
+                                <td>@task.Assigner?.FullName</td>
+                                <td>@(task.DueDate?.ToString("dd/MM/yyyy") ?? "N/A")</td>
+                                <td class="fw-semibold">@task.Status</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Details", "MyTask", new { id = task.AssignmentID })">Details</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <i class="fas fa-tasks fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">No tasks assigned to you.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .subject-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.15rem;
+            min-width: 650px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.18rem;
+                text-align: left;
+                padding: 14px 24px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 12px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 12px;
+                }
+
+            .subject-table tbody tr:last-child td:first-child {
+                border-bottom-left-radius: 12px;
+            }
+
+            .subject-table tbody tr:last-child td:last-child {
+                border-bottom-right-radius: 12px;
+            }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+                transition: background 0.2s ease;
+            }
+
+                .subject-table tbody tr:hover {
+                    background-color: #eef0f6;
+                }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 14px 24px;
+                font-size: 1.13rem;
+            }
+
+        .badge {
+            font-size: 1.09em;
+            border-radius: 6px;
+            padding: 0.54em 1.1em;
+            font-weight: 500;
+        }
+
+        .bg-success {
+            background-color: #28a745 !important;
+            color: #fff;
+        }
+
+        .bg-warning {
+            background-color: #ffc107 !important;
+            color: #212529;
+        }
+
+        .bg-secondary {
+            background-color: #6c757d !important;
+            color: #fff;
+        }
+
+        .btn {
+            font-size: 1.09em;
+        }
+
+        @@media (max-width: 900px) {
+            .main-content-area, .table-container {
+                margin-left: 4vw !important;
+                margin-right: 4vw !important;
+            }
+
+            .subject-table {
+                font-size: 1rem;
+            }
+
+                .subject-table thead tr th,
+                .subject-table td {
+                    font-size: 1rem;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                }
+        }
+    </style>
+}

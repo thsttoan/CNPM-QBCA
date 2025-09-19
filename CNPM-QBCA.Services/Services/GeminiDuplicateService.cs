@@ -33,14 +33,14 @@ namespace QBCA.Services
             var result = await resp.Content.ReadAsStringAsync();
             var obj = JObject.Parse(result);
             var arr = obj["embedding"]?["values"];
-            if (arr == null) throw new System.Exception("Không nhận được embedding từ Gemini API.");
+            if (arr == null) throw new System.Exception("Not receiving embedding from Gemini API.");
             return arr.Select(v => (float)v).ToArray();
         }
 
         public static double CosineSimilarity(float[] vectorA, float[] vectorB)
         {
             if (vectorA.Length != vectorB.Length)
-                throw new System.Exception("Embedding có độ dài khác nhau.");
+                throw new System.Exception("Embeddings come in different lengths.");
 
             double dot = 0.0;
             double magA = 0.0;

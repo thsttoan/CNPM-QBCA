@@ -1,0 +1,76 @@
+﻿@model CNPM_QBCA.ViewModels.ApproveExamDetailViewModel
+
+@{
+    ViewBag.Title = "Approve Exam Details";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <h2 class="fw-bold mb-3" style="font-size: 2rem;">Phê duyệt đề thi: @Model.Task.Exam.Title</h2>
+
+    <div class="mb-4">
+        <h5>📌 Thông tin nhiệm vụ:</h5>
+        <ul class="list-unstyled">
+            <li><strong>Trạng thái:</strong> <span class="badge bg-@(Model.Task.Status == "Approved" ? "success" : Model.Task.Status == "Rejected" ? "danger" : "warning")">@Model.Task.Status</span></li>
+            <li><strong>Giao bởi:</strong> @Model.Task.AssignedBy.FullName</li>
+            <li><strong>Ngày giao:</strong> @Model.Task.AssignedDate.ToString("dd/MM/yyyy")</li>
+        </ul>
+    </div>
+
+    @if (Model.Submission != null && Model.Submission.Questions.Any())
+    {
+        <h5 class="mb-3">📚 Danh sách câu hỏi trong đề:</h5>
+        <table class="table table-bordered">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Nội dung</th>
+                    <th>Độ khó</th>
+                    <th>Người tạo</th>
+                    <th>Ngày tạo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var q in Model.Submission.Questions)
+                {
+                    <tr>
+                        <td>@q.QuestionID</td>
+                        <td>@q.Content</td>
+                        <td>@q.DifficultyLevelID</td>
+                        <td>@q.Creator?.FullName</td>
+                        <td>@q.CreatedAt.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning">Không tìm thấy câu hỏi nào trong đề thi.</div>
+    }
+
+    <hr class="my-4" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Approve" method="post">
+                <input type="hidden" name="id" value="@Model.Task.ExamApproveTaskID" />
+                <div class="mb-3">
+                    <label class="form-label">Nhận xét (nếu có):</label>
+                    <textarea name="feedback" class="form-control" rows="4" placeholder="Nhập nhận xét trước khi phê duyệt..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">✔️ Phê duyệt đề thi</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="Reject" method="post">
+                <input type="hidden" name="id" value="@Model.Task.ExamApproveTaskID" />
+                <div class="mb-3">
+                    <label class="form-label">Lý do từ chối:</label>
+                    <textarea name="feedback" class="form-control" rows="4" placeholder="Nhập lý do từ chối..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger">❌ Từ chối đề thi</button>
+            </form>
+        </div>
+    </div>
+</div>

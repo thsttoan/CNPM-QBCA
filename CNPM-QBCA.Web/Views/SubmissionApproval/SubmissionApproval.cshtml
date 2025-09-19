@@ -1,0 +1,147 @@
+﻿@model IEnumerable<QBCA.ViewModels.SubmissionApprovalViewModel>
+@{
+    ViewBag.Title = "Submission Approvals";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-table {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        margin: 50px auto;
+        max-width: 95%;
+        font-size: 18px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #e0e5ec;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9fc;
+    }
+
+    .badge {
+        padding: 6px 14px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+        .badge.approved {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+    .action-links a {
+        margin: 0 5px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .text-muted {
+        color: #6b7280;
+        font-size: 17px;
+        padding: 20px;
+    }
+
+    h3 {
+        color: #4F46E5;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+</style>
+
+<div class="neumorphic-table">
+    <h3>📄 Submission Approvals</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Submission</th>
+                <th>Subject</th>
+                <th>Status</th>
+                <th>Approved By</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                int index = 1;
+                foreach (var item in Model)
+                {
+                    var statusLower = item.Status?.ToLower() ?? "pending";
+                    <tr>
+                        <td>@(index++)</td>
+                        <td>@item.SubmissionTitle</td>
+                        <td>@item.SubjectName</td>
+                        <td>
+                            <span class="badge @statusLower" title="Status: @item.Status">
+                                @item.Status
+                            </span>
+                        </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ApprovedByName))
+                            {
+                                <span title="Approved on @item.ApprovedDate?.ToString("dd/MM/yyyy")">
+                                    @item.ApprovedByName
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </td>
+                        <td>
+                            @(item.ApprovedDate.HasValue? item.ApprovedDate.Value.ToString("dd/MM/yyyy") : "—")
+                        </td>
+                        <td class="action-links">
+                            <a href="@Url.Action("Details", "SubmissionApproval", new { id = item.SubmissionApprovalID })">👁 View</a>
+                            <a href="@Url.Action("Edit", "SubmissionApproval", new { id = item.SubmissionApprovalID })">✏️ Edit</a>
+                            <a href="@Url.Action("Delete", "SubmissionApproval", new { id = item.SubmissionApprovalID })" style="color:red;">❌ Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted">
+                        🔍 No submissions pending approval at the moment.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,94 @@
+﻿@model QBCA.ViewModels.AssignTaskViewModel
+@{
+    ViewBag.Title = "Task Details";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 50px;
+        margin: 60px auto;
+        max-width: 700px;
+        font-size: 18px;
+    }
+
+    .detail-item {
+        margin-bottom: 25px;
+    }
+
+    .label {
+        font-weight: 700;
+        font-size: 20px;
+        color: #4F46E5;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .value {
+        font-size: 18px;
+        color: #333;
+        margin-left: 10px;
+    }
+
+    .btn-action {
+        background: #4F46E5;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 14px;
+        font-weight: 600;
+        font-size: 16px;
+        text-decoration: none;
+        margin-right: 10px;
+        box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+        transition: background 0.3s ease;
+    }
+
+        .btn-action:hover {
+            background: #3730A3;
+        }
+
+    .btn-secondary {
+        background: #9ca3af;
+    }
+
+        .btn-secondary:hover {
+            background: #6b7280;
+        }
+</style>
+
+<div class="neumorphic-box">
+    <h3 style="color: #4F46E5; font-size: 28px; font-weight: bold; margin-bottom: 35px; text-align: center;">📋 Task Details</h3>
+
+    <div class="detail-item">
+        <span class="label">Task Title:</span>
+        <span class="value">@Model.TaskType</span>
+    </div>
+
+    <div class="detail-item">
+        <span class="label">Assigned To:</span>
+        <span class="value">@Model.AssignedToName</span>
+    </div>
+
+    <div class="detail-item">
+        <span class="label">Status:</span>
+        <span class="value">@Model.Status</span>
+    </div>
+
+    <div class="detail-item">
+        <span class="label">Deadline:</span>
+        <span class="value">@Model.Deadline.ToString("dd/MM/yyyy")</span>
+    </div>
+
+    <div class="detail-item">
+        <span class="label">Assigned At:</span>
+        <span class="value">@Model.AssignedAt.ToString("dd/MM/yyyy")</span>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <a href="@Url.Action("Edit", "AssignTask", new { id = Model.TaskID })" class="btn-action">✏️ Edit</a>
+        <a href="@Url.Action("Index", "AssignTask")" class="btn-action btn-secondary">🔙 Back to List</a>
+    </div>
+</div>

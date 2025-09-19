@@ -34,5 +34,7 @@ namespace QBCA.Models
         public string DuplicateReport { get; set; }
 
         public ICollection<Question> Questions { get; set; } = new List<Question>();
+        public ICollection<SubmissionApproval> SubmissionApprovals { get; set; } = new List<SubmissionApproval>();
+        public string Status { get; set; }
     }
 }

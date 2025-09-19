@@ -1,0 +1,141 @@
+﻿@using QBCA.ViewModels
+@model QBCA.ViewModels.AssignedPlanViewModel
+@{
+    ViewBag.Title = "Assigned Plan Details";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 17px;
+    }
+
+    .neumorphic-box {
+        background: #f2f3f7;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        max-width: 720px;
+        margin: 100px auto;
+    }
+
+    h3 {
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: #4F46E5;
+    }
+
+    .neumorphic-label {
+        font-weight: 600;
+        color: #36395A;
+        margin-bottom: 8px;
+        display: block;
+        font-size: 1.05rem;
+    }
+
+    .neumorphic-text {
+        padding: 14px;
+        margin-bottom: 20px;
+        background: #f2f3f7;
+        border-radius: 12px;
+        box-shadow: inset 6px 6px 10px #d1d9e6, inset -6px -6px 10px #ffffff;
+        color: #333;
+        font-size: 1rem;
+    }
+
+    .badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-block;
+        color: white;
+        text-transform: capitalize;
+    }
+
+    .assigned {
+        background-color: #6366F1;
+    }
+
+    .completed {
+        background-color: #10B981;
+    }
+
+    .overdue {
+        background-color: #EF4444;
+    }
+
+    .inprogress {
+        background-color: #F59E0B;
+    }
+
+    .finalapproved {
+        background-color: #2563EB;
+    }
+
+    .rejectedfinal {
+        background-color: #DC2626;
+    }
+
+    .neumorphic-button {
+        padding: 12px 24px;
+        font-size: 1rem;
+        color: #4F46E5;
+        background: #f2f3f7;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
+        transition: all 0.3s ease-in-out;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .neumorphic-button:hover {
+            box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
+            background: #e6e8f0;
+        }
+</style>
+
+<div class="neumorphic-box">
+    <h3 class="text-center mb-4">📄 Assigned Plan Details</h3>
+
+    <label class="neumorphic-label">Subject:</label>
+    <div class="neumorphic-text">@Model.SubjectName</div>
+
+    <label class="neumorphic-label">Assigned To:</label>
+    <div class="neumorphic-text">@Model.AssignedToName</div>
+
+    <label class="neumorphic-label">Assigned By:</label>
+    <div class="neumorphic-text">
+        @(!string.IsNullOrEmpty(Model.AssignedByName) ? Model.AssignedByName : $"User ID: {Model.AssignedByID}")
+    </div>
+
+    <label class="neumorphic-label">Assigned Date:</label>
+    <div class="neumorphic-text">@Model.AssignedDate.ToString("dd/MM/yyyy")</div>
+
+    <label class="neumorphic-label">Deadline:</label>
+    <div class="neumorphic-text">@Model.Deadline.ToString("dd/MM/yyyy")</div>
+
+    <label class="neumorphic-label">Distribution:</label>
+    <div class="neumorphic-text">@Model.DistributionStatus</div>
+
+    <label class="neumorphic-label">Task Type:</label>
+    <div class="neumorphic-text">@Model.TaskType.GetDisplayName()</div>
+
+    <label class="neumorphic-label">Notes:</label>
+    <div class="neumorphic-text">@(!string.IsNullOrEmpty(Model.Notes) ? Model.Notes : "(No notes)")</div>
+
+    <label class="neumorphic-label">Status:</label>
+    @{
+        var statusString = Model.Status.ToString();
+        var statusClass = statusString.Replace(" ", "").ToLower(); // e.g., FinalApproved → finalapproved
+    }
+    <div class="neumorphic-text">
+        <span class="badge @statusClass">@statusString.Replace("Final", "Final ")</span>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Plans", "AssignedPlan")" class="neumorphic-button">← Back to List</a>
+    </div>
+</div>

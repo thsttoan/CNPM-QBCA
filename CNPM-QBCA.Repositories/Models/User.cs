@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CNPM_QBCA.Models;
+using System.Collections.Generic;
 
 namespace QBCA.Models
 {
@@ -20,7 +21,12 @@ namespace QBCA.Models
         public ICollection<ExamReview> ExamReviews { get; set; } = new List<ExamReview>();
         public ICollection<Question> QuestionsCreated { get; set; } = new List<Question>();
         public ICollection<SubmissionTable> SubmissionTablesCreated { get; set; } = new List<SubmissionTable>();
+        public ICollection<SubmissionApproval> SubmissionApprovals { get; set; } = new List<SubmissionApproval>();
+
         public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public ICollection<Login> Logins { get; set; } = new List<Login>();
+        public virtual ICollection<TaskModel> TasksAssigned { get; set; }
+        public virtual ICollection<TaskModel> TasksCreated { get; set; }
+        public ICollection<ExamApproveTask> AssignedTasks { get; set; }
     }
 }

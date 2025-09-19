@@ -1,0 +1,221 @@
+@model List<QBCA.Models.ExamPlan>
+@{
+    ViewBag.Title = "Exam Plan";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Exam Plan</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">Manage all question distribution plans for your subjects here.</div>
+        </div>
+        <div class="table-container">
+            <table class="table subject-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:8%;">Plan ID</th>
+                        <th style="width:15%;">Plan Name</th>
+                        <th style="width:13%;">Subject</th>
+                        <th style="width:15%;">Created By</th>
+                        <th style="width:15%;">Created At</th>
+                        <th style="width:22%;">Distribution Details</th>
+                        <th style="width:7%;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var plan in Model)
+                        {
+                            <tr>
+                                <td>@plan.ExamPlanID</td>
+                                <td>@plan.Name</td>
+                                <td>@plan.Subject?.SubjectName</td>
+                                <td>
+                                    @if (plan.CreatedByUser != null)
+                                    {
+                                        @plan.CreatedByUser.FullName
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Unknown</span>
+                                    }
+                                </td>
+                                <td>@plan.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
+                                @{
+                                    int currentUserId = (int)ViewBag.CurrentUserId;
+                                    var userDistributions = plan.Distributions
+                                    .Where(d => d.AssignedManagerRoleID == currentUserId)
+                                    .ToList();
+                                }
+
+                                <td>
+                                    @if (userDistributions.Any())
+                                    {
+                                        <ul class="mb-0 ps-3" style="font-size:1.08rem; list-style:none; padding-left:0;">
+                                            @foreach (var d in userDistributions)
+                                            {
+                                                <li style="margin-bottom:8px; padding-left:0;">
+                                                    <div>
+                                                        <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
+                                                        <b>Difficulty Level:</b> @d.DifficultyLevel?.LevelName
+                                                    </div>
+                                                    <div>
+                                                        <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
+                                                        <b>Number of Questions:</b> @d.NumberOfQuestions
+                                                    </div>
+                                                    <div>
+                                                        <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
+                                                        <b>Status:</b>
+                                                        <span class="badge bg-secondary ms-1">@d.Status</span>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No distributions assigned to you.</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@plan.Status</span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="fas fa-folder-open fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">No plans found.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Styles {
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
+        }
+
+        .btn-signin-custom {
+            background: #6d82f3;
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            padding: 14px 0;
+            transition: background 0.2s;
+            text-align: center;
+            margin-bottom: 4px;
+            box-shadow: 0 2px 8px #0001;
+            font-size: 1.16rem;
+            font-weight: 600;
+            display: block;
+        }
+
+            .btn-signin-custom:hover, .btn-signin-custom:focus {
+                background: #5a6ed0;
+                color: #fff;
+            }
+
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 20px;
+        }
+
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.17rem;
+            min-width: 900px;
+        }
+
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.18rem;
+                text-align: left;
+                padding-left: 24px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
+                }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
+            }
+
+                .subject-table tbody tr:last-child {
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.88rem 0.8rem 0.88rem 24px;
+                font-size: 1.14rem;
+            }
+
+        .badge {
+            font-size: 1.09em;
+            border-radius: 6px;
+            padding: 0.54em 1.1em;
+            font-weight: 500;
+        }
+
+        .btn {
+            font-size: 1.09em;
+        }
+
+        ul.ps-3 {
+            padding-left: 1.5rem !important;
+        }
+
+        @@media (max-width: 1100px) {
+            .main-content-area, .table-container {
+                margin-left: 2vw !important;
+                margin-right: 2vw !important;
+            }
+
+            .subject-table {
+                font-size: 1rem;
+            }
+
+                .subject-table thead tr th {
+                    font-size: 1rem;
+                    padding-left: 10px;
+                }
+
+                .subject-table td {
+                    padding-left: 10px;
+                    font-size: 1rem;
+                }
+
+            .btn-signin-custom {
+                font-size: 1rem;
+                padding: 12px 0;
+            }
+        }
+    </style>
+}

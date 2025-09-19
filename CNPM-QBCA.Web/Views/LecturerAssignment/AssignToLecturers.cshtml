@@ -1,0 +1,112 @@
+﻿@model List<QBCA.Models.LecturerAssignment>
+@{
+    ViewBag.Title = "Assigned to Lecturers";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="center-container">
+    <div class="neumorphic-card">
+        <h2 class="header-text">Assigned to Lecturers</h2>
+
+        <a href="@Url.Action("Create", "LecturerAssignment")" class="neumorphic-button">
+            Assign New Task To Lecturer 
+        </a>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p class="empty-msg">No lecturer assignments yet.</p>
+        }
+        else
+        {
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Lecturer</th>
+                        <th>Exam Title</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.LecturerName</td>
+                            <td>@item.ExamTitle</td>
+                            <td>@item.Dealine.ToString("dd/MM/yyyy")</td>
+                            <td>@(item.IsReviewed ? "Reviewed" : "Pending")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<style>
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 75vh;
+    }
+
+    .neumorphic-card {
+        background: #f2f3f7;
+        padding: 40px 35px;
+        border-radius: 25px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        max-width: 750px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .header-text {
+        font-weight: 700;
+        font-size: 1.6rem;
+        margin-bottom: 25px;
+        color: #2a2a2a;
+    }
+
+    .neumorphic-button {
+        display: inline-block;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        border-radius: 12px;
+        background: #5f4dee;
+        color: white;
+        box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+
+    .neumorphic-button:hover {
+        background-color: #3d34a5;
+    }
+
+    .empty-msg {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        font-size: 0.95rem;
+    }
+
+    .styled-table thead tr {
+        background-color: #4F46E5;
+        color: white;
+    }
+
+    .styled-table th,
+    .styled-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
