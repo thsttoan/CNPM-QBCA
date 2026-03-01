@@ -1,67 +1,115 @@
 
-    
-![logo_full](https://github.com/user-attachments/assets/1d1ff715-d5e9-4377-88cb-3c420806708b)
+# 📚 CNPM-QBCA: Question Bank Consistency Analyzer
 
+  **Hệ Thống Hỗ Trợ Phân Tích & Quản Lý Tính Đồng Nhất Ngân Hàng Câu Hỏi**
 
-<h1 align="center"><b>CÔNG NGHỆ PHẦN MỀM</b></h1>
-
-# GIỚI THIỆU MÔN HỌC
-* **TÊN MÔN HỌC:** Công Nghệ Phần Mềm
-* **MÃ LỚP:** 010412210502
-* **NĂM HỌC:** HK2 (2024-2025)
-* **GIẢNG VIÊN**: Ths Nguyễn Văn Chiến 
-
-# ĐỒ ÁN 
-* **ĐỀ TÀI:** Phần mềm hỗ trợ kiểm tra trùng lặp ngân hàng câu hỏi
-
-# SINH VIÊN THỰC HIỆN
-* **HỌ VÀ TÊN:** Lê Trung Toàn
-* **MSSV:** 086204004142
+</div>
 
 ---
 
-## 🌟 Tính năng chính – Hệ thống QBCA
-### 🧪 Quản lý Ngân hàng Đề – Nhân viên R&D
-* Tạo môn học, chuẩn đầu ra (CLO), và mức độ khó của câu hỏi.
-* Phân bổ kế hoạch và số lượng câu hỏi cho từng môn học.
-* Kiểm tra trùng lặp câu hỏi giữa các danh sách của giảng viên.
-* Tạo bảng tổng hợp đề nộp để giám sát tiến độ.
-* Xác định tỷ lệ độ khó của đề thi và xuất đề để rà soát.
-* Cập nhật ngân hàng đề dựa trên phản hồi và nhận thông báo liên quan.
-* Nhận thông báo khi tạo môn học thành công và khi có kết quả phê duyệt.
-### 👨‍🏫 Quản lý Đề – Giảng viên
-* Kiểm tra và loại bỏ câu hỏi trùng lặp trong ngân hàng và câu hỏi mới.
-* Tải lên các câu hỏi mới vào ngân hàng đề.
-* Chỉnh sửa hoặc xóa câu hỏi trùng lặp để đảm bảo tính duy nhất.
-* Làm bài thi thử và gửi phản hồi để cải tiến đề thi.
-* Nhận thông báo khi có nhiệm vụ được giao.
-### 🧑‍💼 Điều phối Ngân hàng Đề – Trưởng Bộ môn
-* Nhận thông báo về kế hoạch được giao và tiến độ câu hỏi.
-* Giao nhiệm vụ cho giảng viên để tạo và rà soát câu hỏi.
-* Rà soát và phê duyệt bảng tổng hợp đề thi cuối cùng.
-* Nhận thông báo khi có câu hỏi mới hoặc trùng lặp được tải lên.
-* Gửi đề thi lên hệ thống để kiểm tra tự động.
-### 👨‍🎓 Điều phối cấp Khoa – Trưởng Khoa
-* Giao nhiệm vụ cụ thể cho giảng viên về việc rà soát và chỉnh sửa câu hỏi.
-* Nhận thông báo khi có câu hỏi mới được tải lên và khi phát hiện trùng lặp.
-* Gửi đề thi để hệ thống kiểm tra.
-* Kiểm tra và phê duyệt danh sách câu hỏi cuối cùng để đưa vào ngân hàng đề.
-### 🏛️ Quản lý cấp Phòng – Trưởng Phòng Khảo thí
-* Nhận thông báo về các nhiệm vụ và đề thi đã cập nhật.
-* Giao nhiệm vụ cho giảng viên để rà soát và nhận xét đề thi.
-* Rà soát và phê duyệt đề thi cuối cùng.
-* Nhận thông báo về trạng thái cập nhật đề thi sau khi nhận xét.
----
+## 📖 Giới thiệu (Introduction)
 
-## 🔥 **Cách hoạt động QBCA**
-
-1️⃣Tạo môn học, CLO, độ khó từ nhân viên R&D.  
-2️⃣Giao nhiệm vụ từ trưởng khoa/bộ môn đến giảng viên.  
-3️⃣Tải câu hỏi, rà soát trùng lặp, cập nhật từ giảng viên.  
-4️⃣Phê duyệt và thông báo ở mỗi giai đoạn (bộ môn, khoa, khảo thí).  
-5️⃣Cập nhật đề thi, phản hồi, và ngân hàng đề chính thức.  
+**CNPM-QBCA** là một hệ thống web ASP.NET Core MVC toàn diện được phát triển nhằm mục đích số hóa và tối ưu hóa quy trình quản lý ngân hàng câu hỏi thi tại các cơ sở giáo dục. Hệ thống không chỉ đơn thuần là nơi lưu trữ, mà còn tích hợp các luồng công việc (workflows) kiểm duyệt nhiều cấp, kết hợp công nghệ AI để tự động phát hiện và ngăn chặn việc trùng lặp câu hỏi, đảm bảo chất lượng và tính duy nhất của đề thi.
 
 ---
 
-# 🙏 **Lời tri ân**
-**Em xin gửi lời cảm ơn chân thành và sâu sắc đến Thầy Nguyễn Văn Chiến, người đã luôn đồng hành, định hướng và hỗ trợ tận tình trong suốt quá trình thực hiện dự án. Chính nhờ sự chỉ dẫn quý báu của Thầy, Em mới có thể hoàn thành sản phẩm một cách hiệu quả và chuyên nghiệp hơn từng ngày.**
+## 🛠️ Công nghệ sử dụng (Tech Stack)
+
+Hệ thống được xây dựng trên kiến trúc Multi-Tier Architecture, đảm bảo tính mở rộng và dễ bảo trì:
+
+- **Backend:** C# / .NET 8, ASP.NET Core MVC
+- **Database:** Microsoft SQL Server, Entity Framework Core (Code-First)
+- **Frontend:** HTML5, CSS3 (Neumorphic Design), Bootstrap, Vanilla JavaScript
+- **AI Integration:** Jina AI (Duplicate checking logic)
+
+---
+
+## ✨ Tính năng chính (Key Features)
+
+Hệ thống cung cấp một luồng làm việc khép kín thông qua mô hình phân quyền (Role-Based Access Control) chặt chẽ với 5 vai trò chính:
+
+### 🔬 1. R&D Staff (Nhân viên Nghiên cứu & Phát triển)
+
+* **Quản lý Cấu trúc học thuật:** Tạo và quản lý Môn học (Subjects), Chuẩn đầu ra (CLOs) và Mức độ khó (Difficulty Levels).
+* **Hoạch định Kế hoạch (Exam Plans):** Phân bổ Kế hoạch bài thi và tỷ lệ phân phối câu hỏi cho từng môn học.
+* **AI Checking:** Sử dụng công cụ kiểm tra trùng lặp câu hỏi độc lập.
+* **System Monitor:** Theo dõi bảng tổng hợp tiến độ chung.
+
+### 🏫 2. Head of Department (Trưởng Khoa / Trưởng bộ môn cấp cao)
+
+* **Tiếp nhận Kế hoạch:** Nhận danh sách Assigned Plans từ R&D.
+* **Điều phối (Task Assignment):** Giao việc cụ thể trực tiếp cho các Giảng viên (Lecturers) hoặc Trưởng môn (Subject Leaders).
+* **Phê duyệt cuối cùng:** Rà soát và phê duyệt các bảng tổng hợp đề thi (Submissions).
+
+### 👨‍🏫 3. Subject Leader (Trưởng Bộ môn)
+
+* **Quản lý Team:** Xem và nắm bắt các Task của cả nhóm (Team Tasks).
+* **Ủy quyền:** Tiếp tục phân bổ (Assign) các công việc rà soát/tạo câu hỏi xuống cho Giảng viên.
+* **Kiểm duyệt chuyên môn:** Review và Approve danh sách câu hỏi cuối cùng trước khi đưa vào ngân hàng.
+* **Tổng hợp:** Bấm Submit hệ thống các bộ đề hoàn chỉnh lên cấp cao hơn.
+
+### 🎓 4. Lecturer (Giảng viên)
+
+* **Thực thi Task:** Xem danh sách công việc (My Tasks) được giao.
+* **Đóng góp Ngân hàng:** Viết câu hỏi, upload lên hệ thống (Question Bank).
+* **Quản lý chất lượng:** Tự kiểm tra trùng lặp những câu hỏi mới của mình với kho dữ liệu chung.
+* **Mô phỏng (Mock Exam):** Làm bài thi thử để test độ khó của đề thi.
+
+### 🏛️ 5. Exam Head (Trưởng phòng Khảo thí)
+
+* **Đồng bộ hóa:** Nhận thông báo các Kế hoạch và Cập nhật đề thi.
+* **Phê bình Đề thi:** Đưa ra nhận xét (Review Exams) đối với bộ đề.
+* **Phê duyệt cuối cùng:** Cấp giấy phép/Approve để chính thức phát hành đề thi (Update Exam Approve Task).
+
+---
+
+## ⚙️ Luồng hoạt động cơ bản (Workflows)
+
+1. **Khởi tạo:** R&D thiết lập Môn học, CLO và Kế hoạch (Exam Plan).
+2. **Phân bổ:** Kế hoạch được đẩy xuống Trưởng Khoa (Head) -> Phân task cho Trưởng bộ môn/Giảng viên.
+3. **Thực thi:** Giảng viên soạn thảo câu hỏi -> AI tự động cảnh báo nếu trùng lặp.
+4. **Kiểm duyệt:** Trưởng bộ môn (Subject Leader) rà soát các câu hỏi và Submit.
+5. **Ban hành:** Trưởng khoa (Head) và Trưởng Khảo thí (Exam Head) phê duyệt cuối cùng. Tất cả quá trình đều được tự động gửi thông báo (Notifications).
+
+---
+
+## 🚀 Hướng dẫn Cài đặt (Installation & Setup)
+
+Để chạy dự án này trên môi trường local, bạn cần làm theo các bước sau:
+
+**1. Yêu cầu hệ thống (Prerequisites)**
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- SQL Server (hoặc SQL Server Express)
+- Visual Studio 2022 (khuyến nghị) hoặc VS Code
+
+**2. Cài đặt CSDL (Database Setup)**
+
+- Mở file `appsettings.json` trong thư mục `CNPM-QBCA.Web`.
+- Thay đổi chuỗi cấu hình `DefaultConnection` sao cho trỏ đúng tới Local SQL Server của bạn.
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=CNPM-QBCA;Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False"
+}
+```
+
+**3. Áp dụng Migrations**
+Mở sơ đồ Package Manager Console trong Visual Studio hoặc dùng Terminal và gõ:
+
+```bash
+cd CNPM-QBCA.Web
+dotnet ef database update
+```
+
+*(Nếu database trống, bạn cần Add seed data cho bảng Roles (ID từ 1->5) và Users)*
+
+**4. Chạy ứng dụng**
+
+```bash
+dotnet run --project CNPM-QBCA.Web
+```
+
+Ứng dụng sẽ khả dụng tại `http://localhost:XXXX`
+
+---
