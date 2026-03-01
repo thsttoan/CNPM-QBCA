@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QBCA.Data;
 
-
+namespace QBCA.Controllers
+{
 
 public class ExamApproveTaskController : Controller
 {
@@ -97,3 +98,4 @@ public class ExamApproveTaskController : Controller
         return RedirectToAction(nameof(Index));
     }
 }
+} // end namespace

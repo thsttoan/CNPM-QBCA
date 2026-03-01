@@ -7,8 +7,9 @@ namespace QBCA.Models
     {
         public int DifficultyLevelID { get; set; }
 
-        [Required(ErrorMessage = "Level Name is required.")]
-        public string LevelName { get; set; }
+        public string? LevelName { get; set; }
+        
+        public List<string> LevelNames { get; set; } = new List<string>();
 
         [Required(ErrorMessage = "Subject is required.")]
         public int? SubjectID { get; set; }

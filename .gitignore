@@ -1,0 +1,100 @@
+## =============================================
+## .gitignore cho ASP.NET Core Solution
+## =============================================
+
+# -----------------------------------------------
+# 🔑 BẢO MẬT - API Keys & cấu hình nhạy cảm
+# -----------------------------------------------
+**/appsettings.json
+**/appsettings.*.json
+**/SQL-Roles_Users.txt
+!**/appsettings.example.json
+
+# User Secrets (dotnet user-secrets)
+**/secrets.json
+
+# -----------------------------------------------
+# 🏗️ Build outputs
+# -----------------------------------------------
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# -----------------------------------------------
+# 🛠️ Visual Studio
+# -----------------------------------------------
+.vs/
+*.rsuser
+*.vsp
+*.vspx
+*.sap
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+.idea/
+
+# -----------------------------------------------
+# 📦 NuGet
+# -----------------------------------------------
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# -----------------------------------------------
+# 🧪 Test Results
+# -----------------------------------------------
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+_TestResults/
+
+# -----------------------------------------------
+# 💻 OS generated
+# -----------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# -----------------------------------------------
+# 📁 Publish / Deploy
+# -----------------------------------------------
+**/publish/
+**/PublishProfiles/
+*.pubxml
+*.pubxml.user
+
+# -----------------------------------------------
+# 🗄️ Entity Framework Migrations cache
+# -----------------------------------------------
+# (giữ lại migrations, chỉ bỏ snapshots tạm)
+# **/Migrations/
+
+# -----------------------------------------------
+# 📋 Misc
+# -----------------------------------------------
+*.bak
+*.tmp
+*.temp
+~$*

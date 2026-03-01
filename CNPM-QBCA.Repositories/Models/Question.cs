@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,6 +30,9 @@ namespace QBCA.Models
 
         [Required]
         public string Status { get; set; }
+
+        // Lưu vector embedding dưới dạng chuỗi JSON để không phải gọi lại API
+        public string? Embedding { get; set; }
 
         // >>>>> BỔ SUNG CHO SUBMISSION TABLE <<<<<
         public int? SubmissionID { get; set; }

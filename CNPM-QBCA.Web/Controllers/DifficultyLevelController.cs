@@ -59,45 +59,51 @@ namespace QBCA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DifficultyLevelCreateViewModel vm)
         {
+            if (vm.SubjectID == null) 
+            {
+                ModelState.AddModelError("SubjectID", "Subject is required.");
+            }
+            if (vm.LevelNames == null || !vm.LevelNames.Any(n => !string.IsNullOrWhiteSpace(n)))
+            {
+                ModelState.AddModelError("LevelNames", "At least one Level Name is required.");
+            }
+
             if (ModelState.IsValid)
             {
-                var dl = new DifficultyLevel
-                {
-                    LevelName = vm.LevelName,
-                    SubjectID = vm.SubjectID.Value,
-                    Questions = new List<Question>()
-                };
-
-                if (vm.SelectedQuestionIDs != null && vm.SelectedQuestionIDs.Count > 0)
-                {
-                    dl.Questions = await _context.Questions
-                        .Where(q => vm.SelectedQuestionIDs.Contains(q.QuestionID))
-                        .ToListAsync();
-                }
-
-                _context.DifficultyLevels.Add(dl);
-                await _context.SaveChangesAsync();
-
+                var validLevels = vm.LevelNames.Where(n => !string.IsNullOrWhiteSpace(n)).Distinct().ToList();
                 var notifyUsers = _context.Users.Where(u => u.RoleID == 1 || u.RoleID == 3).ToList();
-                string subjectName = _context.Subjects.Find(dl.SubjectID)?.SubjectName;
+                string subjectName = _context.Subjects.Find(vm.SubjectID.Value)?.SubjectName;
 
-                // LẤY userID NGƯỜI TẠO
                 var userIdClaim = User?.Claims.FirstOrDefault(c => c.Type == "UserID")?.Value;
                 int.TryParse(userIdClaim, out int createdBy);
 
-                foreach (var user in notifyUsers)
+                foreach(var levelName in validLevels)
                 {
-                    AddNotification(
-                        user.UserID,
-                        $"Difficulty level \"{dl.LevelName}\" for subject \"{subjectName}\" has been created.",
-                        "DifficultyLevel",
-                        dl.DifficultyLevelID,
-                        createdBy
-                    );
+                    var dl = new DifficultyLevel
+                    {
+                        LevelName = levelName,
+                        SubjectID = vm.SubjectID.Value,
+                        Questions = new List<Question>()
+                    };
+
+                    _context.DifficultyLevels.Add(dl);
+                    await _context.SaveChangesAsync();
+                    
+                    foreach (var user in notifyUsers)
+                    {
+                        AddNotification(
+                            user.UserID,
+                            $"Difficulty level \"{dl.LevelName}\" for subject \"{subjectName}\" has been created.",
+                            "DifficultyLevel",
+                            dl.DifficultyLevelID,
+                            createdBy
+                        );
+                    }
                 }
+                
                 await _context.SaveChangesAsync();
 
-                TempData["Success"] = "DifficultyLevel created successfully!";
+                TempData["Success"] = "Difficulty Level(s) created successfully!";
                 return RedirectToAction("DLs");
             }
 
@@ -136,6 +142,11 @@ namespace QBCA.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(DifficultyLevelCreateViewModel vm)
         {
+            if (string.IsNullOrWhiteSpace(vm.LevelName))
+            {
+                ModelState.AddModelError("LevelName", "Level Name is required.");
+            }
+
             if (!ModelState.IsValid)
             {
                 vm.AllSubjects = _context.Subjects.ToList();

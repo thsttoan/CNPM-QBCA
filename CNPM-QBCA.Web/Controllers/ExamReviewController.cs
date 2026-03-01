@@ -69,8 +69,32 @@ namespace QBCA.Controllers
                 DueDate = review.DueDate,
                 ReviewedAt = review.ReviewedAt
             };
-
             return View(vm); // View: ReviewDetails.cshtml
+        }
+
+        // POST: /ExamReview/UpdateStatus
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateStatus(int id, string status)
+        {
+            var review = await _context.ReviewExams.FindAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            // Only allow valid statuses
+            if (status == "Approved" || status == "Rejected")
+            {
+                review.Status = status;
+                
+                // (Optional) Add notification mechanism here if needed
+
+                await _context.SaveChangesAsync();
+                TempData["Success"] = $"Review status has been updated to {status}.";
+            }
+
+            return RedirectToAction(nameof(ReviewDetails), new { id = id });
         }
     }
 }

@@ -42,50 +42,67 @@ namespace QBCA.Controllers
                 return View(model);
             }
 
-            if (!_context.ExamPlanDistributions.Any(d => d.DistributionID == model.DistributionID))
+            if (model.DistributionIDs == null || !model.DistributionIDs.Any())
             {
-                ModelState.AddModelError("DistributionID", "Selected distribution does not exist.");
+                ModelState.AddModelError("DistributionIDs", "Please select at least one distribution.");
                 LoadDropdowns(model);
                 return View(model);
             }
 
-            var plan = new AssignedPlan
-            {
-                ExamPlanID = model.ExamPlanID,
-                DistributionID = model.DistributionID,
-                AssignedToID = model.AssignedToID,
-                AssignedByID = 1, // TODO: Replace with logged-in user
-                AssignedDate = DateTime.Now,
-                Deadline = model.Deadline,
-                Notes = model.Notes,
-                TaskType = model.TaskType,
-                Status = AssignedPlanStatus.Assigned
-            };
+            var validDistributionIds = model.DistributionIDs
+                .Where(id => _context.ExamPlanDistributions.Any(d => d.DistributionID == id))
+                .ToList();
 
-            _context.AssignPlans.Add(plan);
-            _context.SaveChanges(); // Lưu trước để lấy ID
+            if (!validDistributionIds.Any())
+            {
+                ModelState.AddModelError("DistributionIDs", "Selected distributions do not exist.");
+                LoadDropdowns(model);
+                return View(model);
+            }
+
+            int assignedById = 0;
+            int.TryParse(User.FindFirst("UserID")?.Value, out assignedById);
 
             var subjectName = _context.ExamPlans
                 .Include(e => e.Subject)
                 .FirstOrDefault(e => e.ExamPlanID == model.ExamPlanID)
                 ?.Subject?.SubjectName;
 
-            var notification = new Notification
+            foreach (var distId in validDistributionIds)
             {
-                UserID = model.AssignedToID,
-                Message = $"You have been assigned a task for subject: {subjectName} ({model.TaskType})",
-                CreatedAt = DateTime.Now,
-                CreatedBy = plan.AssignedByID,
-                Status = "Unread",
-                RelatedEntityType = "AssignedPlan",
-                RelatedEntityID = plan.ID
-            };
+                var plan = new AssignedPlan
+                {
+                    ExamPlanID = model.ExamPlanID,
+                    DistributionID = distId,
+                    AssignedToID = model.AssignedToID,
+                    AssignedByID = assignedById,
+                    AssignedDate = DateTime.Now,
+                    Deadline = model.Deadline,
+                    Notes = model.Notes,
+                    TaskType = model.TaskType,
+                    Status = AssignedPlanStatus.Assigned
+                };
 
-            _context.Notifications.Add(notification);
+                _context.AssignPlans.Add(plan);
+                _context.SaveChanges(); // Lưu để lấy ID
+                
+                var notification = new Notification
+                {
+                    UserID = model.AssignedToID,
+                    Message = $"You have been assigned a task for subject: {subjectName} ({model.TaskType})",
+                    CreatedAt = DateTime.Now,
+                    CreatedBy = plan.AssignedByID,
+                    Status = "Unread",
+                    RelatedEntityType = "AssignedPlan",
+                    RelatedEntityID = plan.ID
+                };
+
+                _context.Notifications.Add(notification);
+            }
+
             _context.SaveChanges();
 
             return RedirectToAction("Plans");
-
         }
 
         // GET: AssignedPlan/Plans
@@ -257,7 +274,7 @@ namespace QBCA.Controllers
 
             model.AllLecturers = _context.Users
                 .Include(u => u.Role)
-                .Where(u => u.Role.RoleName == "Lecturer")
+                .Where(u => u.RoleID == 2 || u.RoleID == 4)
                 .ToList();
         }
     }

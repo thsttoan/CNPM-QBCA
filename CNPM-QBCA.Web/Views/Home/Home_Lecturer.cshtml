@@ -1,20 +1,51 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     ViewBag.Title = "Lecturer Dashboard";
-    ViewBag.UserName = "Lecturer";
     ViewBag.RoleName = "Lecturer";
-    ViewBag.AvatarInitials = "LE";
 }
 
 <main class="dashboard-container">
     <div class="welcome-banner">
-        <h1>Welcome, Lecturer!</h1>
-        <ul>
-            <li>View and manage assigned tasks from Subject Leader or Head of Department.</li>
-            <li>Upload new questions to the system and check for duplicates.</li>
-            <li>Edit or delete duplicate questions as needed.</li>
-            <li>Take mock exams and provide feedback for exam improvement.</li>
-            <li>Receive notifications about assignments and feedback.</li>
-        </ul>
+        <h1>Welcome, @(User.FindFirst("FullName")?.Value ?? "Lecturer")!</h1>
+        <p style="color:#666;">Manage your assigned tasks and questions</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px 0;">
+        <a href="@Url.Action("MyTasks","MyTask")" class="dash-card" style="border-color:#f0a500;">
+            <i class="fas fa-clipboard-list" style="color:#f0a500;"></i>
+            <span>My Tasks</span>
+        </a>
+        <a href="@Url.Action("Questions","Question")" class="dash-card">
+            <i class="fas fa-database"></i>
+            <span>Question Bank</span>
+        </a>
+        <a href="@Url.Action("HomeCheck","DuplicateCheck")" class="dash-card" style="border-color:#6d82f3;">
+            <i class="fas fa-search" style="color:#6d82f3;"></i>
+            <span>Duplicate Check</span>
+        </a>
+        <a href="@Url.Action("MockExam","Exam")" class="dash-card" style="border-color:#27ae60;">
+            <i class="fas fa-file-signature" style="color:#27ae60;"></i>
+            <span>Mock Exam</span>
+        </a>
+        <a href="@Url.Action("Notifications","Notifications")" class="dash-card">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+        </a>
     </div>
 </main>
+
+@section Styles {
+<style>
+.dash-card {
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:12px;padding:28px 16px;
+    background:#f8faff;border:1.5px solid #e0e8ff;
+    border-radius:16px;text-decoration:none;color:#36395a;
+    font-weight:600;font-size:.97rem;
+    box-shadow:4px 4px 12px #c7d0e840;
+    transition:all .2s;
+}
+.dash-card:hover{transform:translateY(-3px);box-shadow:6px 8px 18px #b0c0e860;background:#fff;}
+.dash-card i{font-size:2rem;color:#667eea;}
+</style>
+}

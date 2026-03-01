@@ -1,0 +1,48 @@
+@model QBCA.Models.SubmissionTable
+@{
+    ViewBag.Title = "Create Submission";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<div class="container py-4">
+    <div class="main-content-area" style="margin-left: 34px; margin-right: 34px;">
+        <div class="card shadow p-4 rounded-4 bg-light" style="max-width: 800px; margin: 0 auto;">
+            <h2 class="mb-4 text-primary"><i class="fas fa-plus-circle me-2"></i>Create Submission Table</h2>
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="PlanID" class="form-label fw-bold">Select Exam Plan</label>
+                    <select asp-for="PlanID" class="form-select" asp-items="ViewBag.Plans" required>
+                        <option value="">-- Choose an Exam Plan --</option>
+                    </select>
+                    <span asp-validation-for="PlanID" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DuplicateRate" class="form-label fw-bold">Duplicate Rate (optional)</label>
+                        <input asp-for="DuplicateRate" type="number" step="0.01" class="form-control" placeholder="e.g. 0.05 for 5%" />
+                        <span asp-validation-for="DuplicateRate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="DuplicateReport" class="form-label fw-bold">Duplicate Report Context (optional)</label>
+                    <textarea asp-for="DuplicateReport" class="form-control" rows="4" placeholder="Summarize duplicate findings..."></textarea>
+                    <span asp-validation-for="DuplicateReport" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4 border-top pt-3">
+                    <a href="@Url.Action("SubmissionTable", "Submission")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Create Submission
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

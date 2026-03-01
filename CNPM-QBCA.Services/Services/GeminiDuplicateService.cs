@@ -19,21 +19,36 @@ namespace QBCA.Services
 
         public async Task<float[]> GetEmbeddingAsync(string text)
         {
-            var url = $"https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent?key={_apiKey}";
+            // Cập nhật model lên text-embedding-004 để có kết quả tốt hơn
+            var url = $"https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key={_apiKey}";
+
             var body = new
             {
+                model = "models/text-embedding-004", // Khai báo model rõ ràng trong body
                 content = new
                 {
                     parts = new[] { new { text = text } }
                 }
             };
+
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(body);
             var resp = await _http.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
-            resp.EnsureSuccessStatusCode();
+
+            // Đọc nội dung lỗi nếu có trước khi ném Exception
+            if (!resp.IsSuccessStatusCode)
+            {
+                var errorContent = await resp.Content.ReadAsStringAsync();
+                throw new Exception($"Gemini API Error: {resp.StatusCode} - {errorContent}");
+            }
+
             var result = await resp.Content.ReadAsStringAsync();
-            var obj = JObject.Parse(result);
+            var obj = Newtonsoft.Json.Linq.JObject.Parse(result);
+
+            // Lưu ý: Kết quả trả về của endpoint embedContent nằm trong object "embedding"
             var arr = obj["embedding"]?["values"];
-            if (arr == null) throw new System.Exception("Not receiving embedding from Gemini API.");
+
+            if (arr == null) throw new Exception("Không nhận được dữ liệu embedding từ Gemini API.");
+
             return arr.Select(v => (float)v).ToArray();
         }
 

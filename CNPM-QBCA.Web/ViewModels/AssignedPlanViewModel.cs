@@ -20,9 +20,12 @@ namespace QBCA.ViewModels
         [Display(Name = "Exam Plan")]
         public int ExamPlanID { get; set; }
 
-        [Required]
         [Display(Name = "Distribution")]
         public int DistributionID { get; set; }
+
+        [Required(ErrorMessage = "Please select at least one distribution.")]
+        [Display(Name = "Distributions")]
+        public List<int> DistributionIDs { get; set; } = new List<int>();
 
         [Required]
         [Display(Name = "Assigned To")]

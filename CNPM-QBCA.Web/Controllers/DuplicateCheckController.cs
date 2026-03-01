@@ -1,27 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using QBCA.Data;
 using QBCA.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using System;
 
 namespace QBCA.Controllers
 {
-
     public class DuplicateCheckController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly GeminiService _aiService;
+        private readonly JinaService _aiService;
 
-        public DuplicateCheckController(ApplicationDbContext context)
+        public DuplicateCheckController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-            _aiService = new GeminiService("AIzaSyC4ZDWUHt2e-BuZ169dIpW6O2rPQ2FmY2M");
+            var jinaKey = configuration["ApiKeys:Jina"]
+                ?? throw new InvalidOperationException("Jina API key not found in configuration.");
+            _aiService = new JinaService(jinaKey);
         }
 
         // GET: DuplicateCheck/HomeCheck
@@ -90,24 +93,25 @@ namespace QBCA.Controllers
                 {
                     var qTopic = ExtractMainTopic(q.Content);
 
-                    // Continue if the main topics do not match
+                    // Bỏ qua nếu chủ đề chính không khớp
                     if (!string.IsNullOrWhiteSpace(targetTopic) && !string.IsNullOrWhiteSpace(qTopic) && targetTopic != qTopic)
                     {
                         continue;
                     }
 
                     var emb = await _aiService.GetEmbeddingAsync(q.Content);
-                    var sim = GeminiService.CosineSimilarity(targetEmbedding, emb);
+                    var sim = JinaService.CosineSimilarity(targetEmbedding, emb);
                     if (sim > 0.92)
                     {
                         duplicates.Add((q, sim));
 
-                        // Check if this duplicate check result already exists
+                        // Kiểm tra xem kết quả đã tồn tại chưa
                         bool exists = await _context.DuplicateCheckResults.AnyAsync(r =>
                             r.QuestionID == target.QuestionID &&
                             r.SimilarQuestionID == q.QuestionID &&
                             Math.Abs(r.SimilarityScore - sim) < 0.0001
                         );
+
                         DuplicateCheckResult result;
                         if (!exists)
                         {
@@ -116,7 +120,7 @@ namespace QBCA.Controllers
                                 QuestionID = target.QuestionID,
                                 SimilarQuestionID = q.QuestionID,
                                 SimilarityScore = sim,
-                                CheckType = "Gemini",
+                                CheckType = "Jina",
                                 CheckedAt = DateTime.UtcNow,
                                 Question = target,
                                 SimilarQuestion = q
@@ -134,12 +138,14 @@ namespace QBCA.Controllers
                                     Math.Abs(r.SimilarityScore - sim) < 0.0001
                                 );
                         }
+
                         if (result != null)
                         {
                             results.Add(result);
                         }
                     }
                 }
+
                 await _context.SaveChangesAsync();
 
                 var model = new DuplicateResultViewModel
@@ -152,12 +158,12 @@ namespace QBCA.Controllers
             }
             catch (HttpRequestException ex)
             {
-                TempData["Error"] = ex.Message;
+                TempData["Error"] = $"Lỗi kết nối Jina API: {ex.Message}";
                 return RedirectToAction("Check");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                TempData["Error"] = $"An error occurred: {ex.Message}";
+                TempData["Error"] = $"Đã xảy ra lỗi: {ex.Message}";
                 return RedirectToAction("Check");
             }
         }
@@ -181,57 +187,67 @@ namespace QBCA.Controllers
         }
     }
 
-    // Service for calling Gemini API
-    public class GeminiService
+    // Service gọi Jina Embeddings API
+    public class JinaService
     {
         private readonly string _apiKey;
-        private readonly HttpClient _http;
+        private static readonly HttpClient _http = new HttpClient();
 
-        public GeminiService(string apiKey)
+        // Jina embeddings-v3: 1024 chiều, hỗ trợ đa ngôn ngữ (kể cả tiếng Việt)
+        private const string JinaModel = "jina-embeddings-v3";
+        private const string JinaEndpoint = "https://api.jina.ai/v1/embeddings";
+
+        public JinaService(string apiKey)
         {
             _apiKey = apiKey;
-            _http = new HttpClient();
         }
 
         public async Task<float[]> GetEmbeddingAsync(string text)
         {
-            var url = $"https://generativelanguage.googleapis.com/v1beta/models/embedding-001:embedContent?key={_apiKey}";
             var body = new
             {
-                content = new
-                {
-                    parts = new[] { new { text = text } }
-                }
+                input = new[] { text },
+                model = JinaModel,
+                task = "text-matching"   // tối ưu cho so sánh độ tương đồng
             };
+
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(body);
-            var resp = await _http.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
-            resp.EnsureSuccessStatusCode();
+            var request = new HttpRequestMessage(HttpMethod.Post, JinaEndpoint);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var resp = await _http.SendAsync(request);
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                var errBody = await resp.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Jina API lỗi {(int)resp.StatusCode}: {errBody}");
+            }
+
             var result = await resp.Content.ReadAsStringAsync();
             var obj = JObject.Parse(result);
-            var arr = obj["embedding"]?["values"];
-            if (arr == null) throw new System.Exception("No embedding received from Gemini API.");
+            var arr = obj["data"]?[0]?["embedding"];
+            if (arr == null) throw new Exception("Không nhận được embedding từ Jina API.");
             return arr.Select(v => (float)v).ToArray();
         }
 
         public static double CosineSimilarity(float[] vectorA, float[] vectorB)
         {
             if (vectorA.Length != vectorB.Length)
-                throw new System.Exception("Embeddings have different lengths.");
+                throw new Exception("Hai vector embedding có độ dài khác nhau.");
 
-            double dot = 0.0;
-            double magA = 0.0;
-            double magB = 0.0;
+            double dot = 0.0, magA = 0.0, magB = 0.0;
             for (int i = 0; i < vectorA.Length; i++)
             {
-                dot += vectorA[i] * vectorB[i];
+                dot  += vectorA[i] * vectorB[i];
                 magA += vectorA[i] * vectorA[i];
                 magB += vectorB[i] * vectorB[i];
             }
-            return dot / (System.Math.Sqrt(magA) * System.Math.Sqrt(magB));
+            return dot / (Math.Sqrt(magA) * Math.Sqrt(magB));
         }
     }
 
-    // ViewModel for duplicate result
+    // ViewModel cho kết quả kiểm tra trùng lặp
     public class DuplicateResultViewModel
     {
         public Question Question { get; set; }

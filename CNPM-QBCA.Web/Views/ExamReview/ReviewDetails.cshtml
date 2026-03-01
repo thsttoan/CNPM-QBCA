@@ -40,6 +40,37 @@
                 <dt class="col-sm-3">Comment:</dt>
                 <dd class="col-sm-9">@Model.Comment</dd>
             </dl>
+            
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success mt-3">@TempData["Success"]</div>
+            }
+
+            @if (User.FindFirst("RoleID")?.Value == "5" && Model.Status == "Submitted")
+            {
+                <div class="mt-4 border-top pt-3 d-flex gap-2">
+                    <form asp-action="UpdateStatus" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.ReviewID" />
+                        <input type="hidden" name="status" value="Approved" />
+                        <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Approve Feedback</button>
+                    </form>
+                    <form asp-action="UpdateStatus" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.ReviewID" />
+                        <input type="hidden" name="status" value="Rejected" />
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-times"></i> Reject Feedback</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="mt-4 border-top pt-3">
+                    <a href="@Url.Action("ReviewExam", "ExamReview")" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            }
         </div>
     </div>
 </div>

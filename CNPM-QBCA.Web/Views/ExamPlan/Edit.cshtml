@@ -145,7 +145,7 @@
                     <tr>
                         <th>Difficulty Level</th>
                         <th>Number of Questions</th>
-                        <th>Manager Role</th>
+                        <th>Manager (Head of Dept)</th>
                     </tr>
                 </thead>
                 <tbody id="dist-tbody">
@@ -164,11 +164,11 @@
                             @Html.ValidationMessage("Distributions[" + i + "].NumberOfQuestions", "", new { @class = "text-danger small" })
                         </td>
                         <td>
-                            @Html.DropDownListFor(m => m.Distributions[i].AssignedManagerRoleID,
-                                                        new SelectList(Model.AllManagerRoles, "RoleID", "RoleName", Model.Distributions[i].AssignedManagerRoleID),
-                                                        "Select Manager Role",
+                            @Html.DropDownListFor(m => m.Distributions[i].AssignedManagerID,
+                                                        new SelectList(Model.AllManagerUsers, "UserID", "FullName", Model.Distributions[i].AssignedManagerID),
+                                                        "Select Manager",
                                                         new { @class = "neumorphic-select" })
-                            @Html.ValidationMessage("Distributions[" + i + "].AssignedManagerRoleID", "", new { @class = "text-danger small" })
+                            @Html.ValidationMessage("Distributions[" + i + "].AssignedManagerID", "", new { @class = "text-danger small" })
                         </td>
                     </tr>
                                         }
@@ -181,8 +181,8 @@
     </div>
 </section>
 <script>
-    var roles = @Html.Raw(JsonSerializer.Serialize(
-                Model.AllManagerRoles.Select(x => new { x.RoleID, x.RoleName })
+    var managers = @Html.Raw(JsonSerializer.Serialize(
+                Model.AllManagerUsers.Select(x => new { x.UserID, x.FullName })
         ));
     var initialDifficulties = @Html.Raw(JsonSerializer.Serialize(
                 Model.AllDifficultyLevels.Select(x => new { x.DifficultyLevelID, x.LevelName })
@@ -203,9 +203,9 @@
                 <input type="number" name="Distributions[${idx}].NumberOfQuestions" class="neumorphic-input" min="1" placeholder="Number" />
             </td>
             <td>
-                <select name="Distributions[${idx}].AssignedManagerRoleID" class="neumorphic-select">
-                    <option value="">Select Manager Role</option>
-                    ${roles.map(r => `<option value="${r.RoleID}">${r.RoleName}</option>`).join('')}
+                <select name="Distributions[${idx}].AssignedManagerID" class="neumorphic-select">
+                    <option value="">Select Manager</option>
+                    ${managers.map(u => `<option value="${u.UserID}">${u.FullName}</option>`).join('')}
                 </select>
             </td>
         </tr>`;

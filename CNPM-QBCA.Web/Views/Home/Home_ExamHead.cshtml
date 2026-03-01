@@ -1,19 +1,51 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     ViewBag.Title = "Head of Examination Department Dashboard";
-    ViewBag.UserName = "Exam Head";
     ViewBag.RoleName = "Head of Examination Department";
-    ViewBag.AvatarInitials = "EH";
 }
 
 <main class="dashboard-container">
     <div class="welcome-banner">
-        <h1>Welcome, Head of Examination Department!</h1>
-        <ul>
-            <li>Receive and manage assigned tasks for exam review and approval.</li>
-            <li>Assign exam review/feedback tasks to lecturers.</li>
-            <li>Review, approve, and update exams based on feedback and progress.</li>
-            <li>Receive notifications about exam progress and updates.</li>
-        </ul>
+        <h1>Welcome, @(User.FindFirst("FullName")?.Value ?? "Exam Head")!</h1>
+        <p style="color:#666;">Review, approve, and manage the exam process</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px 0;">
+        <a href="@Url.Action("ExamPlan","ExamPlan")" class="dash-card" style="border-color:#f0a500;">
+            <i class="fas fa-tasks" style="color:#f0a500;"></i>
+            <span>Assigned Tasks</span>
+        </a>
+        <a href="@Url.Action("AssignToLecturers","Task")" class="dash-card">
+            <i class="fas fa-user-plus"></i>
+            <span>Assign to Lecturers</span>
+        </a>
+        <a href="@Url.Action("ReviewExam","ExamReview")" class="dash-card">
+            <i class="fas fa-search-plus"></i>
+            <span>Review Exams</span>
+        </a>
+        <a href="@Url.Action("Index","ExamApproveTask")" class="dash-card" style="border-color:#27ae60;">
+            <i class="fas fa-check-circle" style="color:#27ae60;"></i>
+            <span>Approve / Update Exam</span>
+        </a>
+        <a href="@Url.Action("Notifications","Notifications")" class="dash-card">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+        </a>
     </div>
 </main>
+
+@section Styles {
+<style>
+.dash-card {
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:12px;padding:28px 16px;
+    background:#f8faff;border:1.5px solid #e0e8ff;
+    border-radius:16px;text-decoration:none;color:#36395a;
+    font-weight:600;font-size:.97rem;
+    box-shadow:4px 4px 12px #c7d0e840;
+    transition:all .2s;
+}
+.dash-card:hover{transform:translateY(-3px);box-shadow:6px 8px 18px #b0c0e860;background:#fff;}
+.dash-card i{font-size:2rem;color:#667eea;}
+</style>
+}

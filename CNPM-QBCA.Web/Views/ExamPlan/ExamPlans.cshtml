@@ -75,8 +75,18 @@
                                                     </div>
                                                     <div>
                                                         <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>
-                                                        <b>Manager Role:</b>
-                                                        @(d.AssignedManagerRole != null ? d.AssignedManagerRole.RoleName : Html.Raw("<span class='text-muted'>Not assigned</span>"))
+                                                        <b>Manager (Head of Dept):</b>
+                                                        @{
+                                                            var managerNames = ViewBag.ManagerNames as Dictionary<int, string>;
+                                                            if (d.AssignedManagerRoleID.HasValue && managerNames != null && managerNames.ContainsKey(d.AssignedManagerRoleID.Value))
+                                                            {
+                                                                @managerNames[d.AssignedManagerRoleID.Value]
+                                                            }
+                                                            else
+                                                            {
+                                                                @Html.Raw("<span class='text-muted'>Not assigned</span>")
+                                                            }
+                                                        }
                                                     </div>
                                                     <div>
                                                         <span style="display:inline-block; font-size:1.6em; color:#222; line-height:0.6; vertical-align:middle; margin-right:8px;">•</span>

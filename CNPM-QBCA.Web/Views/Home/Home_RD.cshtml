@@ -1,21 +1,63 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     ViewBag.Title = "R&D Staff Dashboard";
-    ViewBag.UserName = "R&D User";
     ViewBag.RoleName = "R&D Staff";
-    ViewBag.AvatarInitials = "RM";
 }
 
 <main class="dashboard-container">
     <div class="welcome-banner">
-        <h1>Welcome, R&D Staff!</h1>
-        <ul>
-            <li>Manage subjects, CLOs, and question difficulty levels.</li>
-            <li>Distribute plans and assign number of questions per subject.</li>
-            <li>Check for duplicate English questions using AI/lexical analysis.</li>
-            <li>Manage the question bank, submission table, and exams.</li>
-            <li>Receive and review notifications and reports.</li>
-            <li>Configure system options and maintain high accuracy for duplication checks.</li>
-        </ul>
+        <h1>Welcome, @(User.FindFirst("FullName")?.Value ?? "R&D Staff")!</h1>
+        <p style="color:#666;">Manage the Question Bank Checking Application</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px 0;">
+        <a href="@Url.Action("Subjects","Subject")" class="dash-card">
+            <i class="fas fa-book"></i>
+            <span>Subject Management</span>
+        </a>
+        <a href="@Url.Action("CLOs","CLO")" class="dash-card">
+            <i class="fas fa-list-ol"></i>
+            <span>CLOs Management</span>
+        </a>
+        <a href="@Url.Action("DLs","DifficultyLevel")" class="dash-card">
+            <i class="fas fa-sliders-h"></i>
+            <span>Difficulty Levels</span>
+        </a>
+        <a href="@Url.Action("ExamPlans","ExamPlan")" class="dash-card">
+            <i class="fas fa-tasks"></i>
+            <span>Exam Plan &amp; Distribution</span>
+        </a>
+        <a href="@Url.Action("QuestionBank","Question")" class="dash-card">
+            <i class="fas fa-database"></i>
+            <span>Question Bank</span>
+        </a>
+        <a href="@Url.Action("HomeCheck","DuplicateCheck")" class="dash-card" style="border-color:#6d82f3;">
+            <i class="fas fa-search" style="color:#6d82f3;"></i>
+            <span>Duplicate Check (AI)</span>
+        </a>
+        <a href="@Url.Action("SubmissionTable","Submission")" class="dash-card">
+            <i class="fas fa-table"></i>
+            <span>Submission Table</span>
+        </a>
+        <a href="@Url.Action("ExamManagers","ExamManager")" class="dash-card">
+            <i class="fas fa-file-alt"></i>
+            <span>Exam Management</span>
+        </a>
     </div>
 </main>
+
+@section Styles {
+<style>
+.dash-card {
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:12px;padding:28px 16px;
+    background:#f8faff;border:1.5px solid #e0e8ff;
+    border-radius:16px;text-decoration:none;color:#36395a;
+    font-weight:600;font-size:.97rem;
+    box-shadow:4px 4px 12px #c7d0e840;
+    transition:all .2s;
+}
+.dash-card:hover{transform:translateY(-3px);box-shadow:6px 8px 18px #b0c0e860;background:#fff;}
+.dash-card i{font-size:2rem;color:#667eea;}
+</style>
+}

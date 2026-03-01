@@ -11,7 +11,9 @@
     <div class="main-content-area">
         <div style="margin-bottom: 18px;">
             <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Approve/Update Exam</h2>
-            <div class="text-secondary" style="font-size:1.18rem;">View exams assigned to you.</div>
+            <div class="text-secondary" style="font-size:1.18rem;">
+                View exams assigned to you.
+            </div>
         </div>
 
         <div class="table-container">
@@ -34,25 +36,21 @@
                             <tr>
                                 <td>@task.TaskID</td>
                                 <td>
-                                    <a class="text-decoration-none"
+                                    <a class="text-decoration-none fw-bold"
                                        asp-controller="ExamApproveTask"
                                        asp-action="Details"
-                                       asp-route-id="@task.TaskID">
+                                       asp-route-id="@task.TaskID" style="color: #6277ea;">
                                         @task.ExamTitle
                                     </a>
                                 </td>
                                 <td>
-                                    <span class="badge bg-@(task.Status == "Approved" ? "success" :
-                                                                                                        task.Status == "Rejected" ? "danger" :
-                                                                                                        "warning")">
-                                @task.Status
-                            </span>
-                        </td>
-                        <td>@task.AssignedDate.AddHours(7).ToString("yyyy-MM-dd")</td>
-                        <td>@task.AssignedBy</td>
-                        <td>@task.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
-                    </tr>
-                                        }
+                                    @task.Status
+                                </td>
+                                <td>@task.AssignedDate.AddHours(7).ToString("yyyy-MM-dd")</td>
+                                <td>@task.AssignedBy</td>
+                                <td>@task.CreatedAt.AddHours(7).ToString("yyyy-MM-dd HH:mm")</td>
+                            </tr>
+                        }
                     }
                     else
                     {
@@ -71,26 +69,6 @@
 
 @section Styles {
     <style>
-        .assign-btn-neumorphic {
-            display: inline-block;
-            padding: 10px 24px;
-            background: #f0f4ff;
-            color: #3253f1;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1.05rem;
-            text-decoration: none;
-            box-shadow: 4px 4px 8px #d4d8e5, -4px -4px 8px #ffffff;
-            transition: all 0.2s ease;
-            border: none;
-        }
-
-            .assign-btn-neumorphic:hover {
-                box-shadow: inset 3px 3px 5px #d4d8e5, inset -3px -3px 5px #ffffff;
-                background-color: #e0e9ff;
-                color: #1f3cc4;
-            }
-
         .main-content-area {
             margin-left: 34px;
             margin-right: 34px;
@@ -100,7 +78,7 @@
             background: #fff;
             border-radius: 14px;
             box-shadow: 0 1px 6px #0000000d;
-            padding: 0.5rem;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
             margin-bottom: 20px;
         }
 
@@ -108,7 +86,7 @@
             border-collapse: separate;
             border-spacing: 0;
             font-size: 1.17rem;
-            min-width: 900px;
+            min-width: 650px;
         }
 
             .subject-table thead tr th {
@@ -136,32 +114,15 @@
                 border-bottom: 1px solid #e6e7eb;
             }
 
+                .subject-table tbody tr:last-child {
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+
             .subject-table td {
                 vertical-align: middle;
                 padding: 0.88rem 0.8rem 0.88rem 24px;
                 font-size: 1.14rem;
             }
-
-        @@media (max-width: 1100px) {
-            .main-content-area,
-            .table-container {
-                margin-left: 2vw !important;
-                margin-right: 2vw !important;
-            }
-
-            .subject-table {
-                font-size: 1rem;
-            }
-
-                .subject-table thead tr th {
-                    font-size: 1rem;
-                    padding-left: 10px;
-                }
-
-                .subject-table td {
-                    padding-left: 10px;
-                    font-size: 1rem;
-                }
-        }
     </style>
 }

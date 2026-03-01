@@ -5,159 +5,146 @@
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 
-<style>
-    body {
-        font-family: 'Segoe UI', sans-serif;
-        font-size: 17px;
-    }
-
-    .neumorphic-table {
-        background: #f2f3f7;
-        border-radius: 25px;
-        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
-        padding: 30px;
-        margin: 40px auto;
-        max-width: 95%;
-    }
-
-    h3 {
-        font-size: 1.7rem;
-        font-weight: bold;
-        color: #4F46E5;
-    }
-
-    .neumorphic-button {
-        display: inline-block;
-        padding: 10px 20px;
-        margin: 4px;
-        font-size: 1rem;
-        color: #4F46E5;
-        background: #f2f3f7;
-        border: none;
-        border-radius: 12px;
-        box-shadow: 5px 5px 10px #d1d9e6, -5px -5px 10px #ffffff;
-        text-decoration: none;
-        transition: all 0.3s ease-in-out;
-    }
-
-        .neumorphic-button:hover {
-            box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
-            background: #e6e8f0;
+    <style>
+        .main-content-area {
+            margin-left: 34px;
+            margin-right: 34px;
         }
 
-    .badge {
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 13px;
-        font-weight: 500;
-        color: white;
-        text-transform: capitalize;
-    }
+        .table-container {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 6px #0000000d;
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 20px;
+        }
 
-    .assigned {
-        background-color: #6366F1;
-    }
+        .subject-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1.17rem;
+            min-width: 650px;
+        }
 
-    .completed {
-        background-color: #10B981;
-    }
+            .subject-table thead tr th {
+                background: #6277ea;
+                color: #fff;
+                border: none;
+                font-weight: 700;
+                font-size: 1.18rem;
+                text-align: left;
+                padding-left: 24px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
 
-    .overdue {
-        background-color: #EF4444;
-    }
-
-    .inprogress {
-        background-color: #F59E0B;
-    }
-
-    .finalapproved {
-        background-color: #2563EB;
-    }
-
-    .rejectedfinal {
-        background-color: #DC2626;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 14px 18px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-    }
-
-    th {
-        background-color: #e0e5ec;
-        font-weight: bold;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f9f9fc;
-    }
-
-    .text-muted {
-        color: #6c757d;
-    }
-</style>
-
-<div class="neumorphic-table">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3>📋 Assigned Plans</h3>
-        <a href="@Url.Action("Create", "AssignedPlan")" class="neumorphic-button">➕ Create New Plan</a>
-    </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Subject</th>
-                <th>Assigned To</th>
-                <th>Distribution</th>
-                <th>Status</th>
-                <th>Assigned At</th>
-                <th>Deadline</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Any())
-            {
-                int i = 1;
-                foreach (var item in Model)
-                {
-                    var statusClass = item.Status?.ToString().ToLowerInvariant().Replace(" ", "") ?? "unknown";
-
-                    bool isOverdue = item.Deadline < DateTime.Now && item.Status != AssignedPlanStatus.Completed;
-                    string deadlineColor = isOverdue ? "color:#DC2626;" : "";
-
-
-                    <tr>
-                        <td>@(i++)</td>
-                        <td>@item.SubjectName</td>
-                        <td>@item.AssignedToName</td>
-                        <td>@item.DistributionStatus</td>
-                        <span class="badge @(statusClass)">
-                            @item.Status?.ToString().Replace("Final", "Final ")
-                        </span>
-                        <td>@item.AssignedDate.ToString("dd/MM/yyyy")</td>
-                        <td style="@deadlineColor">@item.Deadline.ToString("dd/MM/yyyy")</td>
-                        <td>
-                            <a href="@Url.Action("Edit", "AssignedPlan", new { id = item.AssignedPlanID })" class="neumorphic-button">✏️ Edit</a>
-                            <a href="@Url.Action("Details", "AssignedPlan", new { id = item.AssignedPlanID })" class="neumorphic-button">📄 Details</a>
-                            <a href="@Url.Action("Delete", "AssignedPlan", new { id = item.AssignedPlanID })" class="neumorphic-button" style="color: #EF4444;">🗑️ Delete</a>
-                        </td>
-                    </tr>
+                .subject-table thead tr th:first-child {
+                    border-top-left-radius: 11px;
                 }
+
+                .subject-table thead tr th:last-child {
+                    border-top-right-radius: 11px;
+                }
+
+            .subject-table tbody tr {
+                background: #fafbfc;
+                border-bottom: 1px solid #e6e7eb;
             }
-            else
-            {
-                <tr>
-                    <td colspan="8" class="text-center text-muted">🔍 No assigned plans found.</td>
-                </tr>
+
+                .subject-table tbody tr:last-child {
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                }
+
+            .subject-table td {
+                vertical-align: middle;
+                padding: 0.88rem 0.8rem 0.88rem 24px;
+                font-size: 1.14rem;
             }
-        </tbody>
-    </table>
+
+        .action-links a {
+            margin: 0 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #4F46E5;
+        }
+
+        .action-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+
+<div class="container py-4">
+    <div class="main-content-area">
+        <div style="margin-bottom: 18px;">
+            <h2 class="fw-bold mb-2" style="font-size:2.1rem;">Assigned Plans</h2>
+            <div class="text-secondary" style="font-size:1.18rem;">
+                Manage head of department exam plans.
+                <div style="margin-top: 5px;">
+                    <a href="@Url.Action("Create", "AssignedPlan")" style="color:#6277ea; font-weight:600; text-decoration:none;">
+                        <i class="fas fa-plus"></i> Create New Plan
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table subject-table mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:5%;">#</th>
+                        <th style="width:20%;">Subject</th>
+                        <th style="width:18%;">Assigned To</th>
+                        <th style="width:12%;">Distribution</th>
+                        <th style="width:12%;">Status</th>
+                        <th style="width:10%;">Assigned At</th>
+                        <th style="width:10%;">Deadline</th>
+                        <th style="width:13%;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            var statusClass = item.Status?.ToString().ToLowerInvariant().Replace(" ", "") ?? "unknown";
+
+                            bool isOverdue = item.Deadline < DateTime.Now && item.Status != AssignedPlanStatus.Completed;
+                            string deadlineColor = isOverdue ? "color:#DC2626; font-weight:bold;" : "";
+
+
+                            <tr>
+                                <td>@(i++)</td>
+                                <td>@item.SubjectName</td>
+                                <td>@item.AssignedToName</td>
+                                <td>@item.DistributionStatus</td>
+                                <td>
+                                    @item.Status?.ToString().Replace("Final", "Final ")
+                                </td>
+                                <td>@item.AssignedDate.ToString("dd/MM/yyyy")</td>
+                                <td style="@deadlineColor">@item.Deadline.ToString("dd/MM/yyyy")</td>
+                                <td class="action-links">
+                                    <a href="@Url.Action("Edit", "AssignedPlan", new { id = item.AssignedPlanID })"><i class="fas fa-edit"></i> Edit</a>
+                                    <a href="@Url.Action("Details", "AssignedPlan", new { id = item.AssignedPlanID })"><i class="fas fa-eye"></i> Details</a>
+                                    <a href="@Url.Action("Delete", "AssignedPlan", new { id = item.AssignedPlanID })" class="text-danger"><i class="fas fa-trash-alt"></i> Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                <i class="fas fa-clipboard-list fa-lg mb-2"></i><br />
+                                <span style="font-size:1.11rem;">No assigned plans found.</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

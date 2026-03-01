@@ -46,7 +46,7 @@ namespace QBCA.Controllers
 
             ViewBag.AllLecturers = _context.Users
                 .Include(u => u.Role)
-                .Where(u => u.Role.RoleName == "Lecturer" || u.Role.RoleName == "Subject Leader")
+                .Where(u => u.RoleID == 2 || u.RoleID == 4)
                 .Select(u => u.FullName)
                 .Distinct()
                 .ToList();
@@ -173,7 +173,7 @@ namespace QBCA.Controllers
             {
                 TaskID = task.AssignmentID,
                 TaskType = task.TaskType,
-                AssignedToName = task.Assignee?.FullName,
+                AssignedToName = task.Assignee?.FullName ?? string.Empty,
                 AssignedByID = task.AssignedBy,
                 Deadline = task.DueDate ?? DateTime.MinValue,
                 AssignedAt = task.AssignedAt,
@@ -196,7 +196,7 @@ namespace QBCA.Controllers
             {
                 TaskID = task.AssignmentID,
                 TaskType = task.TaskType,
-                AssignedToName = task.Assignee?.FullName,
+                AssignedToName = task.Assignee?.FullName ?? string.Empty,
                 Deadline = task.DueDate ?? DateTime.MinValue
             };
 
@@ -222,7 +222,7 @@ namespace QBCA.Controllers
         {
             return _context.Users
                 .Include(u => u.Role)
-                .Where(u => u.Role.RoleName == "Lecturer" || u.Role.RoleName == "Subject Leader")
+                .Where(u => u.RoleID == 2 || u.RoleID == 4)
                 .ToList();
         }
 

@@ -5,90 +5,105 @@
 }
 
 <style>
-    .neumorphic-wrapper {
-        max-width: 720px;
-        margin: 80px auto;
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        font-size: 17px;
+        color: #36395A;
+        background-color: #f8f9fc;
+    }
+
+    .neumorphic-box {
         background: #f2f3f7;
         border-radius: 25px;
-        box-shadow: 10px 10px 20px #d1d9e6, -10px -10px 20px #ffffff;
-        padding: 50px;
+        box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        padding: 40px;
+        max-width: 650px;
+        margin: 100px auto;
+        font-size: 17px;
     }
 
-    .neumorphic-title {
-        font-size: 30px;
+    h3 {
+        font-size: 1.7rem;
         font-weight: 700;
         color: #4F46E5;
-        text-align: center;
-        margin-bottom: 35px;
+        margin-bottom: 30px;
     }
 
-    label {
+    .neumorphic-label {
+        font-size: 1.05rem;
         font-weight: 600;
-        color: #36395A;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
         display: block;
-        font-size: 18px;
     }
 
-    input[type="text"],
-    input[type="date"],
-    select {
+    .neumorphic-input,
+    .modern-dropdown,
+    textarea {
         width: 100%;
-        padding: 16px 20px;
-        border-radius: 14px;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 12px;
         border: none;
-        font-size: 17px;
+        margin-bottom: 20px;
         background: #f2f3f7;
-        box-shadow: inset 5px 5px 10px #d1d9e6, inset -5px -5px 10px #ffffff;
-        margin-bottom: 25px;
-        transition: 0.3s ease;
+        font-weight: 500;
+        color: #36395A;
+        box-shadow: inset 6px 6px 10px #d1d9e6, inset -6px -6px 10px #ffffff;
+        box-sizing: border-box;
     }
 
-        input:focus,
-        select:focus {
+    .modern-dropdown {
+        appearance: none;
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1rem;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8L10 12L14 8' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+        .neumorphic-input:focus,
+        .modern-dropdown:focus,
+        textarea:focus {
             outline: none;
-            box-shadow: inset 3px 3px 8px #d1d9e6, inset -3px -3px 8px #ffffff;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
         }
 
-    .btn-submit {
+    .neumorphic-button {
+        width: 100%;
+        padding: 14px;
+        font-size: 1.05rem;
+        border-radius: 12px;
         background-color: #4F46E5;
         color: white;
-        padding: 15px;
-        width: 100%;
-        font-size: 18px;
-        border-radius: 14px;
-        font-weight: 600;
+        font-weight: bold;
         border: none;
-        box-shadow: 4px 4px 10px #d1d9e6, -4px -4px 10px #ffffff;
-        transition: 0.3s ease;
+        transition: background 0.3s;
     }
 
-        .btn-submit:hover {
+        .neumorphic-button:hover {
             background-color: #3730A3;
-            cursor: pointer;
         }
 
-    .text-danger {
-        font-size: 0.95rem;
+    .validation-message {
         color: red;
-        margin-top: -12px;
-        margin-bottom: 15px;
+        font-size: 0.95rem;
+        margin-top: -14px;
+        margin-bottom: 16px;
         display: block;
     }
 
     .alert-success {
-        background-color: #e6fffa;
-        color: #065f46;
-        padding: 15px;
-        border-radius: 12px;
-        text-align: center;
+        background-color: #e6ffed;
+        border-left: 6px solid #22c55e;
+        padding: 12px 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
         font-weight: 600;
-        margin-bottom: 25px;
-        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05);
+        color: #065f46;
+        text-align: center;
     }
 </style>
 
-<div class="neumorphic-wrapper">
+<div class="neumorphic-box">
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert-success">
@@ -96,43 +111,40 @@
         </div>
     }
 
-    <h3 class="neumorphic-title">🆕 Create New Task</h3>
+    <h3 class="text-center">🆕 Create New Task</h3>
 
-    <form asp-action="Create" method="post">
+    @using (Html.BeginForm("Create", "AssignTask", FormMethod.Post))
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            <label asp-for="TaskType">Task Title</label>
-            <input asp-for="TaskType" placeholder="e.g. Review Exam Questions..." />
-            <span asp-validation-for="TaskType" class="text-danger"></span>
-        </div>
+        <label class="neumorphic-label">Task Title</label>
+        @Html.TextBoxFor(m => m.TaskType, new { @class = "neumorphic-input", placeholder = "e.g. Review Exam Questions..." })
+        @Html.ValidationMessageFor(m => m.TaskType, "", new { @class = "validation-message" })
 
-        <div class="form-group">
-            <label asp-for="AssignedToID">Assign To</label>
-            <select asp-for="AssignedToID" asp-items="@(new SelectList(Model.AllLecturers, "UserID", "FullName"))">
-                <option value="">-- Select Lecturer --</option>
-            </select>
-            <span asp-validation-for="AssignedToID" class="text-danger"></span>
-        </div>
+        <label class="neumorphic-label">Assign To</label>
+        @Html.DropDownListFor(m => m.AssignedToID,
+            new SelectList(Model.AllLecturers, "UserID", "FullName"),
+            "-- Select Manager --",
+            new { @class = "modern-dropdown" })
+        @Html.ValidationMessageFor(m => m.AssignedToID, "", new { @class = "validation-message" })
 
-        <div class="form-group">
-            <label asp-for="Deadline">Deadline</label>
-            <input asp-for="Deadline" type="date" />
-            <span asp-validation-for="Deadline" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="Status">Status</label>
-            <select asp-for="Status">
-                <option value="">-- Select Status --</option>
-                <option value="Assigned">Assigned</option>
-                <option value="InProgress">In Progress</option>
-                <option value="Completed">Completed</option>
-            </select>
-            <span asp-validation-for="Status" class="text-danger"></span>
-        </div>
+        <label class="neumorphic-label">Deadline</label>
+        @Html.TextBoxFor(m => m.Deadline, "{0:yyyy-MM-dd}", new { type = "date", @class = "neumorphic-input" })
+        @Html.ValidationMessageFor(m => m.Deadline, "", new { @class = "validation-message" })
 
-        <button type="submit" class="btn-submit">✅ Create Task</button>
-    </form>
+        <label class="neumorphic-label">Status</label>
+        @Html.DropDownListFor(m => m.Status,
+            new SelectList(new[] {
+                new { Value = "Assigned", Text = "Assigned" },
+                new { Value = "InProgress", Text = "In Progress" },
+                new { Value = "Completed", Text = "Completed" }
+            }, "Value", "Text", "Assigned"),
+            "-- Select Status --",
+            new { @class = "modern-dropdown" })
+        @Html.ValidationMessageFor(m => m.Status, "", new { @class = "validation-message" })
+
+        <button type="submit" class="neumorphic-button">✅ Create Task</button>
+    }
 </div>
 
 
